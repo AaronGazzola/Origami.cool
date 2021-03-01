@@ -2,9 +2,7 @@
 
 ### eCommerce web app for hand folded 3D origami models
 
----
-
-# Getting Started with Create React App
+--
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
