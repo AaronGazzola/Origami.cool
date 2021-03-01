@@ -1,6 +1,6 @@
 # Origami.cool
 
-### eCommerce web app for hand folded 3D origami models
+### eCommerce web app for hand folded 3D origami products
 
 --
 
