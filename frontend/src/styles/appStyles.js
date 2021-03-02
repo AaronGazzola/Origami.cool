@@ -59,7 +59,7 @@ const styles = makeStyles(theme => ({
 		textAlign: 'center'
 	},
 	link: {
-		color: theme.palette.common.blue3
+		color: theme.palette.secondary.main
 	},
 	logo: {
 		width: 100,
@@ -69,15 +69,16 @@ const styles = makeStyles(theme => ({
 	navButton: {
 		fontWeight: 700,
 		marginLeft: theme.spacing(5),
-		borderColor: theme.palette.text.primary,
-		color: theme.palette.text.primary
+		borderColor: theme.palette.secondary.main,
+		color: theme.palette.secondary.main,
+		backgroundColor: theme.palette.common.tan2
 	},
 	selected: {
 		borderColor: theme.palette.secondary.main,
-		color: theme.palette.secondary.main
+		color: theme.palette.common.tan2,
+		backgroundColor: theme.palette.secondary.main
 	},
 	drawer: {
-		// backgroundColor: 'rgba(255,247,236,.9)',
 		width: 150
 	},
 	drawerNavButton: {
@@ -90,7 +91,7 @@ const styles = makeStyles(theme => ({
 			}
 		},
 		'& .MuiListItemIcon-root': {
-			color: theme.palette.text.primary
+			color: theme.palette.secondary.main
 		}
 	}
 }));
