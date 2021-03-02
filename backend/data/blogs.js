@@ -6,7 +6,7 @@ const blogs = [
 			{
 				subtitle: 'This is the sub Title',
 				content:
-					'Here is the paragraph. <strong>This is highlighted text</strong> and <a href="/contact">internal link to contact</a> and <a href="https://www.google.com " target="_blank">external link</a>',
+					'Here is the paragraph. <strong>This is highlighted text</strong> and <a href="/contact">internal link to contact</a> and <a href="https://www.google.com " target="_blank" rel="noreferrer">external link</a>',
 				image: {
 					path: '/images/bull1.jpg',
 					label: 'bull'

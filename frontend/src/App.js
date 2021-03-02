@@ -1,4 +1,6 @@
 import React from 'react';
+import { Provider } from 'react-redux';
+import store from './store';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { CssBaseline, ThemeProvider } from '@material-ui/core';
 import { getTheme } from 'styles/theme';
@@ -15,19 +17,21 @@ const theme = getTheme();
 const App = () => {
 	const classes = useStyles();
 	return (
-		<Router>
-			<ThemeProvider theme={theme}>
-				<CssBaseline />
-				<Header />
-				<main className={classes.main}>
-					<Switch>
-						<Route path='/' exact component={HomeScreen} />
-						<Route path='/' component={PageNotFoundScreen} />
-					</Switch>
-				</main>
-				<Footer />
-			</ThemeProvider>
-		</Router>
+		<Provider store={store}>
+			<Router>
+				<ThemeProvider theme={theme}>
+					<CssBaseline />
+					<Header />
+					<main className={classes.main}>
+						<Switch>
+							<Route path='/' exact component={HomeScreen} />
+							<Route path='/' component={PageNotFoundScreen} />
+						</Switch>
+					</main>
+					<Footer />
+				</ThemeProvider>
+			</Router>
+		</Provider>
 	);
 };
 
