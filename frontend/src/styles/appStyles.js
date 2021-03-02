@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 const appBarHeight = 100;
-const footerHeight = 68;
+const footerHeight = 84;
 
 const styles = makeStyles(theme => ({
 	main: {
@@ -26,6 +26,7 @@ const styles = makeStyles(theme => ({
 	},
 	appBar: {
 		height: appBarHeight
+		// backgroundColor: theme.palette.common.tan2
 	},
 	toolBar: {
 		margin: 'auto',
@@ -45,15 +46,15 @@ const styles = makeStyles(theme => ({
 	footer: {
 		height: 'min-content',
 		width: '100%',
-		// backgroundColor: theme.palette.secondary.light,
-		// backgroundColor: theme.palette.common.tan3,
+		// backgroundColor: theme.palette.common.tan2,
 		background: 'transparent',
 		boxShadow: '0 6px 9px 7px rgba(0,0,0,0.5)',
 		display: 'flex',
 		flexDirection: 'column',
 		justifyContent: 'center',
 		alignItems: 'center',
-		overflow: 'hidden'
+		overflow: 'hidden',
+		padding: theme.spacing(1)
 	},
 	footerText: {
 		textAlign: 'center'
@@ -69,14 +70,16 @@ const styles = makeStyles(theme => ({
 	navButton: {
 		fontWeight: 700,
 		marginLeft: theme.spacing(5),
-		borderColor: theme.palette.secondary.main,
-		color: theme.palette.secondary.main,
-		backgroundColor: theme.palette.common.tan2
+		border: `1px solid transparent`,
+		paddingLeft: theme.spacing(2),
+		paddingRight: theme.spacing(2),
+		'&:first-of-type': {
+			marginLeft: theme.spacing(6)
+		}
 	},
 	selected: {
-		borderColor: theme.palette.secondary.main,
-		color: theme.palette.common.tan2,
-		backgroundColor: theme.palette.secondary.main
+		color: theme.palette.secondary.main,
+		border: `1px solid ${theme.palette.secondary.main}`
 	},
 	drawer: {
 		width: 150

@@ -62,7 +62,7 @@ const Header = () => {
 							{navItems.map(item => (
 								<Button
 									key={item.name}
-									variant='outlined'
+									color='secondary'
 									component={Link}
 									to={item.link}
 									className={

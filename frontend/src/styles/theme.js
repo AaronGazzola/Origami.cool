@@ -42,6 +42,7 @@ export const getTheme = () =>
 				green3: 'rgba(38,153,118,1)',
 				green4: 'rgba(3,110,77,1)',
 				green5: 'rgba(0,83,58,1)',
+				tan0: 'rgba(255,250,250,1)',
 				tan1: 'rgba(228,198,159,1)',
 				tan2: 'rgba(255,247,236,1)',
 				tan3: 'rgba(255,235,210,1)',
@@ -76,10 +77,10 @@ export const getTheme = () =>
 			contrastThreshold: 3,
 			tonalOffset: 0.2,
 			background: {
-				default: 'rgba(255,247,236,1)'
+				default: 'rgba(255,250,240,1)'
 			},
 			text: {
-				primary: 'rgba(70,70,70,1)',
+				primary: 'rgba(60,60,60,1)',
 				secondary: 'rgba(150,150,150,1)'
 			}
 		}
