@@ -31,38 +31,16 @@ const styles = makeStyles(theme => ({
 			justifyContent: 'space-between'
 		}
 	},
-	footer: {
-		height: footerHeight,
-		width: '100%',
-		// backgroundColor: theme.palette.common.tan2,
-		background: 'transparent',
-		display: 'flex',
-		flexDirection: 'column',
-		justifyContent: 'center',
-		alignItems: 'center',
-		overflow: 'hidden',
-		padding: theme.spacing(1)
-	},
-	footerText: {
-		textAlign: 'center'
-	},
-	footerButton: {
-		fontWeight: 800,
-		marginLeft: theme.spacing(1),
-		'&:first-of-type': {
-			marginLeft: 0
-		}
-	},
 	link: {
 		color: theme.palette.secondary.main
 	},
 	logo: {
 		width: 100,
 		padding: theme.spacing(0.5),
-		fill: theme.palette.primary.dark,
-		[theme.breakpoints.up('sm')]: {
-			marginLeft: -100
-		}
+		fill: theme.palette.primary.dark
+		// [theme.breakpoints.up('md')]: {
+		// 	marginLeft: -100
+		// }
 	},
 	navButton: {
 		fontWeight: 800,
@@ -71,8 +49,10 @@ const styles = makeStyles(theme => ({
 		paddingLeft: theme.spacing(2),
 		paddingRight: theme.spacing(2),
 		letterSpacing: 1,
-		'&:last-of-type': {
-			marginRight: theme.spacing(5)
+		[theme.breakpoints.up('md')]: {
+			'&:last-of-type': {
+				marginRight: theme.spacing(5) + 100
+			}
 		}
 	},
 	selected: {
@@ -93,6 +73,28 @@ const styles = makeStyles(theme => ({
 		},
 		'& .MuiListItemIcon-root': {
 			color: theme.palette.secondary.main
+		}
+	},
+	footer: {
+		height: footerHeight,
+		width: '100%',
+		// backgroundColor: theme.palette.common.tan2,
+		background: 'transparent',
+		display: 'flex',
+		flexDirection: 'column',
+		justifyContent: 'center',
+		alignItems: 'center',
+		overflow: 'hidden',
+		padding: theme.spacing(1)
+	},
+	footerText: {
+		textAlign: 'center'
+	},
+	footerButton: {
+		fontWeight: 800,
+		marginLeft: theme.spacing(1),
+		'&:first-of-type': {
+			marginLeft: 0
 		}
 	}
 }));

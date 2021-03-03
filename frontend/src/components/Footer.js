@@ -25,20 +25,6 @@ const Footer = () => {
 
 	return (
 		<footer className={classes.footer}>
-			<div>
-				{links.map(link => (
-					<Button
-						component={Link}
-						to={link.path}
-						size='small'
-						color='secondary'
-						key={link.name}
-						className={classes.footerButton}
-					>
-						{link.name}
-					</Button>
-				))}
-			</div>
 			<Typography className={classes.footerText} variant='caption'>
 				Copyright &copy; {new Date().getFullYear()}{' '}
 				<a
@@ -61,6 +47,20 @@ const Footer = () => {
 					Apex Apps
 				</a>
 			</Typography>
+			<div>
+				{links.map(link => (
+					<Button
+						component={Link}
+						to={link.path}
+						size='small'
+						color='secondary'
+						key={link.name}
+						className={classes.footerButton}
+					>
+						{link.name}
+					</Button>
+				))}
+			</div>
 		</footer>
 	);
 };

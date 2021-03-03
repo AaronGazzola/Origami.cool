@@ -7,9 +7,19 @@ const reducer = combineReducers({
 	auth: authReducer
 });
 
-const middleware = [thunk];
+const userDataFromStorage = localStorage.getItem('userData')
+	? JSON.parse(localStorage.getItem('userData'))
+	: null;
 
-const initialState = {};
+const initialState = {
+	auth: {
+		user: userDataFromStorage?.user,
+		token: userDataFromStorage?.token,
+		isAuth: !!userDataFromStorage?.token
+	}
+};
+
+const middleware = [thunk];
 
 const store = createStore(
 	reducer,

@@ -24,6 +24,7 @@ import styles from 'styles/appStyles';
 import Logo from 'components/Logo';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const useStyles = styles;
 
@@ -39,7 +40,7 @@ const navItems = [
 		icon: <ShoppingCart />
 	},
 	{
-		name: 'Log In',
+		name: 'auth',
 		link: '/login',
 		icon: <Person />
 	}
@@ -49,43 +50,45 @@ const Header = () => {
 	const classes = useStyles();
 	const location = useLocation();
 	const matchesXs = useMediaQuery(theme => theme.breakpoints.down('xs'));
+	const auth = useSelector(state => state.auth);
+	const { isAuth, user } = auth;
 
 	// scroll to top on navigation
 	useEffect(() => {
 		window.scrollTo(0, 0);
-	}, [location]);
+	}, [location, user]);
 
 	const [drawerIsOpen, setDrawerIsOpen] = useState(false);
-	//
 
 	return (
 		<>
-			<AppBar
-				className={classes.appBar}
-				position='fixed'
-				color='transparent'
-				position='static'
-			>
+			<AppBar className={classes.appBar} color='transparent' position='static'>
 				<Toolbar className={classes.toolBar}>
 					<Logo />
 					{!matchesXs && (
 						<div>
-							{navItems.map(item => (
-								<Button
-									key={item.name}
-									color='secondary'
-									component={Link}
-									to={item.link}
-									className={
-										location.pathname === item.link
-											? clsx(classes.selected, classes.navButton)
-											: classes.navButton
-									}
-									startIcon={item.icon}
-								>
-									{item.name}
-								</Button>
-							))}
+							{navItems.map(item => {
+								if (item.name === 'auth') {
+									item.link = isAuth ? '/profile' : '/login';
+									item.name = isAuth ? 'Profile' : 'Log In';
+								}
+								return (
+									<Button
+										key={item.name}
+										color='secondary'
+										component={Link}
+										to={item.link}
+										className={
+											location.pathname === item.link
+												? clsx(classes.selected, classes.navButton)
+												: classes.navButton
+										}
+										startIcon={item.icon}
+									>
+										{item.name}
+									</Button>
+								);
+							})}
 						</div>
 					)}
 					{matchesXs && (

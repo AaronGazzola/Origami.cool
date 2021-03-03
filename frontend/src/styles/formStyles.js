@@ -20,15 +20,18 @@ const styles = makeStyles(theme => ({
 		}
 	},
 	button: {
-		marginTop: theme.spacing(4)
+		marginTop: theme.spacing(4),
+		fontWeight: 700
 	},
 	button2: {
-		marginTop: theme.spacing(2)
+		marginTop: theme.spacing(2),
+		fontWeight: 700
 	},
 	button3: {
 		marginTop: theme.spacing(1),
 		color: theme.palette.secondary.main,
 		textTransform: 'none',
+		fontWeight: 700,
 		'&:hover': {
 			// color: theme.palette.primary.main
 		}

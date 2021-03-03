@@ -12,7 +12,7 @@ import {
 	Typography
 } from '@material-ui/core';
 import useAuthForm from 'hooks/authFormHook';
-import { logoutAction } from 'actions/userActions';
+import { logoutAction, loginAction, signupAction } from 'actions/userActions';
 
 const useStyles = styles;
 
@@ -40,7 +40,20 @@ const AuthScreen = ({ history }) => {
 		formDispatch({ type: 'SWITCH_MODE' });
 	};
 
-	const submitHandler = () => {};
+	const submitHandler = e => {
+		e.preventDefault();
+		if (isLoginMode) {
+			dispatch(loginAction(inputs.email.value, inputs.password.value));
+		} else {
+			dispatch(
+				signupAction(
+					inputs.name.value,
+					inputs.email.value,
+					inputs.password.value
+				)
+			);
+		}
+	};
 
 	useEffect(() => {
 		if (isAuth && user.isValid) {
@@ -48,7 +61,7 @@ const AuthScreen = ({ history }) => {
 		} else if (isAuth && !user.isValid) {
 			dispatch(logoutAction());
 		}
-	}, [history, user, isAuth, dispatch]);
+	}, [isAuth, user, history, dispatch]);
 
 	return (
 		<>

@@ -5,15 +5,15 @@ const origamiSecondary = 'rgba(43,83, 112,1)';
 
 export const getTheme = () =>
 	createMuiTheme({
-		breakpoints: {
-			values: {
-				xs: 0,
-				sm: 650,
-				md: 960,
-				lg: 1280,
-				xl: 1920
-			}
-		},
+		// breakpoints: {
+		// 	values: {
+		// 		xs: 0,
+		// 		sm: 650,
+		// 		md: 960,
+		// 		lg: 1280,
+		// 		xl: 1920
+		// 	}
+		// },
 		palette: {
 			primary: {
 				main: origamiPrimary,
@@ -96,6 +96,8 @@ export const getTheme = () =>
 		typography: {
 			fontFamily: "'Nanum Gothic', sans-serif",
 			h1: {
+				fontWeight: 100,
+				fontFamily: "'Nixie One', sans-serif",
 				fontSize: '3.5rem',
 				color: 'rgba(90, 51,  1,1)'
 			}
