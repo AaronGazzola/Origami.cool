@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import {
 	AppBar,
@@ -39,7 +39,7 @@ const navItems = [
 		icon: <ShoppingCart />
 	},
 	{
-		name: 'Login',
+		name: 'Log In',
 		link: '/login',
 		icon: <Person />
 	}
@@ -50,11 +50,22 @@ const Header = () => {
 	const location = useLocation();
 	const matchesXs = useMediaQuery(theme => theme.breakpoints.down('xs'));
 
+	// scroll to top on navigation
+	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, [location]);
+
 	const [drawerIsOpen, setDrawerIsOpen] = useState(false);
+	//
 
 	return (
 		<>
-			<AppBar className={classes.appBar} position='fixed' color='transparent'>
+			<AppBar
+				className={classes.appBar}
+				position='fixed'
+				color='transparent'
+				position='static'
+			>
 				<Toolbar className={classes.toolBar}>
 					<Logo />
 					{!matchesXs && (

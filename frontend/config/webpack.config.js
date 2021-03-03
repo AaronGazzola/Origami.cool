@@ -335,6 +335,7 @@ module.exports = function (webpackEnv) {
 				'reducers': path.resolve('src/reducers'),
 				'actions': path.resolve('src/actions'),
 				'utils': path.resolve('src/utils'),
+				'hooks': path.resolve('src/hooks'),
 				// Allows for better profiling with ReactDevTools
 				...(isEnvProductionProfile && {
 					'react-dom$': 'react-dom/profiling',

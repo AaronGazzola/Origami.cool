@@ -8,6 +8,7 @@ import Header from 'components/Header';
 import Footer from 'components/Footer';
 import styles from 'styles/appStyles';
 import HomeScreen from 'screens/HomeScreen';
+import AuthScreen from 'screens/AuthScreen';
 import PageNotFoundScreen from 'screens/PageNotFoundScreen';
 
 const useStyles = styles;
@@ -25,6 +26,7 @@ const App = () => {
 					<main className={classes.main}>
 						<Switch>
 							<Route path='/' exact component={HomeScreen} />
+							<Route path='/login' exact component={AuthScreen} />
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
 					</main>

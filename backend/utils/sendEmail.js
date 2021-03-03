@@ -1,23 +1,21 @@
 import nodemailer from 'nodemailer';
 import useHtmlTemplate from './useHtmlTemplate.js';
-import moment from 'moment';
 
 const sendEmail = async options => {
 	const transporter = nodemailer.createTransport({
-		host: process.env.SMTP_HOST,
-		port: process.env.SMTP_PORT,
+		host: process.env.SMTP_HOST_DEV,
+		port: process.env.SMTP_PORT_DEV,
 		auth: {
-			user: process.env.SMTP_EMAIL,
-			pass: process.env.SMTP_PASSWORD
+			user: process.env.SMTP_EMAIL_DEV,
+			pass: process.env.SMTP_PASSWORD_DEV
 		}
 	});
 
 	const [subject, html] = useHtmlTemplate(options);
 
 	const message = {
-		from: `${process.env.FROM_NAME} <aaron@apexapps.dev>`,
-		to:
-			options.type === 'BOOKING_DETAILS' ? 'aaron@apexapps.dev' : options.email,
+		from: `${process.env.FROM_NAME_DEV} <aaron@origami.cool>`,
+		to: options.user.email,
 		subject,
 		html
 	};

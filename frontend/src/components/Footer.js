@@ -5,21 +5,39 @@ import styles from 'styles/appStyles';
 
 const useStyles = styles;
 
+const links = [
+	{
+		name: 'About',
+		path: '/about'
+	},
+	{
+		name: 'Contact',
+		path: '/contact'
+	},
+	{
+		name: 'Terms & Conditions',
+		path: '/terms'
+	}
+];
+
 const Footer = () => {
 	const classes = useStyles();
 
 	return (
 		<footer className={classes.footer}>
 			<div>
-				<Button component={Link} to='/about' size='small' color='secondary'>
-					About
-				</Button>
-				<Button component={Link} to='/contact' size='small' color='secondary'>
-					Contact
-				</Button>
-				<Button component={Link} to='/terms' size='small' color='secondary'>
-					Terms &amp; Conditions
-				</Button>
+				{links.map(link => (
+					<Button
+						component={Link}
+						to={link.path}
+						size='small'
+						color='secondary'
+						key={link.name}
+						className={classes.footerButton}
+					>
+						{link.name}
+					</Button>
+				))}
 			</div>
 			<Typography className={classes.footerText} variant='caption'>
 				Copyright &copy; {new Date().getFullYear()}{' '}

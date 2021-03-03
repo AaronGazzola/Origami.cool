@@ -60,7 +60,6 @@ const UserSchema = new mongoose.Schema({
 		type: Boolean,
 		default: false
 	},
-	subscribed: { type: Boolean, default: true },
 	verifyUserToken: { type: String, select: false },
 	changeEmailToken: { type: String, select: false }
 });
@@ -88,47 +87,27 @@ UserSchema.methods.matchPassword = async function (enteredPassword) {
 };
 
 // Generate and hash password token
-UserSchema.methods.getResetPasswordToken = function () {
+UserSchema.methods.getToken = function (type) {
 	// Generate token
-	const resetToken = crypto.randomBytes(20).toString('hex');
-
-	// Hash token and set to resetPasswordToken field
-	this.resetPasswordToken = crypto
-		.createHash('sha256')
-		.update(resetToken)
-		.digest('hex');
-
-	// Set expire
-	this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
-
-	return resetToken;
-};
-// Generate and hash verify token
-UserSchema.methods.getVerifyToken = function () {
-	// Generate token
-	const verifyToken = crypto.randomBytes(20).toString('hex');
-
-	// Hash token and set to verifyUserToken field
-	this.verifyUserToken = crypto
-		.createHash('sha256')
-		.update(verifyToken)
-		.digest('hex');
-
-	return verifyToken;
-};
-
-// Generate and hash change email token
-UserSchema.methods.getChangeEmailToken = function () {
-	// Generate token
-	const changeEmailToken = crypto.randomBytes(20).toString('hex');
-
-	// Hash token and set to verifyUserToken field
-	this.changeEmailToken = crypto
-		.createHash('sha256')
-		.update(changeEmailToken)
-		.digest('hex');
-
-	return changeEmailToken;
+	const token = crypto.randomBytes(20).toString('hex');
+	// Hash token
+	const hash = crypto.createHash('sha256').update(token).digest('hex');
+	// add token to document
+	switch (type) {
+		case 'PASSWORD':
+			this.resetPasswordToken = hash;
+			this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
+			break;
+		case 'VERIFY':
+			this.verifyUserToken = hash;
+			break;
+		case 'EMAIL':
+			this.changeEmailToken = hash;
+			break;
+		default:
+			break;
+	}
+	return token;
 };
 
 export default mongoose.model('User', UserSchema);

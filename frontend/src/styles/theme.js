@@ -5,21 +5,30 @@ const origamiSecondary = 'rgba(43,83, 112,1)';
 
 export const getTheme = () =>
 	createMuiTheme({
+		breakpoints: {
+			values: {
+				xs: 0,
+				sm: 650,
+				md: 960,
+				lg: 1280,
+				xl: 1920
+			}
+		},
 		palette: {
 			primary: {
 				main: origamiPrimary,
-				contrastText: origamiSecondary
+				contrastText: 'rgba(255,250,240,1)'
 			},
 			secondary: {
 				main: origamiSecondary,
-				contrastText: origamiPrimary
+				contrastText: 'rgba(255,250,240,1)'
 			},
-			// success: {
-
-			// },
-			// error: {
-
-			// },
+			success: {
+				main: '#a8af3b'
+			},
+			error: {
+				main: '#af433b'
+			},
 			common: {
 				orange1: 'rgba(203, 84, 20,1)',
 				orange2: 'rgba(254,155,103,1)',
@@ -83,29 +92,29 @@ export const getTheme = () =>
 				primary: 'rgba(60,60,60,1)',
 				secondary: 'rgba(150,150,150,1)'
 			}
+		},
+		typography: {
+			fontFamily: "'Nanum Gothic', sans-serif",
+			h1: {
+				fontSize: '3.5rem',
+				color: 'rgba(90, 51,  1,1)'
+			}
+			// 	h2: {
+			// 		fontWeight: 200,
+			// 		fontSize: '2.5rem',
+			// 		fontStyle: 'italic'
+			// 	},
+			// 	h3: {
+			// 		fontWeight: 200,
+			// 		fontSize: '2rem',
+			// 		fontStyle: 'italic'
+			// 	},
+			// 	h4: {
+			// 		fontWeight: 200,
+			// 		fontSize: '1.8rem'
+			// 	},
+			// 	body1: {
+			// 		fontWeight: 300
+			// 	}
 		}
-		// typography: {
-		// 	fontFamily: "'Montserrat', sans-serif",
-		// 	h1: {
-		// 		fontWeight: 200,
-		// 		fontSize: '3.5rem'
-		// 	},
-		// 	h2: {
-		// 		fontWeight: 200,
-		// 		fontSize: '2.5rem',
-		// 		fontStyle: 'italic'
-		// 	},
-		// 	h3: {
-		// 		fontWeight: 200,
-		// 		fontSize: '2rem',
-		// 		fontStyle: 'italic'
-		// 	},
-		// 	h4: {
-		// 		fontWeight: 200,
-		// 		fontSize: '1.8rem'
-		// 	},
-		// 	body1: {
-		// 		fontWeight: 300
-		// 	}
-		// }
 	});

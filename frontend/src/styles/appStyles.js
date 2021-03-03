@@ -5,16 +5,11 @@ const footerHeight = 84;
 
 const styles = makeStyles(theme => ({
 	main: {
-		display: 'flex',
-		flexDirection: 'column',
-		flexGrow: 1,
 		margin: '0 auto',
-		padding: 0,
-		paddingBottom: theme.spacing(3),
-		marginTop: appBarHeight,
+		paddingTop: theme.spacing(2),
+		paddingBottom: theme.spacing(4),
 		minHeight: `calc(100vh - ${appBarHeight + footerHeight}px)`,
 		width: '100%',
-		overflow: 'visible',
 		maxWidth: 1220,
 		[theme.breakpoints.down('md')]: {
 			maxWidth: 900
@@ -22,33 +17,25 @@ const styles = makeStyles(theme => ({
 		[theme.breakpoints.down('sm')]: {
 			maxWidth: 600
 		}
-		// backgroundColor: '#fff'
 	},
 	appBar: {
-		height: appBarHeight
-		// backgroundColor: theme.palette.common.tan2
+		height: appBarHeight,
+		boxShadow: 'none'
 	},
 	toolBar: {
 		margin: 'auto',
 		display: 'flex',
+		justifyContent: 'center',
 		width: '100%',
-		maxWidth: 1220,
-		[theme.breakpoints.down('md')]: {
-			maxWidth: 900
-		},
-		[theme.breakpoints.down('sm')]: {
-			maxWidth: 600
-		},
 		[theme.breakpoints.down('xs')]: {
 			justifyContent: 'space-between'
 		}
 	},
 	footer: {
-		height: 'min-content',
+		height: footerHeight,
 		width: '100%',
 		// backgroundColor: theme.palette.common.tan2,
 		background: 'transparent',
-		boxShadow: '0 6px 9px 7px rgba(0,0,0,0.5)',
 		display: 'flex',
 		flexDirection: 'column',
 		justifyContent: 'center',
@@ -59,22 +46,33 @@ const styles = makeStyles(theme => ({
 	footerText: {
 		textAlign: 'center'
 	},
+	footerButton: {
+		fontWeight: 800,
+		marginLeft: theme.spacing(1),
+		'&:first-of-type': {
+			marginLeft: 0
+		}
+	},
 	link: {
 		color: theme.palette.secondary.main
 	},
 	logo: {
 		width: 100,
 		padding: theme.spacing(0.5),
-		fill: theme.palette.primary.dark
+		fill: theme.palette.primary.dark,
+		[theme.breakpoints.up('sm')]: {
+			marginLeft: -100
+		}
 	},
 	navButton: {
-		fontWeight: 700,
+		fontWeight: 800,
 		marginLeft: theme.spacing(5),
 		border: `1px solid transparent`,
 		paddingLeft: theme.spacing(2),
 		paddingRight: theme.spacing(2),
-		'&:first-of-type': {
-			marginLeft: theme.spacing(6)
+		letterSpacing: 1,
+		'&:last-of-type': {
+			marginRight: theme.spacing(5)
 		}
 	},
 	selected: {
