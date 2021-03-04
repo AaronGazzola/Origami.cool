@@ -2,8 +2,8 @@ import express from 'express';
 import {
 	login,
 	signup,
-	sendVerifyUser
-	// verifyUser,
+	sendVerifyUser,
+	verifyUser
 	// forgotPassword,
 	// resetPassword,
 	// getUserProfile,
@@ -22,8 +22,8 @@ const router = express.Router();
 // router.get('/', protect, admin, getUsers);
 router.post('/signup', signup);
 router.post('/login', login);
-router.post('/verify', sendVerifyUser);
-// router.post('/verify/:token', verifyUser);
+router.post('/sendverifyuser', sendVerifyUser);
+router.post('/verifyuser/:token', verifyUser);
 // router.post('/forgotpassword', forgotPassword);
 // router.put('/resetpassword/:token', resetPassword);
 // router

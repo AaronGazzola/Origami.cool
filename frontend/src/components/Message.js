@@ -12,8 +12,9 @@ import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
 	success: {
+		color: theme.palette.success.main,
+		fontWeight: 700,
 		'& .MuiTypography-root': {
-			color: theme.palette.success.main,
 			fontWeight: 700
 		}
 	},
@@ -24,8 +25,9 @@ const useStyles = makeStyles(theme => ({
 		}
 	},
 	alert: {
+		color: theme.palette.common.purple6,
+		fontWeight: 700,
 		'& .MuiTypography-root': {
-			color: theme.palette.common.purple6,
 			fontWeight: 700
 		}
 	},

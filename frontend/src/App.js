@@ -16,6 +16,7 @@ import HomeScreen from 'screens/HomeScreen';
 import AuthScreen from 'screens/AuthScreen';
 import ProfileScreen from 'screens/ProfileScreen';
 import PageNotFoundScreen from 'screens/PageNotFoundScreen';
+import VerifyUserScreen from 'screens/VerifyUserScreen';
 
 const useStyles = styles;
 
@@ -28,7 +29,7 @@ const App = () => {
 	const { user, isAuth } = userData;
 
 	useEffect(() => {
-		if (!user?.isValid) {
+		if (!user?.isVerified) {
 			dispatch(logoutAction());
 		}
 	}, [user, dispatch]);
@@ -39,19 +40,21 @@ const App = () => {
 				<CssBaseline />
 				<Header />
 				<main className={classes.main}>
-					{isAuth && user.isValid && user.isAdmin ? (
+					{isAuth && user.isVerified && user.isAdmin ? (
 						// Admin routes
 						<Switch>
 							<Route path='/' exact component={HomeScreen} />
 							<Redirect from='/login' exact to='/profile' />
+							<Redirect from='/verify' to='/profile' />
 							<Route path='/profile' exact component={ProfileScreen} />
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
-					) : isAuth && user.isValid ? (
+					) : isAuth && user.isVerified ? (
 						// Private routes
 						<Switch>
 							<Route path='/' exact component={HomeScreen} />
 							<Redirect from='/login' exact to='/profile' />
+							<Redirect from='/verify' to='/profile' />
 							<Route path='/profile' exact component={ProfileScreen} />
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
@@ -61,6 +64,7 @@ const App = () => {
 							<Route path='/' exact component={HomeScreen} />
 							<Route path='/login' exact component={AuthScreen} />
 							<Redirect from='/profile' exact to='/login' />
+							<Route path='/verify/:token' component={VerifyUserScreen} />
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
 					)}

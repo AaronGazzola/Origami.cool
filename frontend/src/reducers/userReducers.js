@@ -3,6 +3,10 @@ import {
 	SIGNUP_SUCCESS,
 	SIGNUP_FAIL,
 	SIGNUP_CLEAR,
+	SEND_VERIFY_USER_REQUEST,
+	SEND_VERIFY_USER_SUCCESS,
+	SEND_VERIFY_USER_FAIL,
+	SEND_VERIFY_USER_CLEAR,
 	LOGIN_REQUEST,
 	LOGIN_SUCCESS,
 	LOGIN_FAIL,
@@ -11,7 +15,11 @@ import {
 	USER_DATA_REQUEST,
 	USER_DATA_SUCCESS,
 	USER_DATA_FAIL,
-	USER_DATA_CLEAR
+	USER_DATA_CLEAR,
+	VERIFY_USER_REQUEST,
+	VERIFY_USER_SUCCESS,
+	VERIFY_USER_FAIL,
+	VERIFY_USER_CLEAR
 } from 'constants/userConstants';
 
 export const signupReducer = (state = {}, action) => {
@@ -26,6 +34,24 @@ export const signupReducer = (state = {}, action) => {
 		case SIGNUP_FAIL:
 			return { loading: false, error: action.payload };
 		case SIGNUP_CLEAR:
+			return { ...state, error: null, success: null };
+		default:
+			return state;
+	}
+};
+
+export const sendVerifyUserReducer = (state = {}, action) => {
+	switch (action.type) {
+		case SEND_VERIFY_USER_REQUEST:
+			return { loading: true };
+		case SEND_VERIFY_USER_SUCCESS:
+			return {
+				loading: false,
+				success: action.payload
+			};
+		case SEND_VERIFY_USER_FAIL:
+			return { loading: false, error: action.payload };
+		case SEND_VERIFY_USER_CLEAR:
 			return { ...state, error: null, success: null };
 		default:
 			return state;
@@ -69,6 +95,23 @@ export const userDataReducer = (state = {}, action) => {
 		case USER_DATA_FAIL:
 			return { loading: false, error: action.payload };
 		case USER_DATA_CLEAR:
+			return { error: null, success: null };
+		default:
+			return state;
+	}
+};
+export const verifyUserReducer = (state = {}, action) => {
+	switch (action.type) {
+		case VERIFY_USER_REQUEST:
+			return { loading: true };
+		case VERIFY_USER_SUCCESS:
+			return {
+				loading: false,
+				success: true
+			};
+		case VERIFY_USER_FAIL:
+			return { loading: false, error: action.payload };
+		case VERIFY_USER_CLEAR:
 			return { error: null, success: null };
 		default:
 			return state;

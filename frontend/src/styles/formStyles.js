@@ -8,7 +8,9 @@ const styles = makeStyles(theme => ({
 		alignItems: 'center'
 	},
 	input: {
-		marginTop: theme.spacing(2),
+		'&:first-of-type': {
+			marginTop: theme.spacing(2)
+		},
 		width: '90%',
 		'& .MuiInputLabel-shrink, p': {
 			fontWeight: 700
@@ -20,7 +22,7 @@ const styles = makeStyles(theme => ({
 		}
 	},
 	button: {
-		marginTop: theme.spacing(4),
+		marginTop: theme.spacing(3),
 		fontWeight: 700
 	},
 	button2: {

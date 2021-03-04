@@ -84,7 +84,9 @@ const sendVerifyUser = asyncHandler(async (req, res, next) => {
 
 	await user.save({ validateBeforeSave: false });
 
-	const baseUrl = `${req.protocol}://${req.get('host')}`;
+	const baseUrl = `${req.protocol}://${
+		process.env.NODE_ENV === 'production' ? req.get('host') : 'localhost:3000'
+	}`;
 
 	try {
 		await sendEmail({
@@ -122,8 +124,8 @@ const verifyUser = asyncHandler(async (req, res, next) => {
 		return next(new ErrorResponse('Invalid token', 400));
 	}
 
-	// Validate user
-	user.isValid = true;
+	// Verify user
+	user.isVerified = true;
 	user.verifyUserToken = undefined;
 	await user.save();
 
@@ -195,7 +197,7 @@ const verifyUser = asyncHandler(async (req, res, next) => {
 // 	user.password = req.body.password;
 // 	user.resetPasswordToken = undefined;
 // 	user.resetPasswordExpire = undefined;
-// 	user.isValid = true;
+// 	user.isVerified = true;
 // 	await user.save();
 
 // 	sendTokenResponse(user, 200, res);

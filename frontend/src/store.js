@@ -3,14 +3,18 @@ import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import {
 	signupReducer,
+	sendVerifyUserReducer,
 	loginReducer,
-	userDataReducer
+	userDataReducer,
+	verifyUserReducer
 } from 'reducers/userReducers';
 
 const reducer = combineReducers({
 	signup: signupReducer,
+	sendVerifyUser: sendVerifyUserReducer,
 	login: loginReducer,
-	userData: userDataReducer
+	userData: userDataReducer,
+	verifyUser: verifyUserReducer
 });
 
 const userFromStorage = localStorage.getItem('user')

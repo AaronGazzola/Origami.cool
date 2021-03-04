@@ -5,6 +5,9 @@ const footerHeight = 84;
 
 const styles = makeStyles(theme => ({
 	main: {
+		display: 'flex',
+		flexDirection: 'column',
+		alignItems: 'center',
 		margin: '0 auto',
 		paddingTop: theme.spacing(2),
 		paddingBottom: theme.spacing(4),
