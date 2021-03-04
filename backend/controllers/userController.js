@@ -84,9 +84,6 @@ const sendVerifyUser = asyncHandler(async (req, res, next) => {
 
 	await user.save({ validateBeforeSave: false });
 
-	// get base URL from request protocol and host domain
-	// const host =
-	// 	process.env.NODE_ENV === 'production' ? req.get('host') : 'localhost:3000';
 	const baseUrl = `${req.protocol}://${req.get('host')}`;
 
 	try {

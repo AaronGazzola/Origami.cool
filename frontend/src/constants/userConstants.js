@@ -1,6 +1,15 @@
-export const AUTH_REQUEST = 'AUTH_REQUEST';
-export const AUTH_SUCCESS = 'AUTH_SUCCESS';
-export const AUTH_FAIL = 'AUTH_FAIL';
-export const AUTH_ALERT = 'AUTH_ALERT';
-export const AUTH_LOGOUT = 'AUTH_LOGOUT';
-export const AUTH_CLEAR = 'AUTH_CLEAR';
+export const SIGNUP_REQUEST = 'SIGNUP_REQUEST';
+export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
+export const SIGNUP_FAIL = 'SIGNUP_FAIL';
+export const SIGNUP_CLEAR = 'SIGNUP_CLEAR';
+
+export const LOGIN_REQUEST = 'LOGIN_REQUEST';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAIL = 'LOGIN_FAIL';
+export const LOGIN_ALERT = 'LOGIN_ALERT';
+export const LOGIN_CLEAR = 'LOGIN_CLEAR';
+
+export const USER_DATA_REQUEST = 'USER_DATA_REQUEST';
+export const USER_DATA_SUCCESS = 'USER_DATA_SUCCESS';
+export const USER_DATA_FAIL = 'USER_DATA_FAIL';
+export const USER_DATA_CLEAR = 'USER_DATA_CLEAR';

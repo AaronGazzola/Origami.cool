@@ -28,35 +28,37 @@ import { useSelector } from 'react-redux';
 
 const useStyles = styles;
 
-const navItems = [
-	{
-		name: 'Shop',
-		link: '/',
-		icon: <Storefront />
-	},
-	{
-		name: 'Cart',
-		link: '/cart',
-		icon: <ShoppingCart />
-	},
-	{
-		name: 'auth',
-		link: '/login',
-		icon: <Person />
-	}
-];
-
 const Header = () => {
 	const classes = useStyles();
 	const location = useLocation();
 	const matchesXs = useMediaQuery(theme => theme.breakpoints.down('xs'));
-	const auth = useSelector(state => state.auth);
-	const { isAuth, user } = auth;
+	const userData = useSelector(state => state.userData);
+	const { isAuth, user } = userData;
+
+	const navItems = [
+		{
+			name: 'Shop',
+			link: '/',
+			icon: <Storefront />
+		},
+		{
+			name: 'Cart',
+			link: '/cart',
+			icon: <ShoppingCart />
+		},
+		{
+			name: isAuth ? 'Profile' : 'Log In',
+			link: isAuth ? '/profile' : '/login',
+			icon: <Person />
+		}
+	];
 
 	// scroll to top on navigation
 	useEffect(() => {
 		window.scrollTo(0, 0);
-	}, [location, user]);
+	}, [location]);
+
+	useEffect(() => {}, [user]);
 
 	const [drawerIsOpen, setDrawerIsOpen] = useState(false);
 
@@ -67,28 +69,22 @@ const Header = () => {
 					<Logo />
 					{!matchesXs && (
 						<div>
-							{navItems.map(item => {
-								if (item.name === 'auth') {
-									item.link = isAuth ? '/profile' : '/login';
-									item.name = isAuth ? 'Profile' : 'Log In';
-								}
-								return (
-									<Button
-										key={item.name}
-										color='secondary'
-										component={Link}
-										to={item.link}
-										className={
-											location.pathname === item.link
-												? clsx(classes.selected, classes.navButton)
-												: classes.navButton
-										}
-										startIcon={item.icon}
-									>
-										{item.name}
-									</Button>
-								);
-							})}
+							{navItems.map(item => (
+								<Button
+									key={item.name}
+									color='secondary'
+									component={Link}
+									to={item.link}
+									className={
+										location.pathname === item.link
+											? clsx(classes.selected, classes.navButton)
+											: classes.navButton
+									}
+									startIcon={item.icon}
+								>
+									{item.name}
+								</Button>
+							))}
 						</div>
 					)}
 					{matchesXs && (

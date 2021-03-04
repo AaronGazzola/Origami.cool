@@ -35,6 +35,9 @@ const styles = makeStyles(theme => ({
 		'&:hover': {
 			// color: theme.palette.primary.main
 		}
+	},
+	submitProgress: {
+		color: theme.palette.common.background
 	}
 }));
 

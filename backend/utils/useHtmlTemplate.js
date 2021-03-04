@@ -2,7 +2,7 @@ import moment from 'moment';
 
 const useHtmlTemplate = ({ type, baseUrl, user, token }) => {
 	switch (type) {
-		case 'CLIENT_CONFIRM_BOOKING':
+		case 'VERIFY_EMAIL':
 			return [
 				`Please verify your email address`,
 				`<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" />

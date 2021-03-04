@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core';
 import useAuthForm from 'hooks/authFormHook';
 import { logoutAction, loginAction, signupAction } from 'actions/userActions';
+import { SIGNUP_CLEAR, LOGIN_CLEAR } from 'constants/userConstants';
 
 const useStyles = styles;
 
@@ -23,8 +24,23 @@ const AuthScreen = ({ history }) => {
 	const [formState, formDispatch] = useAuthForm();
 	const { formIsValid, isLoginMode, inputs } = formState;
 
-	const auth = useSelector(state => state.auth);
-	const { loading, error, user, alert, isAuth } = auth;
+	const userData = useSelector(state => state.userData);
+	const { user } = userData;
+
+	const signup = useSelector(state => state.signup);
+	const {
+		loading: signupLoading,
+		success: signupSuccess,
+		error: signupError
+	} = signup;
+
+	const login = useSelector(state => state.login);
+	const {
+		loading: loginLoading,
+		success: loginSuccess,
+		alert: loginAlert,
+		error: loginError
+	} = login;
 
 	const changeHandler = (e, validators) => {
 		formDispatch({ type: 'CHANGE', payload: e.target, validators });
@@ -56,16 +72,25 @@ const AuthScreen = ({ history }) => {
 	};
 
 	useEffect(() => {
-		if (isAuth && user.isValid) {
+		if (user?.isValid) {
 			history.push('/profile');
-		} else if (isAuth && !user.isValid) {
+		} else if (!user?.isValid) {
 			dispatch(logoutAction());
 		}
-	}, [isAuth, user, history, dispatch]);
+	}, [user, history, dispatch]);
 
 	return (
 		<>
-			<Message />
+			<Message
+				error={signupError || loginError}
+				alert={loginAlert}
+				success={signupSuccess}
+				reset={
+					signupError || signupSuccess
+						? () => dispatch({ type: SIGNUP_CLEAR })
+						: () => dispatch({ type: LOGIN_CLEAR })
+				}
+			/>
 			<Grid container direction='column' alignItems='center'>
 				<Grid item>
 					<form className={classes.form} onSubmit={submitHandler}>
@@ -122,7 +147,7 @@ const AuthScreen = ({ history }) => {
 							color='secondary'
 							fullWidth
 						>
-							{loading ? (
+							{signupLoading || loginLoading ? (
 								<CircularProgress
 									size={25}
 									className={classes.submitProgress}

@@ -12,19 +12,28 @@ import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
 	success: {
-		color: theme.palette.success.main
+		'& .MuiTypography-root': {
+			color: theme.palette.success.main,
+			fontWeight: 700
+		}
 	},
 	error: {
-		color: theme.palette.error.light
+		'& .MuiTypography-root': {
+			color: theme.palette.error.main,
+			fontWeight: 700
+		}
 	},
 	alert: {
-		color: theme.palette.secondary.main
+		'& .MuiTypography-root': {
+			color: theme.palette.common.purple6,
+			fontWeight: 700
+		}
 	},
 	text: {
 		color: theme.palette.text.primary
 	},
 	paper: {
-		backgroundColor: theme.palette.grey[900]
+		backgroundColor: theme.palette.common.tan2
 	}
 }));
 

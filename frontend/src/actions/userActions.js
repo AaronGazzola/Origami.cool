@@ -1,16 +1,24 @@
 import axios from 'axios';
 import {
-	AUTH_REQUEST,
-	AUTH_SUCCESS,
-	AUTH_FAIL,
-	AUTH_ALERT,
-	AUTH_LOGOUT
+	SIGNUP_REQUEST,
+	SIGNUP_SUCCESS,
+	SIGNUP_FAIL,
+	SIGNUP_CLEAR,
+	LOGIN_REQUEST,
+	LOGIN_SUCCESS,
+	LOGIN_FAIL,
+	LOGIN_ALERT,
+	LOGIN_CLEAR,
+	USER_DATA_REQUEST,
+	USER_DATA_SUCCESS,
+	USER_DATA_FAIL,
+	USER_DATA_CLEAR
 } from '../constants/userConstants';
 
 export const signupAction = (name, email, password) => async dispatch => {
 	try {
 		dispatch({
-			type: AUTH_REQUEST
+			type: SIGNUP_REQUEST
 		});
 
 		const config = {
@@ -26,19 +34,14 @@ export const signupAction = (name, email, password) => async dispatch => {
 		);
 
 		dispatch({
-			type: AUTH_SUCCESS,
-			payload: data
-		});
-
-		dispatch({
-			type: AUTH_ALERT,
+			type: SIGNUP_SUCCESS,
 			payload: 'Please Check your inbox to confirm your email address'
 		});
 
 		await axios.post('/api/v1/users/verify', { email }, config);
 	} catch (error) {
 		dispatch({
-			type: AUTH_FAIL,
+			type: SIGNUP_FAIL,
 			payload:
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -50,7 +53,7 @@ export const signupAction = (name, email, password) => async dispatch => {
 export const loginAction = (email, password) => async dispatch => {
 	try {
 		dispatch({
-			type: AUTH_REQUEST
+			type: LOGIN_REQUEST
 		});
 
 		const config = {
@@ -65,27 +68,30 @@ export const loginAction = (email, password) => async dispatch => {
 			config
 		);
 
-		dispatch({
-			type: AUTH_SUCCESS,
-			payload: data
-		});
-
 		if (data && !data.user.isValid) {
 			dispatch({
-				type: AUTH_ALERT,
+				type: LOGIN_ALERT,
 				payload: 'Please check your email for a link to verify your account'
 			});
 		}
 
 		if (data.user.isValid) {
+			dispatch({
+				type: LOGIN_SUCCESS,
+				payload: `Welcome back ${data.user.name}!`
+			});
+			dispatch({
+				type: USER_DATA_SUCCESS,
+				payload: data
+			});
 			localStorage.setItem(
-				'userData',
+				'user',
 				JSON.stringify({ user: data.user, token: data.token })
 			);
 		}
 	} catch (error) {
 		dispatch({
-			type: AUTH_FAIL,
+			type: LOGIN_FAIL,
 			payload:
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -95,6 +101,6 @@ export const loginAction = (email, password) => async dispatch => {
 };
 
 export const logoutAction = () => dispatch => {
-	localStorage.removeItem('userData');
-	dispatch({ type: AUTH_LOGOUT });
+	localStorage.removeItem('user');
+	dispatch({ type: USER_DATA_CLEAR });
 };

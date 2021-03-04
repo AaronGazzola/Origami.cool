@@ -85,7 +85,11 @@ const styles = makeStyles(theme => ({
 		justifyContent: 'center',
 		alignItems: 'center',
 		overflow: 'hidden',
-		padding: theme.spacing(1)
+		padding: theme.spacing(1),
+		'& a': {
+			textDecoration: 'none',
+			fontWeight: 700
+		}
 	},
 	footerText: {
 		textAlign: 'center'

@@ -5,15 +5,6 @@ const origamiSecondary = 'rgba(43,83, 112,1)';
 
 export const getTheme = () =>
 	createMuiTheme({
-		// breakpoints: {
-		// 	values: {
-		// 		xs: 0,
-		// 		sm: 650,
-		// 		md: 960,
-		// 		lg: 1280,
-		// 		xl: 1920
-		// 	}
-		// },
 		palette: {
 			primary: {
 				main: origamiPrimary,
@@ -24,7 +15,7 @@ export const getTheme = () =>
 				contrastText: 'rgba(255,250,240,1)'
 			},
 			success: {
-				main: '#a8af3b'
+				main: 'rgba(38,153,118,1)'
 			},
 			error: {
 				main: '#af433b'
@@ -81,7 +72,8 @@ export const getTheme = () =>
 				teal7: 'rgba(122,180,153,1)',
 				teal8: 'rgba(76,150,116,1)',
 				teal9: 'rgba(17, 92, 58,1)',
-				teal10: 'rgba(1, 62, 34,1)'
+				teal10: 'rgba(1, 62, 34,1)',
+				background: 'rgba(255,250,240,1)'
 			},
 			contrastThreshold: 3,
 			tonalOffset: 0.2,
@@ -89,7 +81,7 @@ export const getTheme = () =>
 				default: 'rgba(255,250,240,1)'
 			},
 			text: {
-				primary: 'rgba(60,60,60,1)',
+				primary: 'rgba(40,40,40,1)',
 				secondary: 'rgba(150,150,150,1)'
 			}
 		},
