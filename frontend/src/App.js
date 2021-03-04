@@ -1,9 +1,14 @@
-import React from 'react';
-import { Provider } from 'react-redux';
-import store from './store';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import {
+	BrowserRouter as Router,
+	Redirect,
+	Route,
+	Switch
+} from 'react-router-dom';
 import { CssBaseline, ThemeProvider } from '@material-ui/core';
 import { getTheme } from 'styles/theme';
+import { useSelector, useDispatch } from 'react-redux';
+import { logoutAction } from 'actions/userActions';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import styles from 'styles/appStyles';
@@ -18,24 +23,51 @@ const theme = getTheme();
 
 const App = () => {
 	const classes = useStyles();
+	const dispatch = useDispatch();
+	const userData = useSelector(state => state.userData);
+	const { user, isAuth } = userData;
+
+	useEffect(() => {
+		if (!user?.isValid) {
+			dispatch(logoutAction());
+		}
+	}, [user, dispatch]);
+
 	return (
-		<Provider store={store}>
-			<Router>
-				<ThemeProvider theme={theme}>
-					<CssBaseline />
-					<Header />
-					<main className={classes.main}>
+		<Router>
+			<ThemeProvider theme={theme}>
+				<CssBaseline />
+				<Header />
+				<main className={classes.main}>
+					{isAuth && user.isValid && user.isAdmin ? (
+						// Admin routes
 						<Switch>
 							<Route path='/' exact component={HomeScreen} />
-							<Route path='/login' exact component={AuthScreen} />
+							<Redirect from='/login' exact to='/profile' />
 							<Route path='/profile' exact component={ProfileScreen} />
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
-					</main>
-					<Footer />
-				</ThemeProvider>
-			</Router>
-		</Provider>
+					) : isAuth && user.isValid ? (
+						// Private routes
+						<Switch>
+							<Route path='/' exact component={HomeScreen} />
+							<Redirect from='/login' exact to='/profile' />
+							<Route path='/profile' exact component={ProfileScreen} />
+							<Route path='/' component={PageNotFoundScreen} />
+						</Switch>
+					) : (
+						// Public routes
+						<Switch>
+							<Route path='/' exact component={HomeScreen} />
+							<Route path='/login' exact component={AuthScreen} />
+							<Redirect from='/profile' exact to='/login' />
+							<Route path='/' component={PageNotFoundScreen} />
+						</Switch>
+					)}
+				</main>
+				<Footer />
+			</ThemeProvider>
+		</Router>
 	);
 };
 

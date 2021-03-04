@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import styles from 'styles/formStyles';
@@ -12,20 +12,17 @@ import {
 	Typography
 } from '@material-ui/core';
 import useAuthForm from 'hooks/authFormHook';
-import { logoutAction, loginAction, signupAction } from 'actions/userActions';
+import { loginAction, signupAction } from 'actions/userActions';
 import { SIGNUP_CLEAR, LOGIN_CLEAR } from 'constants/userConstants';
 
 const useStyles = styles;
 
-const AuthScreen = ({ history }) => {
+const AuthScreen = () => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
 	const [formState, formDispatch] = useAuthForm();
 	const { formIsValid, isLoginMode, inputs } = formState;
-
-	const userData = useSelector(state => state.userData);
-	const { user } = userData;
 
 	const signup = useSelector(state => state.signup);
 	const {
@@ -35,12 +32,7 @@ const AuthScreen = ({ history }) => {
 	} = signup;
 
 	const login = useSelector(state => state.login);
-	const {
-		loading: loginLoading,
-		success: loginSuccess,
-		alert: loginAlert,
-		error: loginError
-	} = login;
+	const { loading: loginLoading, alert: loginAlert, error: loginError } = login;
 
 	const changeHandler = (e, validators) => {
 		formDispatch({ type: 'CHANGE', payload: e.target, validators });
@@ -70,14 +62,6 @@ const AuthScreen = ({ history }) => {
 			);
 		}
 	};
-
-	useEffect(() => {
-		if (user?.isValid) {
-			history.push('/profile');
-		} else if (!user?.isValid) {
-			dispatch(logoutAction());
-		}
-	}, [user, history, dispatch]);
 
 	return (
 		<>
