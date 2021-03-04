@@ -8,8 +8,11 @@ import {
 	CircularProgress,
 	Button,
 	TextField,
-	Typography
+	Typography,
+	Snackbar,
+	IconButton
 } from '@material-ui/core';
+import { Close } from '@material-ui/icons';
 import useAuthForm from 'hooks/authFormHook';
 import { loginAction, signupAction } from 'actions/userActions';
 import {
@@ -49,14 +52,12 @@ const AuthScreen = () => {
 	};
 
 	const touchHandler = e => {
-		console.log('touch');
 		if (!formState.inputs[e.target.id].isTouched) {
 			formDispatch({ type: 'TOUCH', payload: e.target });
 		}
 	};
 
 	const switchModeHandler = () => {
-		console.log('switch');
 		formDispatch({ type: 'SWITCH_MODE' });
 	};
 
@@ -95,7 +96,21 @@ const AuthScreen = () => {
 						: null
 				}
 			/>
-
+			<Snackbar
+				anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+				open={!!sendVerifyUserSuccess}
+				autoHideDuration={5000}
+				onClose={() => dispatch({ type: SEND_VERIFY_USER_CLEAR })}
+				message={sendVerifyUserSuccess}
+				className={classes.snackbar}
+				action={
+					<IconButton
+						onClick={() => dispatch({ type: SEND_VERIFY_USER_CLEAR })}
+					>
+						<Close />
+					</IconButton>
+				}
+			/>
 			<form className={classes.form} onSubmit={submitHandler}>
 				<Typography variant='h1'>
 					{isLoginMode ? 'Log In' : 'Sign Up'}

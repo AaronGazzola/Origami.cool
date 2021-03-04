@@ -40,6 +40,18 @@ const styles = makeStyles(theme => ({
 	},
 	submitProgress: {
 		color: theme.palette.common.background
+	},
+	snackbar: {
+		'& .MuiPaper-root': {
+			backgroundColor: theme.palette.success.main
+		},
+		'& .MuiSnackbarContent-message': {
+			color: theme.palette.common.background,
+			fontSize: '1rem'
+		},
+		'& .MuiSvgIcon-root': {
+			color: theme.palette.common.green5
+		}
 	}
 }));
 
