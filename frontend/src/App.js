@@ -17,6 +17,8 @@ import AuthScreen from 'screens/AuthScreen';
 import ProfileScreen from 'screens/ProfileScreen';
 import PageNotFoundScreen from 'screens/PageNotFoundScreen';
 import VerifyUserScreen from 'screens/VerifyUserScreen';
+import ResetPasswordScreen from 'screens/ResetPasswordScreen';
+import ForgotPasswordScreen from 'screens/ForgotPasswordScreen';
 
 const useStyles = styles;
 
@@ -47,6 +49,8 @@ const App = () => {
 							<Redirect from='/login' exact to='/profile' />
 							<Redirect from='/verify' to='/profile' />
 							<Route path='/profile' exact component={ProfileScreen} />
+							<Redirect from='/resetpassword' to='/profile' />
+							<Redirect from='/forgotpassword' exact to='/profile' />
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
 					) : isAuth && user.isVerified ? (
@@ -56,6 +60,8 @@ const App = () => {
 							<Redirect from='/login' exact to='/profile' />
 							<Redirect from='/verify' to='/profile' />
 							<Route path='/profile' exact component={ProfileScreen} />
+							<Redirect from='/resetpassword' to='/profile' />
+							<Redirect from='/forgotpassword' exact to='/profile' />
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
 					) : (
@@ -65,6 +71,15 @@ const App = () => {
 							<Route path='/login' exact component={AuthScreen} />
 							<Redirect from='/profile' exact to='/login' />
 							<Route path='/verify/:token' component={VerifyUserScreen} />
+							<Route
+								path='/resetpassword/:token'
+								component={ResetPasswordScreen}
+							/>
+							<Route
+								path='/forgotpassword'
+								exact
+								component={ForgotPasswordScreen}
+							/>
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
 					)}

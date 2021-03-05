@@ -23,7 +23,12 @@ const VerifyUserScreen = ({ match }) => {
 				reset={() => dispatch({ type: VERIFY_USER_CLEAR })}
 			/>
 			<Typography variant='h1'>Verifying your account </Typography>
-			<CircularProgress color='secondary' thickness={2} size={50} />
+			<CircularProgress
+				style={{ marginTop: 20 }}
+				color='secondary'
+				thickness={2}
+				size={50}
+			/>
 		</>
 	);
 };

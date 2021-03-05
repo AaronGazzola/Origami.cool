@@ -80,7 +80,7 @@ const sendVerifyUser = asyncHandler(async (req, res, next) => {
 	}
 
 	// Get token
-	const token = user.getToken('VERIFY');
+	const token = user.getToken('VERIFY_USER');
 
 	await user.save({ validateBeforeSave: false });
 
@@ -132,76 +132,75 @@ const verifyUser = asyncHandler(async (req, res, next) => {
 	sendTokenResponse(user, 200, res);
 });
 
-// // @desc      Forgot password
-// // @route     POST /api/v1/users/forgotpassword
-// // @access    Public
-// const forgotPassword = asyncHandler(async (req, res, next) => {
-// 	const user = await User.findOne({ email: req.body.email });
+// @desc      Forgot password
+// @route     POST /api/v1/users/forgotpassword
+// @access    Public
+const forgotPassword = asyncHandler(async (req, res, next) => {
+	const user = await User.findOne({ email: req.body.email });
 
-// 	if (!user) {
-// 		return next(new ErrorResponse('There is no user with that email', 404));
-// 	}
+	if (!user) {
+		return next(new ErrorResponse('There is no user with that email', 404));
+	}
 
-// 	// Get reset token
-// 	const token = user.getResetPasswordToken();
+	// Get reset token
+	const token = user.getToken('RESET_PASSWORD');
 
-// 	await user.save({ validateBeforeSave: false });
+	await user.save({ validateBeforeSave: false });
 
-// 	// get base URL from request protocol and host domain
-// 	const protocol = req.protocol;
-// 	const host =
-// 		process.env.NODE_ENV === 'production' ? req.get('host') : 'localhost:3000';
-// 	const baseUrl = `${protocol}://${host}`;
+	// get base URL from request protocol and host domain
+	const baseUrl = `${req.protocol}://${
+		process.env.NODE_ENV === 'production' ? req.get('host') : 'localhost:3000'
+	}`;
 
-// 	try {
-// 		await sendEmail({
-// 			type: 'FORGOT_PASSWORD',
-// 			token,
-// 			user,
-// 			baseUrl
-// 		});
-// 		res.status(200).json({ success: true, data: 'Email sent' });
-// 	} catch (error) {
-// 		console.log(error);
-// 		user.resetPasswordToken = undefined;
-// 		user.resetPasswordExpire = undefined;
+	try {
+		await sendEmail({
+			type: 'RESET_PASSWORD',
+			token,
+			user,
+			baseUrl
+		});
+		res.status(200).json({ success: true, data: 'Email sent' });
+	} catch (error) {
+		console.log(error);
+		user.resetPasswordToken = undefined;
+		user.resetPasswordExpire = undefined;
 
-// 		await user.save({ validateBeforeSave: false });
+		await user.save({ validateBeforeSave: false });
 
-// 		return next(new ErrorResponse('Email could not be sent', 500));
-// 	}
-// });
+		return next(new ErrorResponse('Email could not be sent', 500));
+	}
+});
 
-// // @desc      Reset password
-// // @route     PUT /api/v1/users/resetpassword/:resettoken
-// // @access    Public
-// const resetPassword = asyncHandler(async (req, res, next) => {
-// 	// Get hashed token
-// 	const resetPasswordToken = crypto
-// 		.createHash('sha256')
-// 		.update(req.params.token)
-// 		.digest('hex');
+// @desc      Reset password
+// @route     PUT /api/v1/users/resetpassword/:token
+// @access    Public
+const resetPassword = asyncHandler(async (req, res, next) => {
+	// Get hashed token
+	const resetPasswordToken = crypto
+		.createHash('sha256')
+		.update(req.params.token)
+		.digest('hex');
 
-// 	const user = await User.findOne({
-// 		resetPasswordToken,
-// 		resetPasswordExpire: {
-// 			$gt: Date.now()
-// 		}
-// 	});
+	const user = await User.findOne({
+		resetPasswordToken,
+		resetPasswordExpire: {
+			$gt: Date.now()
+		}
+	});
 
-// 	if (!user) {
-// 		return next(new ErrorResponse('Invalid token', 400));
-// 	}
+	if (!user) {
+		return next(new ErrorResponse('Invalid token', 400));
+	}
 
-// 	// Set new password
-// 	user.password = req.body.password;
-// 	user.resetPasswordToken = undefined;
-// 	user.resetPasswordExpire = undefined;
-// 	user.isVerified = true;
-// 	await user.save();
+	// Set new password
+	user.password = req.body.password;
+	user.resetPasswordToken = undefined;
+	user.resetPasswordExpire = undefined;
+	user.isVerified = true;
+	await user.save();
 
-// 	sendTokenResponse(user, 200, res);
-// });
+	sendTokenResponse(user, 200, res);
+});
 
 // // @desc      Get current logged in user
 // // @route     GET /api/v1/users/profile
@@ -523,9 +522,9 @@ export {
 	login,
 	signup,
 	sendVerifyUser,
-	verifyUser
-	// forgotPassword,
-	// resetPassword,
+	verifyUser,
+	forgotPassword,
+	resetPassword
 	// getUserProfile,
 	// userUpdateProfile,
 	// userUpdateAddress,

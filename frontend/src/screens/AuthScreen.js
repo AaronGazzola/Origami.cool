@@ -121,7 +121,7 @@ const AuthScreen = () => {
 						isLoginMode &&
 						(input === 'name' || input === 'confirmPassword')
 					) {
-						return;
+						return <React.Fragment key={input}></React.Fragment>;
 					} else {
 						return (
 							<TextField

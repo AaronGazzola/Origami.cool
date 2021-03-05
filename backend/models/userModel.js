@@ -94,14 +94,14 @@ UserSchema.methods.getToken = function (type) {
 	const hash = crypto.createHash('sha256').update(token).digest('hex');
 	// add token to document
 	switch (type) {
-		case 'PASSWORD':
+		case 'RESET_PASSWORD':
 			this.resetPasswordToken = hash;
 			this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
 			break;
-		case 'VERIFY':
+		case 'VERIFY_USER':
 			this.verifyUserToken = hash;
 			break;
-		case 'EMAIL':
+		case 'VERIFY_EMAIL':
 			this.changeEmailToken = hash;
 			break;
 		default:

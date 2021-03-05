@@ -6,7 +6,9 @@ import {
 	sendVerifyUserReducer,
 	loginReducer,
 	userDataReducer,
-	verifyUserReducer
+	verifyUserReducer,
+	forgotPasswordReducer,
+	resetPasswordReducer
 } from 'reducers/userReducers';
 
 const reducer = combineReducers({
@@ -14,7 +16,9 @@ const reducer = combineReducers({
 	sendVerifyUser: sendVerifyUserReducer,
 	login: loginReducer,
 	userData: userDataReducer,
-	verifyUser: verifyUserReducer
+	verifyUser: verifyUserReducer,
+	forgotPassword: forgotPasswordReducer,
+	resetPassword: resetPasswordReducer
 });
 
 const userFromStorage = localStorage.getItem('user')

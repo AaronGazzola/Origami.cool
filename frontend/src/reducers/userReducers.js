@@ -16,10 +16,19 @@ import {
 	USER_DATA_SUCCESS,
 	USER_DATA_FAIL,
 	USER_DATA_CLEAR,
+	USER_DATA_LOGOUT,
 	VERIFY_USER_REQUEST,
 	VERIFY_USER_SUCCESS,
 	VERIFY_USER_FAIL,
-	VERIFY_USER_CLEAR
+	VERIFY_USER_CLEAR,
+	FORGOT_PASSWORD_REQUEST,
+	FORGOT_PASSWORD_SUCCESS,
+	FORGOT_PASSWORD_FAIL,
+	FORGOT_PASSWORD_CLEAR,
+	RESET_PASSWORD_REQUEST,
+	RESET_PASSWORD_SUCCESS,
+	RESET_PASSWORD_FAIL,
+	RESET_PASSWORD_CLEAR
 } from 'constants/userConstants';
 
 export const signupReducer = (state = {}, action) => {
@@ -95,7 +104,9 @@ export const userDataReducer = (state = {}, action) => {
 		case USER_DATA_FAIL:
 			return { loading: false, error: action.payload };
 		case USER_DATA_CLEAR:
-			return { error: null, success: null };
+			return { ...state, error: null, success: null };
+		case USER_DATA_LOGOUT:
+			return {};
 		default:
 			return state;
 	}
@@ -112,6 +123,40 @@ export const verifyUserReducer = (state = {}, action) => {
 		case VERIFY_USER_FAIL:
 			return { loading: false, error: action.payload };
 		case VERIFY_USER_CLEAR:
+			return { error: null, success: null };
+		default:
+			return state;
+	}
+};
+export const forgotPasswordReducer = (state = {}, action) => {
+	switch (action.type) {
+		case FORGOT_PASSWORD_REQUEST:
+			return { loading: true };
+		case FORGOT_PASSWORD_SUCCESS:
+			return {
+				loading: false,
+				success: action.payload
+			};
+		case FORGOT_PASSWORD_FAIL:
+			return { loading: false, error: action.payload };
+		case FORGOT_PASSWORD_CLEAR:
+			return { error: null, success: null };
+		default:
+			return state;
+	}
+};
+export const resetPasswordReducer = (state = {}, action) => {
+	switch (action.type) {
+		case RESET_PASSWORD_REQUEST:
+			return { loading: true };
+		case RESET_PASSWORD_SUCCESS:
+			return {
+				loading: false,
+				success: true
+			};
+		case RESET_PASSWORD_FAIL:
+			return { loading: false, error: action.payload };
+		case RESET_PASSWORD_CLEAR:
 			return { error: null, success: null };
 		default:
 			return state;

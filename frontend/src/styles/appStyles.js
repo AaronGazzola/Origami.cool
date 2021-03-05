@@ -12,7 +12,7 @@ const styles = makeStyles(theme => ({
 		paddingTop: theme.spacing(2),
 		paddingBottom: theme.spacing(4),
 		minHeight: `calc(100vh - ${appBarHeight + footerHeight}px)`,
-		width: '100%',
+		width: '90%',
 		maxWidth: 1220,
 		[theme.breakpoints.down('md')]: {
 			maxWidth: 900

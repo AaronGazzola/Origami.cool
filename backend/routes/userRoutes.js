@@ -3,9 +3,9 @@ import {
 	login,
 	signup,
 	sendVerifyUser,
-	verifyUser
-	// forgotPassword,
-	// resetPassword,
+	verifyUser,
+	forgotPassword,
+	resetPassword
 	// getUserProfile,
 	// userUpdateProfile,
 	// cancelNewEmail,
@@ -24,8 +24,8 @@ router.post('/signup', signup);
 router.post('/login', login);
 router.post('/sendverifyuser', sendVerifyUser);
 router.post('/verifyuser/:token', verifyUser);
-// router.post('/forgotpassword', forgotPassword);
-// router.put('/resetpassword/:token', resetPassword);
+router.post('/forgotpassword', forgotPassword);
+router.put('/resetpassword/:token', resetPassword);
 // router
 // 	.route('/profile')
 // 	.get(protect, getUserProfile)

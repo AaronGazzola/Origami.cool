@@ -88,16 +88,15 @@ export const getTheme = () =>
 		typography: {
 			fontFamily: "'Nanum Gothic', sans-serif",
 			h1: {
-				fontWeight: 100,
 				fontFamily: "'Nixie One', sans-serif",
 				fontSize: '3.5rem',
 				color: 'rgba(90, 51,  1,1)'
-			}
-			// 	h2: {
-			// 		fontWeight: 200,
-			// 		fontSize: '2.5rem',
-			// 		fontStyle: 'italic'
-			// 	},
+			},
+			h2: {
+				fontFamily: "'Nixie One', sans-serif",
+				fontSize: '3rem',
+				color: 'rgba(90, 51,  1,1)'
+			},
 			// 	h3: {
 			// 		fontWeight: 200,
 			// 		fontSize: '2rem',
@@ -107,8 +106,9 @@ export const getTheme = () =>
 			// 		fontWeight: 200,
 			// 		fontSize: '1.8rem'
 			// 	},
-			// 	body1: {
-			// 		fontWeight: 300
-			// 	}
+			h5: {
+				fontWeight: 100,
+				fontStyle: 'italic'
+			}
 		}
 	});
