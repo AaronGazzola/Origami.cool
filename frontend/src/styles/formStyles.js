@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const styles = makeStyles(theme => ({
 	form: {
-		width: '320px',
+		width: 320,
 		display: 'flex',
 		flexDirection: 'column',
 		alignItems: 'center'
@@ -39,7 +39,7 @@ const styles = makeStyles(theme => ({
 		}
 	},
 	submitProgress: {
-		color: theme.palette.common.background
+		color: theme.palette.background.default
 	},
 	snackbar: {
 		'& .MuiPaper-root': {
@@ -52,6 +52,60 @@ const styles = makeStyles(theme => ({
 		'& .MuiSvgIcon-root': {
 			color: theme.palette.common.green5
 		}
+	},
+	modalPaper: {
+		padding: theme.spacing(4, 2, 3, 2),
+		position: 'absolute',
+		top: '50%',
+		left: '50%',
+		transform: 'translate(-50%, -50%)',
+		overflowY: 'scroll',
+		'&:focus': {
+			outline: 'none'
+		},
+		width: 500,
+		maxWidth: '100%',
+		maxHeight: '85%',
+		[theme.breakpoints.down('xs')]: {
+			top: 0,
+			left: 0,
+			width: '100%',
+			maxHeight: '100%',
+			transform: 'none'
+		}
+	},
+	modalForm: {
+		maxWidth: 400,
+		width: '100%',
+		display: 'flex',
+		flexDirection: 'column',
+		alignItems: 'center'
+	},
+	close: {
+		position: 'absolute',
+		top: 0,
+		left: 0
+	},
+	outerList: {
+		width: '90%',
+		marginTop: theme.spacing(2),
+		padding: 0,
+		border: `1px solid ${theme.palette.grey[500]}`,
+		borderRadius: 5
+	},
+	outerListOpen: {
+		borderColor: theme.palette.primary.main
+	},
+	innerList: {
+		display: 'flex',
+		flexDirection: 'column',
+		alignItems: 'center'
+	},
+	greyText: {
+		color: theme.palette.grey[600]
+	},
+	listInput: {
+		width: '90%'
 	}
 }));
 

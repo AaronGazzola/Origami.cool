@@ -72,13 +72,13 @@ export const getTheme = () =>
 				teal7: 'rgba(122,180,153,1)',
 				teal8: 'rgba(76,150,116,1)',
 				teal9: 'rgba(17, 92, 58,1)',
-				teal10: 'rgba(1, 62, 34,1)',
-				background: 'rgba(255,250,240,1)'
+				teal10: 'rgba(1, 62, 34,1)'
 			},
 			contrastThreshold: 3,
 			tonalOffset: 0.2,
 			background: {
-				default: 'rgba(255,250,240,1)'
+				default: 'rgba(255,250,240,1)',
+				paper: 'rgba(255,250,250,1)'
 			},
 			text: {
 				primary: 'rgba(40,40,40,1)',
@@ -97,11 +97,11 @@ export const getTheme = () =>
 				fontSize: '3rem',
 				color: 'rgba(90, 51,  1,1)'
 			},
-			// 	h3: {
-			// 		fontWeight: 200,
-			// 		fontSize: '2rem',
-			// 		fontStyle: 'italic'
-			// 	},
+			h3: {
+				fontFamily: "'Nixie One', sans-serif",
+				fontSize: '2.5rem',
+				color: 'rgba(90, 51,  1,1)'
+			},
 			// 	h4: {
 			// 		fontWeight: 200,
 			// 		fontSize: '1.8rem'

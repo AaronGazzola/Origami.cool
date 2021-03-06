@@ -8,7 +8,14 @@ const users = [
 		email: 'admin@example.com',
 		password: bcrypt.hashSync(process.env.USER_PASSWORD, 10),
 		isAdmin: true,
-		isVerified: true
+		isVerified: true,
+		address: {
+			street1: 'street 1',
+			street2: 'street 2',
+			city: 'city',
+			state: 'state',
+			postCode: 'post code'
+		}
 	},
 	{
 		name: 'John Doe',

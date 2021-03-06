@@ -5,20 +5,19 @@ const styles = makeStyles(theme => ({
 		marginBottom: theme.spacing(1)
 	},
 	paper: {
-		display: 'flex',
-		flexDirection: 'column',
-		backgroundColor: theme.palette.common.tan0,
 		padding: theme.spacing(2)
 	},
 	text: {
-		marginTop: theme.spacing(1)
+		marginTop: theme.spacing(1),
+		'&:last-of-type': {
+			marginBottom: theme.spacing(1)
+		}
 	},
-	divider: {
-		marginTop: theme.spacing(1)
-	},
-	logoutButton: {
-		alignSelf: 'flex-end',
+	button: {
 		fontWeight: 700,
+		color: theme.palette.secondary.main
+	},
+	error: {
 		color: theme.palette.error.main
 	}
 }));
