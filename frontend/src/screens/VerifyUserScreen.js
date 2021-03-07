@@ -1,28 +1,52 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { verifyUserAction } from 'actions/userActions';
+import { verifyUserAction, verifyEmailUpdateAction } from 'actions/userActions';
 import { CircularProgress, Typography } from '@material-ui/core';
-import { VERIFY_USER_CLEAR } from 'constants/userConstants';
+import {
+	VERIFY_USER_CLEAR,
+	VERIFY_EMAIL_UPDATE_CLEAR
+} from 'constants/userConstants';
 import Message from 'components/Message';
 
-const VerifyUserScreen = ({ match }) => {
+const VerifyScreen = ({ match, location, history }) => {
 	const dispatch = useDispatch();
 	const verifyToken = match.params.token;
 
 	const verifyUser = useSelector(state => state.verifyUser);
-	const { error } = verifyUser;
+	const { error: verifyUserError, success: verifyUserSuccess } = verifyUser;
+
+	const verifyEmailUpdate = useSelector(state => state.verifyEmailUpdate);
+	const {
+		error: verifyEmailError,
+		success: verifyEmailSuccess
+	} = verifyEmailUpdate;
 
 	useEffect(() => {
-		dispatch(verifyUserAction(verifyToken));
-	}, [dispatch, verifyToken]);
+		if (location.pathname.startsWith('/verifyuser') && !verifyUserSuccess) {
+			dispatch(verifyUserAction(verifyToken));
+		} else if (
+			location.pathname.startsWith('/verifyemail') &&
+			!verifyEmailSuccess
+		) {
+			dispatch(verifyEmailUpdateAction(verifyToken));
+		}
+
+		if (verifyUserSuccess || verifyEmailSuccess) {
+			history.push('/profile');
+		}
+	}, [dispatch, verifyToken, verifyUserSuccess, verifyEmailSuccess, history]);
 
 	return (
 		<>
 			<Message
-				error={error}
-				reset={() => dispatch({ type: VERIFY_USER_CLEAR })}
+				error={verifyEmailError || verifyUserError}
+				reset={
+					verifyUserError
+						? () => dispatch({ type: VERIFY_USER_CLEAR })
+						: () => dispatch({ type: VERIFY_EMAIL_UPDATE_CLEAR })
+				}
 			/>
-			<Typography variant='h1'>Verifying your account </Typography>
+			<Typography variant='h1'>Verifying</Typography>
 			<CircularProgress
 				style={{ marginTop: 20 }}
 				color='secondary'
@@ -33,4 +57,4 @@ const VerifyUserScreen = ({ match }) => {
 	);
 };
 
-export default VerifyUserScreen;
+export default VerifyScreen;

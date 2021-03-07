@@ -20,7 +20,16 @@ import {
 	FORGOT_PASSWORD_FAIL,
 	RESET_PASSWORD_REQUEST,
 	RESET_PASSWORD_SUCCESS,
-	RESET_PASSWORD_FAIL
+	RESET_PASSWORD_FAIL,
+	USER_UPDATE_PROFILE_REQUEST,
+	USER_UPDATE_PROFILE_SUCCESS,
+	USER_UPDATE_PROFILE_FAIL,
+	CANCEL_EMAIL_UPDATE_REQUEST,
+	CANCEL_EMAIL_UPDATE_SUCCESS,
+	CANCEL_EMAIL_UPDATE_FAIL,
+	VERIFY_EMAIL_UPDATE_REQUEST,
+	VERIFY_EMAIL_UPDATE_SUCCESS,
+	VERIFY_EMAIL_UPDATE_FAIL
 } from 'constants/userConstants';
 
 export const signupAction = (name, email, password) => async dispatch => {
@@ -157,7 +166,8 @@ export const verifyUserAction = token => async dispatch => {
 		);
 
 		dispatch({
-			type: VERIFY_USER_SUCCESS
+			type: VERIFY_USER_SUCCESS,
+			payload: 'Account verified'
 		});
 
 		dispatch({
@@ -242,6 +252,146 @@ export const resetPasswordAction = (password, token) => async dispatch => {
 	} catch (error) {
 		dispatch({
 			type: RESET_PASSWORD_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+		});
+	}
+};
+
+export const userUpdateProfileAction = updateFields => async (
+	dispatch,
+	getState
+) => {
+	try {
+		dispatch({
+			type: USER_UPDATE_PROFILE_REQUEST
+		});
+
+		const {
+			userData: { token }
+		} = getState();
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`
+			}
+		};
+
+		const { data } = await axios.put(
+			`/api/v1/users/profile/`,
+			updateFields,
+			config
+		);
+
+		dispatch({
+			type: USER_UPDATE_PROFILE_SUCCESS,
+			payload: data.user.newEmail
+				? 'Please check your inbox to confirm your new email address'
+				: 'Profile Updated'
+		});
+
+		dispatch({
+			type: USER_DATA_SUCCESS,
+			payload: data
+		});
+
+		localStorage.setItem(
+			'user',
+			JSON.stringify({ user: data.user, token: data.token })
+		);
+	} catch (error) {
+		dispatch({
+			type: USER_UPDATE_PROFILE_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+		});
+	}
+};
+
+export const cancelEmailUpdateAction = () => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: CANCEL_EMAIL_UPDATE_REQUEST
+		});
+
+		const {
+			userData: { token }
+		} = getState();
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`
+			}
+		};
+
+		const { data } = await axios.delete(`/api/v1/users/cancelemail/`, config);
+
+		dispatch({
+			type: CANCEL_EMAIL_UPDATE_SUCCESS,
+			payload: 'Email Update Cancelled'
+		});
+
+		dispatch({
+			type: USER_DATA_SUCCESS,
+			payload: data
+		});
+
+		localStorage.setItem(
+			'user',
+			JSON.stringify({ user: data.user, token: data.token })
+		);
+	} catch (error) {
+		dispatch({
+			type: CANCEL_EMAIL_UPDATE_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+		});
+	}
+};
+
+export const verifyEmailUpdateAction = token => async dispatch => {
+	try {
+		dispatch({
+			type: VERIFY_EMAIL_UPDATE_REQUEST
+		});
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		};
+
+		const { data } = await axios.post(
+			`/api/v1/users/verifyemail/${token}`,
+			{},
+			config
+		);
+
+		dispatch({
+			type: VERIFY_EMAIL_UPDATE_SUCCESS,
+			payload: 'Email address updated'
+		});
+
+		dispatch({
+			type: USER_DATA_SUCCESS,
+			payload: data
+		});
+
+		localStorage.setItem(
+			'user',
+			JSON.stringify({ user: data.user, token: data.token })
+		);
+	} catch (error) {
+		dispatch({
+			type: VERIFY_EMAIL_UPDATE_FAIL,
 			payload:
 				error.response && error.response.data.message
 					? error.response.data.message

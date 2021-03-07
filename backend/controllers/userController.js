@@ -34,7 +34,9 @@ const signup = asyncHandler(async (req, res, next) => {
 		password
 	});
 
-	sendTokenResponse(user, 200, res);
+	const returnUser = await User.findById(user._id);
+
+	sendTokenResponse(returnUser, 200, res);
 });
 
 // @desc      Login user
@@ -62,7 +64,9 @@ const login = asyncHandler(async (req, res, next) => {
 		return next(new ErrorResponse('Password incorrect', 401));
 	}
 
-	sendTokenResponse(user, 200, res);
+	const returnUser = await User.findById(user._id);
+
+	sendTokenResponse(returnUser, 200, res);
 });
 
 // @desc      Send verification email
@@ -87,13 +91,16 @@ const sendVerifyUser = asyncHandler(async (req, res, next) => {
 	const baseUrl = `${req.protocol}://${
 		process.env.NODE_ENV === 'production' ? req.get('host') : 'localhost:3000'
 	}`;
+	const actionLink = `${baseUrl}/verifyuser/${token}`;
 
 	try {
 		await sendEmail({
-			type: 'VERIFY_EMAIL',
-			token,
+			type: 'ACTION',
+			actionLink,
 			user,
-			baseUrl
+			baseUrl,
+			message: `Thank you for creating an account at <a class="link a" href="${baseUrl}" style="color: #026A97; text-decoration: none;"><span class="a__text" style="color: #026A97; text-decoration: none;">Origami.cool</span></a><br/><br/> Please click the link below to verify your email address.`,
+			reason: `You have recieved this email because your email address was used to create an account at Origami.cool, this is not a promotional email. `
 		});
 		res.status(200).json({ success: true, data: 'Email sent' });
 	} catch (error) {
@@ -151,13 +158,16 @@ const forgotPassword = asyncHandler(async (req, res, next) => {
 	const baseUrl = `${req.protocol}://${
 		process.env.NODE_ENV === 'production' ? req.get('host') : 'localhost:3000'
 	}`;
+	const actionLink = `${baseUrl}/resetpassword/${token}`;
 
 	try {
 		await sendEmail({
-			type: 'RESET_PASSWORD',
-			token,
+			type: 'ACTION',
+			actionLink,
 			user,
-			baseUrl
+			baseUrl,
+			message: `Please follow the link below to reset your password. <br/><br/> If you did not request to reset your password, please ignore this email.`,
+			reason: `You have recieved this email because a request was made to reset your password at Origami.cool, this is not a promotional email.`
 		});
 		res.status(200).json({ success: true, data: 'Email sent' });
 	} catch (error) {
@@ -202,128 +212,87 @@ const resetPassword = asyncHandler(async (req, res, next) => {
 	sendTokenResponse(user, 200, res);
 });
 
-// // @desc      Get current logged in user
-// // @route     GET /api/v1/users/profile
-// // @access    Private
-// const getUserProfile = asyncHandler(async (req, res, next) => {
-// 	res.status(200).json({
-// 		success: true,
-// 		user: req.user
-// 	});
-// });
+// @desc      Update logged in user's profile
+// @route     PUT /api/v1/users/profile
+// @access    Private
+const userUpdateProfile = asyncHandler(async (req, res, next) => {
+	// select password from user
+	const user = await User.findOne({ email: req.user.email }).select(
+		'+password'
+	);
 
-// // @desc      Update logged in user's profile
-// // @route     PUT /api/v1/users/profile
-// // @access    Private
-// const userUpdateProfile = asyncHandler(async (req, res, next) => {
-// 	const user = await User.findOne({ email: req.user.email }).select(
-// 		'+password'
-// 	);
+	// update name
+	user.name = req.body.name;
 
-// 	// if email is updated
-// 	if (req.body.email) {
-// 		//check for user with email
-// 		const foundUser = await User.findOne({ email: req.body.email });
-// 		if (foundUser) {
-// 			return next(
-// 				new ErrorResponse('A user with that email address already exists', 400)
-// 			);
-// 		}
-// 		// get change email token
-// 		const token = req.user.getChangeEmailToken();
+	// if email is updated
+	if (req.body.email !== user.email) {
+		//check for user with email
+		const foundUser = await User.findOne({ email: req.body.email });
+		if (foundUser) {
+			return next(
+				new ErrorResponse('A user with that email address already exists', 400)
+			);
+		}
+		// get update email token
+		const token = user.getToken('UPDATE_EMAIL');
 
-// 		// add email to user
-// 		req.user.newEmail = req.body.email;
+		// add email to user
+		user.newEmail = req.body.email;
 
-// 		// get base URL from request protocol and host domain
-// 		const protocol = req.protocol;
-// 		const host =
-// 			process.env.NODE_ENV === 'production'
-// 				? req.get('host')
-// 				: 'localhost:3000';
-// 		const baseUrl = `${protocol}://${host}`;
+		// get base URL from request protocol and host domain
+		const baseUrl = `${req.protocol}://${
+			process.env.NODE_ENV === 'production' ? req.get('host') : 'localhost:3000'
+		}`;
+		const actionLink = `${baseUrl}/verifyemail/${token}`;
 
-// 		try {
-// 			await sendEmail({
-// 				type: 'CHANGE_EMAIL',
-// 				token,
-// 				user: req.user,
-// 				baseUrl
-// 			});
-// 		} catch (error) {
-// 			console.log(error);
-// 			user.verifyUserToken = undefined;
+		// send verification email
+		try {
+			await sendEmail({
+				type: 'ACTION',
+				actionLink,
+				user,
+				baseUrl,
+				message: `Please follow the link below to verify your updated email address<br/><br/> If you did not request to change your email at <a class="link a" href="${baseUrl}" style="color: #026A97; text-decoration: none;"><span class="a__text" style="color: #026A97; text-decoration: none;">Origami.cool</span></a>, please ignore this email.`,
+				reason: `You have recieved this email because a request was made to update the email address associated with your account, this is not a promotional email.`
+			});
+		} catch (error) {
+			console.log(error);
+			user.verifyUserToken = undefined;
 
-// 			await user.save({ validateBeforeSave: false });
+			await user.save({ validateBeforeSave: false });
 
-// 			return next(new ErrorResponse('Email could not be sent', 500));
-// 		}
-// 	}
+			return next(new ErrorResponse('Email could not be sent', 500));
+		}
+	}
 
-// 	// update other fields depending on whether password is sent
-// 	if (req.body.newPassword) {
-// 		try {
-// 			const isMatch = await user.matchPassword(req.body.currentPassword);
+	// update password
+	if (req.body.newPassword) {
+		try {
+			const isMatch = await user.matchPassword(req.body.currentPassword);
 
-// 			if (!isMatch) {
-// 				return next(new ErrorResponse('Password incorrect', 401));
-// 			}
-// 		} catch (error) {
-// 			console.log(error);
-// 			return next(new ErrorResponse('Profile could not be updated', 500));
-// 		}
+			if (!isMatch) {
+				return next(new ErrorResponse('Password incorrect', 401));
+			}
 
-// 		req.user.name = req.body.name;
-// 		req.user.password = req.body.newPassword;
-// 	} else {
-// 		req.user.name = req.body.name;
-// 	}
+			user.password = req.body.newPassword;
+		} catch (error) {
+			console.log(error);
+			return next(new ErrorResponse('Profile could not be updated', 500));
+		}
+	}
 
-// 	// check if address has changed, get formatted address from place_id
-// 	if (req.user.address !== req.body.address && req.body.place_id) {
-// 		try {
-// 			const { data } = await axios.get(
-// 				`https://aqueous-fortress-38882.herokuapp.com/https://maps.googleapis.com/maps/api/place/details/json?key=${
-// 					process.env.NODE_ENV === 'production'
-// 						? process.env.GOOGLE_MAPS_API_KEY_PROD
-// 						: process.env.GOOGLE_MAPS_API_KEY_DEV
-// 				}&place_id=${req.body.place_id}`,
-// 				{
-// 					headers: {
-// 						origin: `${req.protocol}://${
-// 							process.env.NODE_ENV === 'production'
-// 								? req.get('host')
-// 								: 'localhost:3000'
-// 						}`
-// 					}
-// 				}
-// 			);
+	// update address
+	if (req.body.address) {
+		user.address = req.body.address;
+	}
 
-// 			req.user.formattedAddress = data.result.formatted_address;
-// 			req.user.address = req.body.address;
-// 			req.user.place_id = req.body.place_id;
-// 		} catch (error) {
-// 			console.log(error);
-// 			return next(new ErrorResponse('Profile could not be updated', 500));
-// 		}
-// 	} else {
-// 		req.user.address = req.body.address;
-// 	}
+	// save user
+	await user.save();
 
-// 	// save user
-// 	await req.user.save();
+	const returnUser = await User.findById(user._id);
 
-// 	// find user to return user details without change email token
-// 	// === this could be done better, review on refactor === //
-// 	const newUser = await User.findOne({ _id: req.user._id });
-
-// 	res.status(201).json({
-// 		success: req.body.email
-// 			? `Please check your inbox to update your email address to ${req.body.email}`
-// 			: 'Profile updated',
-// 		user: newUser
-// 	});
-// });
+	sendTokenResponse(returnUser, 201, res);
+});
 
 // // @desc      Update logged in user's address
 // // @route     PUT /api/v1/users/address
@@ -367,72 +336,44 @@ const resetPassword = asyncHandler(async (req, res, next) => {
 // 	});
 // });
 
-// // @desc      Cancel email update
-// // @route     DELETE /api/v1/users/cancelemail
-// // @access    Private
-// const cancelNewEmail = asyncHandler(async (req, res, next) => {
-// 	const user = await User.findOne({
-// 		newEmail: req.body.newEmail
-// 	});
+// @desc      Cancel email update
+// @route     DELETE /api/v1/users/cancelemail
+// @access    Private
+const cancelEmailUpdate = asyncHandler(async (req, res, next) => {
+	// remove newEmail and token
+	req.user.newEmail = undefined;
+	req.user.changeEmailToken = undefined;
+	await req.user.save();
 
-// 	if (!user) {
-// 		return next(
-// 			new ErrorResponse('Could not cancel email update, please try again', 400)
-// 		);
-// 	}
+	sendTokenResponse(req.user, 200, res);
+});
 
-// 	if (user.isBanned) {
-// 		return next(
-// 			new ErrorResponse(
-// 				'You have been banned from accessing this content by the administrator(s)',
-// 				401
-// 			)
-// 		);
-// 	}
+// @desc      Verify email update
+// @route     GET /api/v1/users/verifyemail/:token
+// @access    Public
+const verifyEmailUpdate = asyncHandler(async (req, res, next) => {
+	// Get hashed token
+	const changeEmailToken = crypto
+		.createHash('sha256')
+		.update(req.params.token)
+		.digest('hex');
 
-// 	// remove newEmail and token
-// 	user.newEmail = undefined;
-// 	user.changeEmailToken = undefined;
-// 	await user.save();
+	const user = await User.findOne({
+		changeEmailToken
+	});
 
-// 	sendTokenResponse(user, 200, res);
-// });
+	if (!user) {
+		return next(new ErrorResponse('Invalid token', 400));
+	}
 
-// // @desc      Verify email change
-// // @route     GET /api/v1/users/verifyemail/:token
-// // @access    Public
-// const verifyNewEmail = asyncHandler(async (req, res, next) => {
-// 	// Get hashed token
-// 	const changeEmailToken = crypto
-// 		.createHash('sha256')
-// 		.update(req.params.token)
-// 		.digest('hex');
+	// change email
+	user.email = user.newEmail;
+	user.newEmail = undefined;
+	user.changeEmailToken = undefined;
+	await user.save();
 
-// 	const user = await User.findOne({
-// 		changeEmailToken
-// 	});
-
-// 	if (!user) {
-// 		return next(new ErrorResponse('Invalid token', 400));
-// 	}
-
-// 	if (user.isBanned) {
-// 		return next(
-// 			new ErrorResponse(
-// 				'You have been banned from accessing this content by the administrator(s)',
-// 				401
-// 			)
-// 		);
-// 	}
-
-// 	// change email
-// 	user.email = user.newEmail;
-// 	user.newEmail = undefined;
-// 	user.changeEmailToken = undefined;
-// 	await user.save();
-
-// 	sendTokenResponse(user, 200, res);
-// });
+	sendTokenResponse(user, 200, res);
+});
 
 // // @desc    Get all users
 // // @route   GET /api/users
@@ -524,12 +465,12 @@ export {
 	sendVerifyUser,
 	verifyUser,
 	forgotPassword,
-	resetPassword
+	resetPassword,
+	userUpdateProfile,
+	cancelEmailUpdate,
+	verifyEmailUpdate
 	// getUserProfile,
-	// userUpdateProfile,
 	// userUpdateAddress,
-	// cancelNewEmail,
-	// verifyNewEmail,
 	// getUsers,
 	// setAdmin,
 	// setBan

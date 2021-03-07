@@ -8,7 +8,10 @@ import {
 	userDataReducer,
 	verifyUserReducer,
 	forgotPasswordReducer,
-	resetPasswordReducer
+	resetPasswordReducer,
+	userUpdateProfileReducer,
+	cancelEmailUpdateReducer,
+	verifyEmailUpdateReducer
 } from 'reducers/userReducers';
 
 const reducer = combineReducers({
@@ -18,7 +21,10 @@ const reducer = combineReducers({
 	userData: userDataReducer,
 	verifyUser: verifyUserReducer,
 	forgotPassword: forgotPasswordReducer,
-	resetPassword: resetPasswordReducer
+	resetPassword: resetPasswordReducer,
+	userUpdateProfile: userUpdateProfileReducer,
+	cancelEmailUpdate: cancelEmailUpdateReducer,
+	verifyEmailUpdate: verifyEmailUpdateReducer
 });
 
 const userFromStorage = localStorage.getItem('user')

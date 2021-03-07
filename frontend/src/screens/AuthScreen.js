@@ -8,11 +8,8 @@ import {
 	CircularProgress,
 	Button,
 	TextField,
-	Typography,
-	Snackbar,
-	IconButton
+	Typography
 } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
 import useAuthForm from 'hooks/authFormHook';
 import { loginAction, signupAction } from 'actions/userActions';
 import {
@@ -21,6 +18,7 @@ import {
 	SEND_VERIFY_USER_CLEAR
 } from 'constants/userConstants';
 import { sendVerifyUserAction } from '../actions/userActions';
+import SnackBar from 'components/SnackBar';
 
 const useStyles = styles;
 
@@ -96,20 +94,9 @@ const AuthScreen = () => {
 						: null
 				}
 			/>
-			<Snackbar
-				anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-				open={!!sendVerifyUserSuccess}
-				autoHideDuration={5000}
-				onClose={() => dispatch({ type: SEND_VERIFY_USER_CLEAR })}
+			<SnackBar
 				message={sendVerifyUserSuccess}
-				className={classes.snackbar}
-				action={
-					<IconButton
-						onClick={() => dispatch({ type: SEND_VERIFY_USER_CLEAR })}
-					>
-						<Close />
-					</IconButton>
-				}
+				clearType={SEND_VERIFY_USER_CLEAR}
 			/>
 			<form className={classes.form} onSubmit={submitHandler}>
 				<Typography variant='h1'>

@@ -5,17 +5,17 @@ import {
 	sendVerifyUser,
 	verifyUser,
 	forgotPassword,
-	resetPassword
+	resetPassword,
+	userUpdateProfile,
+	cancelEmailUpdate,
+	verifyEmailUpdate
 	// getUserProfile,
-	// userUpdateProfile,
-	// cancelNewEmail,
-	// verifyNewEmail,
 	// userUpdateAddress,
 	// getUsers,
 	// setAdmin,
 	// setBan
 } from '../controllers/userController.js';
-// import { protect, admin } from '../middleware/authMiddleware.js';
+import { protect, admin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
@@ -26,13 +26,13 @@ router.post('/sendverifyuser', sendVerifyUser);
 router.post('/verifyuser/:token', verifyUser);
 router.post('/forgotpassword', forgotPassword);
 router.put('/resetpassword/:token', resetPassword);
-// router
-// 	.route('/profile')
-// 	.get(protect, getUserProfile)
-// 	.put(protect, userUpdateProfile);
+router
+	.route('/profile')
+	// 	.get(protect, getUserProfile)
+	.put(protect, userUpdateProfile);
 // router.put('/address', protect, userUpdateAddress);
-// router.put('/cancelemail', protect, cancelNewEmail);
-// router.post('/verifyemail/:token', verifyNewEmail);
+router.delete('/cancelemail', protect, cancelEmailUpdate);
+router.post('/verifyemail/:token', verifyEmailUpdate);
 // router.put('/setadmin/:id', protect, admin, setAdmin);
 // router.put('/setban/:id', protect, admin, setBan);
 

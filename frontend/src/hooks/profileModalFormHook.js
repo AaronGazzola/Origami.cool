@@ -98,7 +98,6 @@ const useProfileModalForm = user => {
 				activeFields = {
 					...activeFields,
 					street1: state.inputs.street1,
-					street2: state.inputs.street2,
 					city: state.inputs.city,
 					state: state.inputs.state,
 					postCode: state.inputs.postCode
@@ -181,6 +180,8 @@ const useProfileModalForm = user => {
 						draft.addressIsOpen = !state.addressIsOpen;
 					}
 					break;
+				case 'RESET':
+					return initialFormState;
 				default:
 					break;
 			}

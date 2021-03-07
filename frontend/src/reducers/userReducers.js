@@ -28,7 +28,19 @@ import {
 	RESET_PASSWORD_REQUEST,
 	RESET_PASSWORD_SUCCESS,
 	RESET_PASSWORD_FAIL,
-	RESET_PASSWORD_CLEAR
+	RESET_PASSWORD_CLEAR,
+	USER_UPDATE_PROFILE_REQUEST,
+	USER_UPDATE_PROFILE_SUCCESS,
+	USER_UPDATE_PROFILE_FAIL,
+	USER_UPDATE_PROFILE_CLEAR,
+	CANCEL_EMAIL_UPDATE_REQUEST,
+	CANCEL_EMAIL_UPDATE_SUCCESS,
+	CANCEL_EMAIL_UPDATE_FAIL,
+	CANCEL_EMAIL_UPDATE_CLEAR,
+	VERIFY_EMAIL_UPDATE_REQUEST,
+	VERIFY_EMAIL_UPDATE_SUCCESS,
+	VERIFY_EMAIL_UPDATE_FAIL,
+	VERIFY_EMAIL_UPDATE_CLEAR
 } from 'constants/userConstants';
 
 export const signupReducer = (state = {}, action) => {
@@ -157,6 +169,60 @@ export const resetPasswordReducer = (state = {}, action) => {
 		case RESET_PASSWORD_FAIL:
 			return { loading: false, error: action.payload };
 		case RESET_PASSWORD_CLEAR:
+			return { error: null, success: null };
+		default:
+			return state;
+	}
+};
+
+export const userUpdateProfileReducer = (state = {}, action) => {
+	switch (action.type) {
+		case USER_UPDATE_PROFILE_REQUEST:
+			return { loading: true };
+		case USER_UPDATE_PROFILE_SUCCESS:
+			return {
+				loading: false,
+				success: action.payload
+			};
+		case USER_UPDATE_PROFILE_FAIL:
+			return { loading: false, error: action.payload };
+		case USER_UPDATE_PROFILE_CLEAR:
+			return { error: null, success: null };
+		default:
+			return state;
+	}
+};
+
+export const cancelEmailUpdateReducer = (state = {}, action) => {
+	switch (action.type) {
+		case CANCEL_EMAIL_UPDATE_REQUEST:
+			return { loading: true };
+		case CANCEL_EMAIL_UPDATE_SUCCESS:
+			return {
+				loading: false,
+				success: action.payload
+			};
+		case CANCEL_EMAIL_UPDATE_FAIL:
+			return { loading: false, error: action.payload };
+		case CANCEL_EMAIL_UPDATE_CLEAR:
+			return { error: null, success: null };
+		default:
+			return state;
+	}
+};
+
+export const verifyEmailUpdateReducer = (state = {}, action) => {
+	switch (action.type) {
+		case VERIFY_EMAIL_UPDATE_REQUEST:
+			return { loading: true };
+		case VERIFY_EMAIL_UPDATE_SUCCESS:
+			return {
+				loading: false,
+				success: action.payload
+			};
+		case VERIFY_EMAIL_UPDATE_FAIL:
+			return { loading: false, error: action.payload };
+		case VERIFY_EMAIL_UPDATE_CLEAR:
 			return { error: null, success: null };
 		default:
 			return state;

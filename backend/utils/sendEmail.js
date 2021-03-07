@@ -15,7 +15,7 @@ const sendEmail = async options => {
 
 	const message = {
 		from: `${process.env.FROM_NAME_DEV} <aaron@origami.cool>`,
-		to: options.user.email,
+		to: options.user.newEmail ? options.user.newEmail : options.user.email,
 		subject,
 		html
 	};

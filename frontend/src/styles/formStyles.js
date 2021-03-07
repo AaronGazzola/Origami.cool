@@ -41,18 +41,6 @@ const styles = makeStyles(theme => ({
 	submitProgress: {
 		color: theme.palette.background.default
 	},
-	snackbar: {
-		'& .MuiPaper-root': {
-			backgroundColor: theme.palette.success.main
-		},
-		'& .MuiSnackbarContent-message': {
-			color: theme.palette.common.background,
-			fontSize: '1rem'
-		},
-		'& .MuiSvgIcon-root': {
-			color: theme.palette.common.green5
-		}
-	},
 	modalPaper: {
 		padding: theme.spacing(4, 2, 3, 2),
 		position: 'absolute',

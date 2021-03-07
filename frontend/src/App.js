@@ -47,7 +47,8 @@ const App = () => {
 						<Switch>
 							<Route path='/' exact component={HomeScreen} />
 							<Redirect from='/login' exact to='/profile' />
-							<Redirect from='/verify' to='/profile' />
+							<Route path='/verifyuser/:token' component={VerifyUserScreen} />
+							<Route path='/verifyemail/:token' component={VerifyUserScreen} />
 							<Route path='/profile' exact component={ProfileScreen} />
 							<Redirect from='/resetpassword' to='/profile' />
 							<Redirect from='/forgotpassword' exact to='/profile' />
@@ -58,7 +59,8 @@ const App = () => {
 						<Switch>
 							<Route path='/' exact component={HomeScreen} />
 							<Redirect from='/login' exact to='/profile' />
-							<Redirect from='/verify' to='/profile' />
+							<Route path='/verifyuser/:token' component={VerifyUserScreen} />
+							<Route path='/verifyemail/:token' component={VerifyUserScreen} />
 							<Route path='/profile' exact component={ProfileScreen} />
 							<Redirect from='/resetpassword' to='/profile' />
 							<Redirect from='/forgotpassword' exact to='/profile' />
@@ -70,7 +72,8 @@ const App = () => {
 							<Route path='/' exact component={HomeScreen} />
 							<Route path='/login' exact component={AuthScreen} />
 							<Redirect from='/profile' exact to='/login' />
-							<Route path='/verify/:token' component={VerifyUserScreen} />
+							<Route path='/verifyuser/:token' component={VerifyUserScreen} />
+							<Route path='/verifyemail/:token' component={VerifyUserScreen} />
 							<Route
 								path='/resetpassword/:token'
 								component={ResetPasswordScreen}

@@ -104,7 +104,7 @@ UserSchema.methods.getToken = function (type) {
 		case 'VERIFY_USER':
 			this.verifyUserToken = hash;
 			break;
-		case 'VERIFY_EMAIL':
+		case 'UPDATE_EMAIL':
 			this.changeEmailToken = hash;
 			break;
 		default:

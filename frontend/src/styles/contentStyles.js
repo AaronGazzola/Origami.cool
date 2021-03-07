@@ -9,6 +9,7 @@ const styles = makeStyles(theme => ({
 	},
 	text: {
 		marginTop: theme.spacing(1),
+		marginLeft: theme.spacing(1),
 		'&:last-of-type': {
 			marginBottom: theme.spacing(1)
 		}
@@ -19,6 +20,16 @@ const styles = makeStyles(theme => ({
 	},
 	error: {
 		color: theme.palette.error.main
+	},
+	divider: {
+		margin: theme.spacing(1, 0)
+	},
+	address: {
+		marginBottom: -theme.spacing(0.7),
+		marginLeft: theme.spacing(1)
+	},
+	buttonContainer: {
+		marginTop: theme.spacing(1)
 	}
 }));
 
