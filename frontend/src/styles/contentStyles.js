@@ -30,6 +30,10 @@ const styles = makeStyles(theme => ({
 	},
 	buttonContainer: {
 		marginTop: theme.spacing(1)
+	},
+	full: {
+		width: '100%',
+		height: '100%'
 	}
 }));
 

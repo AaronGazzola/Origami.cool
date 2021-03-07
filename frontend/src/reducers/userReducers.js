@@ -130,7 +130,7 @@ export const verifyUserReducer = (state = {}, action) => {
 		case VERIFY_USER_SUCCESS:
 			return {
 				loading: false,
-				success: true
+				success: action.payload
 			};
 		case VERIFY_USER_FAIL:
 			return { loading: false, error: action.payload };

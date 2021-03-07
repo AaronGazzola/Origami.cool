@@ -4,9 +4,11 @@ const useHtmlTemplate = ({
 	type,
 	baseUrl,
 	user,
-	message,
+	message1,
+	message2,
 	reason,
-	actionLink
+	actionLink,
+	buttonText
 }) => {
 	switch (type) {
 		case 'ACTION':
@@ -134,7 +136,8 @@ const useHtmlTemplate = ({
                                                 <h1 class="title header h1" style="margin: 20px 0; line-height: 40px; width: 100%; color: #000000; font-family: Helvetica,Arial,sans-serif; padding-left: 10px; background-color: #FFFFFF; margin-bottom: 20px; margin-top: 0; height: min-content; font-weight: 500;">Hi ${
 																									user.name
 																								},</h1>
-                                                <p class="subtitle text p" style="display: block; color: #000000; line-height: 20px; font-family: Helvetica,Arial,sans-serif; margin: 0; padding-left: 10px; font-size: 20px; margin-bottom: 10px;">${message}</p>
+                                                <p class="subtitle text p" style="display: block; color: #000000; line-height: 20px; font-family: Helvetica,Arial,sans-serif; margin: 0; padding-left: 10px; font-size: 20px; margin-bottom: 10px;">${message1}</p>
+                                                <p class="subtitle text p" style="display: block; color: #000000; line-height: 20px; font-family: Helvetica,Arial,sans-serif; margin: 0; padding-left: 10px; font-size: 20px; margin-bottom: 10px;">${message2}</p>
                                                   <div class="secondary-button button" style="background-color: #2A7855; background-color: rgba(42,120,85,1); margin-top: 10px;">
                                                     <table role="presentation" width="100%" align="left" border="0" cellpadding="0" cellspacing="0">
                                                       <tr>
@@ -142,7 +145,7 @@ const useHtmlTemplate = ({
                                                           <table role="presentation" width="auto" align="center" border="0" cellspacing="0" cellpadding="0" class="button__table" style="margin: 0 auto; margin-top: 10px;">
                                                             <tr>
                   <td align="center" class="button__cell" style="border-radius: 3px; padding: 6px 12px; background-color: #2A7855; background-color: rgba(42,120,85,1);" bgcolor="rgba(42,120,85,1)"><a href="${actionLink}" class="button__link" style="color: #FFFFFF; text-decoration: none; background-color: #2A7855; background-color: rgba(42,120,85,1); display: inline-block;"><span class="button__text" style="color: #FFFFFF; text-decoration: none;">
-                        Verify Email
+                        ${buttonText}
                       </span></a></td>
                                                             </tr>
                                                           </table>

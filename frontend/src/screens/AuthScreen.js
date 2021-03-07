@@ -15,7 +15,9 @@ import { loginAction, signupAction } from 'actions/userActions';
 import {
 	SIGNUP_CLEAR,
 	LOGIN_CLEAR,
-	SEND_VERIFY_USER_CLEAR
+	SEND_VERIFY_USER_CLEAR,
+	VERIFY_EMAIL_UPDATE_CLEAR,
+	VERIFY_USER_CLEAR
 } from 'constants/userConstants';
 import { sendVerifyUserAction } from '../actions/userActions';
 import SnackBar from 'components/SnackBar';
@@ -41,6 +43,15 @@ const AuthScreen = () => {
 		success: sendVerifyUserSuccess,
 		error: sendVerifyUserError
 	} = sendVerifyUser;
+
+	const verifyUser = useSelector(state => state.verifyUser);
+	const { success: verifyUserSuccess } = verifyUser;
+
+	const verifyEmailUpdate = useSelector(state => state.verifyEmailUpdate);
+	const {
+		success: verifyEmailUpdateSuccess,
+		error: verifyEmailUpdateError
+	} = verifyEmailUpdate;
 
 	const login = useSelector(state => state.login);
 	const { loading: loginLoading, alert: loginAlert, error: loginError } = login;
@@ -77,7 +88,12 @@ const AuthScreen = () => {
 	return (
 		<>
 			<Message
-				error={signupError || loginError || sendVerifyUserError}
+				error={
+					signupError ||
+					loginError ||
+					sendVerifyUserError ||
+					verifyEmailUpdateError
+				}
 				alert={loginAlert}
 				success={signupSuccess}
 				reset={
@@ -85,6 +101,8 @@ const AuthScreen = () => {
 						? () => dispatch({ type: SIGNUP_CLEAR })
 						: sendVerifyUserError
 						? () => dispatch({ type: SEND_VERIFY_USER_CLEAR })
+						: verifyEmailUpdateError
+						? () => dispatch({ type: VERIFY_EMAIL_UPDATE_CLEAR })
 						: () => dispatch({ type: LOGIN_CLEAR })
 				}
 				funcText='Resend Email'
@@ -95,8 +113,16 @@ const AuthScreen = () => {
 				}
 			/>
 			<SnackBar
-				message={sendVerifyUserSuccess}
-				clearType={SEND_VERIFY_USER_CLEAR}
+				message={
+					sendVerifyUserSuccess || verifyUserSuccess || verifyEmailUpdateSuccess
+				}
+				clearType={
+					sendVerifyUserSuccess
+						? SEND_VERIFY_USER_CLEAR
+						: verifyUserSuccess
+						? VERIFY_USER_CLEAR
+						: VERIFY_EMAIL_UPDATE_CLEAR
+				}
 			/>
 			<form className={classes.form} onSubmit={submitHandler}>
 				<Typography variant='h1'>

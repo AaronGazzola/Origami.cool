@@ -22,30 +22,19 @@ const VerifyScreen = ({ match, location, history }) => {
 	} = verifyEmailUpdate;
 
 	useEffect(() => {
-		if (location.pathname.startsWith('/verifyuser') && !verifyUserSuccess) {
-			dispatch(verifyUserAction(verifyToken));
-		} else if (
-			location.pathname.startsWith('/verifyemail') &&
-			!verifyEmailSuccess
-		) {
-			dispatch(verifyEmailUpdateAction(verifyToken));
-		}
-
-		if (verifyUserSuccess || verifyEmailSuccess) {
+		if (verifyUserSuccess || verifyEmailSuccess || verifyEmailError) {
 			history.push('/profile');
+		} else if (verifyUserError) {
+			history.push('/login');
+		} else if (location.pathname.startsWith('/verifyuser')) {
+			dispatch(verifyUserAction(verifyToken));
+		} else if (location.pathname.startsWith('/verifyemail')) {
+			dispatch(verifyEmailUpdateAction(verifyToken));
 		}
 	}, [dispatch, verifyToken, verifyUserSuccess, verifyEmailSuccess, history]);
 
 	return (
 		<>
-			<Message
-				error={verifyEmailError || verifyUserError}
-				reset={
-					verifyUserError
-						? () => dispatch({ type: VERIFY_USER_CLEAR })
-						: () => dispatch({ type: VERIFY_EMAIL_UPDATE_CLEAR })
-				}
-			/>
 			<Typography variant='h1'>Verifying</Typography>
 			<CircularProgress
 				style={{ marginTop: 20 }}

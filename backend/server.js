@@ -13,6 +13,7 @@ import cors from 'cors';
 import connectDB from './config/db.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import userRoutes from './routes/userRoutes.js';
+import productRoutes from './routes/productRoutes.js';
 
 // Load env variables from .env file in root
 dotenv.config();
@@ -62,6 +63,7 @@ app.use('/images', express.static(path.join(__dirname, '/images')));
 
 //Mount Routers
 app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/products', productRoutes);
 
 // Serve react app from frontend folder if in production
 if (process.env.NODE_ENV === 'production') {

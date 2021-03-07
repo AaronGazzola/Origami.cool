@@ -16,7 +16,7 @@ import HomeScreen from 'screens/HomeScreen';
 import AuthScreen from 'screens/AuthScreen';
 import ProfileScreen from 'screens/ProfileScreen';
 import PageNotFoundScreen from 'screens/PageNotFoundScreen';
-import VerifyUserScreen from 'screens/VerifyUserScreen';
+import VerifyScreen from 'screens/VerifyScreen';
 import ResetPasswordScreen from 'screens/ResetPasswordScreen';
 import ForgotPasswordScreen from 'screens/ForgotPasswordScreen';
 
@@ -47,8 +47,8 @@ const App = () => {
 						<Switch>
 							<Route path='/' exact component={HomeScreen} />
 							<Redirect from='/login' exact to='/profile' />
-							<Route path='/verifyuser/:token' component={VerifyUserScreen} />
-							<Route path='/verifyemail/:token' component={VerifyUserScreen} />
+							<Route path='/verifyuser/:token' component={VerifyScreen} />
+							<Route path='/verifyemail/:token' component={VerifyScreen} />
 							<Route path='/profile' exact component={ProfileScreen} />
 							<Redirect from='/resetpassword' to='/profile' />
 							<Redirect from='/forgotpassword' exact to='/profile' />
@@ -59,8 +59,8 @@ const App = () => {
 						<Switch>
 							<Route path='/' exact component={HomeScreen} />
 							<Redirect from='/login' exact to='/profile' />
-							<Route path='/verifyuser/:token' component={VerifyUserScreen} />
-							<Route path='/verifyemail/:token' component={VerifyUserScreen} />
+							<Route path='/verifyuser/:token' component={VerifyScreen} />
+							<Route path='/verifyemail/:token' component={VerifyScreen} />
 							<Route path='/profile' exact component={ProfileScreen} />
 							<Redirect from='/resetpassword' to='/profile' />
 							<Redirect from='/forgotpassword' exact to='/profile' />
@@ -72,8 +72,8 @@ const App = () => {
 							<Route path='/' exact component={HomeScreen} />
 							<Route path='/login' exact component={AuthScreen} />
 							<Redirect from='/profile' exact to='/login' />
-							<Route path='/verifyuser/:token' component={VerifyUserScreen} />
-							<Route path='/verifyemail/:token' component={VerifyUserScreen} />
+							<Route path='/verifyuser/:token' component={VerifyScreen} />
+							<Route path='/verifyemail/:token' component={VerifyScreen} />
 							<Route
 								path='/resetpassword/:token'
 								component={ResetPasswordScreen}
