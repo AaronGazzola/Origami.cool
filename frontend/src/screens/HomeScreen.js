@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styles from 'styles/contentStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProductsAction } from 'actions/productActions';
-import { Grid, Paper } from '@material-ui/core';
+import { Grid, Paper, Typography } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
 
 const useStyles = styles;
@@ -16,7 +16,15 @@ const HomeScreen = () => {
 	}, []);
 
 	return (
-		<Grid container spacing={3}>
+		<>
+			<div className={classes.hero}>
+				<Typography variant='h1'>
+					Origami
+					<span>.cool</span>
+				</Typography>
+				<div></div>
+			</div>
+
 			{loading
 				? [...Array(3).keys()].map(key => (
 						<Grid key={key} item xs sm={2} md={3}>
@@ -28,7 +36,7 @@ const HomeScreen = () => {
 							<Paper>{product.name}</Paper>
 						</Grid>
 				  ))}
-		</Grid>
+		</>
 	);
 };
 

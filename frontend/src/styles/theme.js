@@ -102,10 +102,11 @@ export const getTheme = () =>
 				fontSize: '2.5rem',
 				color: 'rgba(90, 51,  1,1)'
 			},
-			// 	h4: {
-			// 		fontWeight: 200,
-			// 		fontSize: '1.8rem'
-			// 	},
+			h4: {
+				fontFamily: "'Nixie One', sans-serif",
+				fontSize: '2rem',
+				color: 'rgba(90, 51,  1,1)'
+			},
 			h5: {
 				fontWeight: 100,
 				fontStyle: 'italic'

@@ -34,6 +34,33 @@ const styles = makeStyles(theme => ({
 	full: {
 		width: '100%',
 		height: '100%'
+	},
+	hero: {
+		position: 'relative',
+		overflow: 'hidden',
+		width: '100vw',
+		height: '30vw',
+		backgroundImage: 'url(/images/bull1.jpg)',
+		backgroundPosition: '0 48%',
+		backgroundRepeat: 'no-repeat',
+		backgroundSize: 'cover',
+		'& div': {
+			width: '100%',
+			height: '100%',
+			background:
+				'linear-gradient(0deg, rgba(255,250,240,1) 0%,rgba(255,250,240,0) 20%, rgba(255,250,240,0) 80%, rgba(255,250,240,1) 100%)'
+		},
+		'& h1': {
+			color: 'rgba(0,0,0,.5)',
+			fontSize: '15vw',
+			position: 'absolute',
+			top: '50%',
+			left: '50%',
+			transform: 'translate(-50%, -50%)'
+		}
+		// '& span': {
+		// 	fontSize: '6vw'
+		// }
 	}
 }));
 
