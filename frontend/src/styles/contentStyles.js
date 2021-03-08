@@ -39,22 +39,22 @@ const styles = makeStyles(theme => ({
 		position: 'relative',
 		overflow: 'hidden',
 		width: '100vw',
-		height: '40vw',
+		height: '45vw',
 		backgroundImage: 'url(/images/bull1.jpg)',
-		backgroundPosition: '0 38%',
+		backgroundPosition: '0 33%',
 		backgroundRepeat: 'no-repeat',
 		backgroundSize: 'cover',
 		'& div': {
 			width: '100%',
 			height: '100%',
 			background:
-				'linear-gradient(0deg, rgba(255,250,240,1) 0%,rgba(255,250,240,0) 15%, rgba(255,250,240,0) 75%, rgba(255,250,240,.5)  85%, rgba(255,250,240,1) 100%)'
+				'linear-gradient(0deg, rgba(255,250,240,1) 0%,rgba(255,250,240,0) 15%, rgba(255,250,240,0) 75%, rgba(255,250,240,.5) 85%, rgba(255,250,240,1) 100%)'
 		},
 		'& h1': {
 			color: 'rgba(255,250,240,1)',
-			fontSize: '8vw',
+			fontSize: '15vw',
 			position: 'absolute',
-			top: '0%',
+			top: '-6%',
 			left: '50%',
 			transform: 'translateX(-50%)'
 		}
