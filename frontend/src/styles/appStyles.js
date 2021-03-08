@@ -43,9 +43,6 @@ const styles = makeStyles(theme => ({
 		width: 100,
 		padding: theme.spacing(0.5),
 		fill: theme.palette.primary.dark
-		// [theme.breakpoints.up('md')]: {
-		// 	marginLeft: -100
-		// }
 	},
 	navButton: {
 		fontWeight: 800,
@@ -56,7 +53,7 @@ const styles = makeStyles(theme => ({
 		letterSpacing: 1,
 		[theme.breakpoints.up('md')]: {
 			'&:last-of-type': {
-				marginRight: theme.spacing(5) + 100
+				marginRight: theme.spacing(5)
 			}
 		}
 	},

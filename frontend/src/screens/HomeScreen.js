@@ -18,10 +18,7 @@ const HomeScreen = () => {
 	return (
 		<>
 			<div className={classes.hero}>
-				<Typography variant='h1'>
-					Origami
-					<span>.cool</span>
-				</Typography>
+				<Typography variant='h1'>Origami.cool</Typography>
 				<div></div>
 			</div>
 
