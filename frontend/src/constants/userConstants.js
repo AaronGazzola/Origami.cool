@@ -11,7 +11,6 @@ export const SEND_VERIFY_USER_CLEAR = 'SEND_VERIFY_USER_CLEAR';
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAIL = 'LOGIN_FAIL';
-export const LOGIN_ALERT = 'LOGIN_ALERT';
 export const LOGIN_CLEAR = 'LOGIN_CLEAR';
 
 export const USER_DATA_REQUEST = 'USER_DATA_REQUEST';

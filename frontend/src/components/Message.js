@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
 	success: {
@@ -47,17 +48,18 @@ const Message = ({
 	ok = true,
 	link,
 	linkText,
-	func,
-	funcText,
-	reset
+	action,
+	actionText,
+	clearType
 }) => {
 	const classes = useStyles();
 	const history = useHistory();
+	const dispatch = useDispatch();
 	return (
 		<Dialog
 			classes={{ paper: classes.paper }}
 			open={!!success || !!error || !!alert}
-			onClose={() => reset()}
+			onClose={() => dispatch({ type: clearType })}
 			transitionDuration={{ exit: 0 }}
 		>
 			<DialogTitle
@@ -82,7 +84,7 @@ const Message = ({
 				{ok && (
 					<Button
 						className={!!success ? classes.success : classes.alert}
-						onClick={reset}
+						onClick={() => dispatch({ type: clearType })}
 					>
 						OK
 					</Button>
@@ -91,22 +93,22 @@ const Message = ({
 					<Button
 						className={classes.alert}
 						onClick={() => {
-							reset();
+							dispatch({ type: clearType });
 							history.push(link);
 						}}
 					>
 						{linkText}
 					</Button>
 				)}
-				{!!func && (
+				{!!action && (
 					<Button
 						className={classes.alert}
 						onClick={() => {
-							func();
-							reset();
+							dispatch(action);
+							dispatch({ type: clearType });
 						}}
 					>
-						{funcText}
+						{actionText}
 					</Button>
 				)}
 			</DialogActions>

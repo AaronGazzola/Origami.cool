@@ -5,60 +5,32 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logoutAction } from 'actions/userActions';
 import styles from 'styles/contentStyles';
 import ProfileModal from '../components/ProfileModal';
-import Message from 'components/Message';
-import SnackBar from 'components/SnackBar';
-import {
-	USER_UPDATE_PROFILE_CLEAR,
-	VERIFY_USER_CLEAR,
-	VERIFY_EMAIL_UPDATE_CLEAR
-} from 'constants/userConstants';
 
 const useStyles = styles;
 
 const ProfileScreen = () => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const userData = useSelector(state => state.userData);
 	const {
 		user: { address },
 		user
-	} = userData;
-	const userUpdateProfile = useSelector(state => state.userUpdateProfile);
-	const { success, error } = userUpdateProfile;
-	const verifyUser = useSelector(state => state.verifyUser);
-	const { success: verifyUserSuccess } = verifyUser;
+	} = useSelector(state => state.userData);
 
-	const verifyEmailUpdate = useSelector(state => state.verifyEmailUpdate);
-	const { success: verifyEmailSuccess } = verifyEmailUpdate;
+	const {
+		error: userUpdateProfileError,
+		success: userUpdateProfileSuccess
+	} = useSelector(state => state.userUpdateProfile);
+
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 
 	useEffect(() => {
-		if (success || error) {
+		if (userUpdateProfileSuccess || userUpdateProfileError) {
 			setModalIsOpen(false);
 		}
-	}, [success, error]);
+	}, [userUpdateProfileSuccess, userUpdateProfileError]);
 
 	return (
 		<>
-			<Message
-				error={error}
-				success={success !== 'Profile Updated' && success}
-				reset={() => dispatch({ type: USER_UPDATE_PROFILE_CLEAR })}
-			/>
-			<SnackBar
-				message={
-					(success && success === 'Profile Updated' && success) ||
-					verifyUserSuccess ||
-					verifyEmailSuccess
-				}
-				clearType={
-					verifyUserSuccess
-						? VERIFY_USER_CLEAR
-						: verifyEmailSuccess
-						? VERIFY_EMAIL_UPDATE_CLEAR
-						: USER_UPDATE_PROFILE_CLEAR
-				}
-			/>
 			<ProfileModal open={modalIsOpen} setOpen={setModalIsOpen} user={user} />
 			<Grid container spacing={5} className={classes.container}>
 				<Grid item xs={12} md={5} lg={4}>

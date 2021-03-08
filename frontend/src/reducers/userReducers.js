@@ -10,7 +10,6 @@ import {
 	LOGIN_REQUEST,
 	LOGIN_SUCCESS,
 	LOGIN_FAIL,
-	LOGIN_ALERT,
 	LOGIN_CLEAR,
 	USER_DATA_REQUEST,
 	USER_DATA_SUCCESS,
@@ -87,11 +86,6 @@ export const loginReducer = (state = {}, action) => {
 			return {
 				loading: false,
 				success: action.payload
-			};
-		case LOGIN_ALERT:
-			return {
-				loading: false,
-				alert: action.payload
 			};
 		case LOGIN_FAIL:
 			return { loading: false, error: action.payload };

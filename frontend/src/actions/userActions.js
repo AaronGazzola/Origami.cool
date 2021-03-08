@@ -9,7 +9,6 @@ import {
 	LOGIN_REQUEST,
 	LOGIN_SUCCESS,
 	LOGIN_FAIL,
-	LOGIN_ALERT,
 	USER_DATA_SUCCESS,
 	USER_DATA_LOGOUT,
 	VERIFY_USER_REQUEST,
@@ -112,7 +111,7 @@ export const loginAction = (email, password) => async dispatch => {
 
 		if (data && !data.user.isVerified) {
 			dispatch({
-				type: LOGIN_ALERT,
+				type: LOGIN_FAIL,
 				payload: 'Please check your email for a link to verify your account'
 			});
 		}
@@ -237,7 +236,8 @@ export const resetPasswordAction = (password, token) => async dispatch => {
 		);
 
 		dispatch({
-			type: RESET_PASSWORD_SUCCESS
+			type: RESET_PASSWORD_SUCCESS,
+			payload: 'Password Reset'
 		});
 
 		dispatch({

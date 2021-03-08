@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
 	BrowserRouter as Router,
 	Redirect,
@@ -19,6 +19,22 @@ import PageNotFoundScreen from 'screens/PageNotFoundScreen';
 import VerifyScreen from 'screens/VerifyScreen';
 import ResetPasswordScreen from 'screens/ResetPasswordScreen';
 import ForgotPasswordScreen from 'screens/ForgotPasswordScreen';
+import Message from 'components/Message';
+import SnackBar from 'components/SnackBar';
+import {
+	SIGNUP_CLEAR,
+	SEND_VERIFY_USER_CLEAR,
+	LOGIN_CLEAR,
+	VERIFY_USER_CLEAR,
+	FORGOT_PASSWORD_CLEAR,
+	RESET_PASSWORD_CLEAR,
+	USER_UPDATE_PROFILE_CLEAR,
+	CANCEL_EMAIL_UPDATE_CLEAR,
+	VERIFY_EMAIL_UPDATE_CLEAR
+} from 'constants/userConstants';
+import { GET_PRODUCTS_CLEAR } from 'constants/productConstants';
+import { sendVerifyUserAction } from 'actions/userActions';
+import { getProductsAction } from 'actions/productActions';
 
 const useStyles = styles;
 
@@ -27,8 +43,36 @@ const theme = getTheme();
 const App = () => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const userData = useSelector(state => state.userData);
-	const { user, isAuth } = userData;
+	const [authFormEmail, setAuthFormEmail] = useState('');
+
+	const {
+		signup: { error: signupError, success: signupSuccess },
+		sendVerifyUser: {
+			error: sendVerifyUserError,
+			success: sendVerifyUserSuccess
+		},
+		login: { error: loginError },
+		userData: { user, isAuth },
+		verifyUser: { error: verifyUserError, success: verifyUserSuccess },
+		forgotPassword: {
+			error: forgotPasswordError,
+			success: forgotPasswordSuccess
+		},
+		resetPassword: { error: resetPasswordError, success: resetPasswordSuccess },
+		userUpdateProfile: {
+			error: userUpdateProfileError,
+			success: userUpdateProfileSuccess
+		},
+		cancelEmailUpdate: {
+			error: cancelEmailUpdateError,
+			success: cancelEmailUpdateSuccess
+		},
+		verifyEmailUpdate: {
+			error: verifyEmailUpdateError,
+			success: verifyEmailUpdateSuccess
+		},
+		getProducts: { error: getProductsError }
+	} = useSelector(state => state);
 
 	useEffect(() => {
 		if (!user?.isVerified) {
@@ -42,6 +86,84 @@ const App = () => {
 				<CssBaseline />
 				<Header />
 				<main className={classes.main}>
+					<Message
+						error={
+							signupError ||
+							sendVerifyUserError ||
+							loginError ||
+							verifyUserError ||
+							forgotPasswordError ||
+							resetPasswordError ||
+							userUpdateProfileError ||
+							cancelEmailUpdateError ||
+							verifyEmailUpdateError ||
+							getProductsError
+						}
+						success={
+							signupSuccess ||
+							(userUpdateProfileSuccess &&
+								userUpdateProfileSuccess !== 'Profile Updated')
+						}
+						clearType={
+							signupError || signupSuccess
+								? SIGNUP_CLEAR
+								: sendVerifyUserError
+								? SEND_VERIFY_USER_CLEAR
+								: loginError
+								? LOGIN_CLEAR
+								: verifyUserError
+								? VERIFY_USER_CLEAR
+								: forgotPasswordError
+								? FORGOT_PASSWORD_CLEAR
+								: resetPasswordError
+								? RESET_PASSWORD_CLEAR
+								: userUpdateProfileError || userUpdateProfileSuccess
+								? USER_UPDATE_PROFILE_CLEAR
+								: cancelEmailUpdateError
+								? CANCEL_EMAIL_UPDATE_CLEAR
+								: verifyEmailUpdateError
+								? VERIFY_EMAIL_UPDATE_CLEAR
+								: getProductsError
+								? GET_PRODUCTS_CLEAR
+								: null
+						}
+						actionText={
+							loginError || sendVerifyUserError ? 'Resend Email' : 'Retry'
+						}
+						action={
+							loginError || sendVerifyUserError
+								? sendVerifyUserAction(authFormEmail)
+								: getProductsError
+								? getProductsAction()
+								: null
+						}
+					/>
+					<SnackBar
+						message={
+							sendVerifyUserSuccess ||
+							verifyUserSuccess ||
+							verifyEmailUpdateSuccess ||
+							userUpdateProfileSuccess ||
+							forgotPasswordSuccess ||
+							resetPasswordSuccess ||
+							cancelEmailUpdateSuccess
+						}
+						clearType={
+							sendVerifyUserSuccess
+								? SEND_VERIFY_USER_CLEAR
+								: verifyUserSuccess
+								? VERIFY_USER_CLEAR
+								: verifyEmailUpdateSuccess
+								? VERIFY_EMAIL_UPDATE_CLEAR
+								: forgotPasswordSuccess
+								? FORGOT_PASSWORD_CLEAR
+								: resetPasswordSuccess
+								? RESET_PASSWORD_CLEAR
+								: cancelEmailUpdateSuccess
+								? CANCEL_EMAIL_UPDATE_CLEAR
+								: null
+						}
+					/>
 					{isAuth && user.isVerified && user.isAdmin ? (
 						// Admin routes
 						<Switch>
@@ -70,7 +192,9 @@ const App = () => {
 						// Public routes
 						<Switch>
 							<Route path='/' exact component={HomeScreen} />
-							<Route path='/login' exact component={AuthScreen} />
+							<Route path='/login' exact>
+								<AuthScreen setEmail={setAuthFormEmail} />
+							</Route>
 							<Redirect from='/profile' exact to='/login' />
 							<Route path='/verifyuser/:token' component={VerifyScreen} />
 							<Route path='/verifyemail/:token' component={VerifyScreen} />

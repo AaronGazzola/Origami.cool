@@ -10,9 +10,7 @@ import {
 import { VALIDATOR_REQUIRE, VALIDATOR_EMAIL, validate } from 'utils/validators';
 import { forgotPasswordAction } from 'actions/userActions';
 import { Link } from 'react-router-dom';
-import { FORGOT_PASSWORD_CLEAR } from 'constants/userConstants';
 import { useDispatch, useSelector } from 'react-redux';
-import Message from 'components/Message';
 
 const useStyles = styles;
 
@@ -20,14 +18,13 @@ const ForgotPasswordScreen = () => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
+	const { loading } = useSelector(state => state.forgotPassword);
+
 	const [email, setEmail] = useState({
 		value: '',
 		isValid: false,
 		isTouched: false
 	});
-
-	const forgotPassword = useSelector(state => state.forgotPassword);
-	const { loading, error, success } = forgotPassword;
 
 	const changeHandler = (e, validators) => {
 		setEmail({
@@ -47,64 +44,57 @@ const ForgotPasswordScreen = () => {
 	};
 
 	return (
-		<>
-			<Message
-				error={error}
-				success={success}
-				reset={() => dispatch({ type: FORGOT_PASSWORD_CLEAR })}
+		<form className={classes.form} onSubmit={submitHandler}>
+			<Typography variant='h2' style={{ textAlign: 'center' }}>
+				Forgot Password
+			</Typography>
+			<TextField
+				id='email'
+				label='Email'
+				type='email'
+				placeholder='Email'
+				fullWidth
+				color='secondary'
+				className={
+					email.isTouched && !email.isValid
+						? clsx(classes.input, classes.error)
+						: classes.input
+				}
+				onChange={e =>
+					changeHandler(e, [VALIDATOR_REQUIRE(), VALIDATOR_EMAIL()])
+				}
+				onBlur={touchHandler}
+				value={email.value}
+				error={email.isTouched && !email.isValid}
+				helperText={
+					email.isTouched && !email.isValid
+						? 'Please enter a valid email address'
+						: ' '
+				}
 			/>
-			<form className={classes.form} onSubmit={submitHandler}>
-				<Typography variant='h2' style={{ textAlign: 'center' }}>
-					Forgot Password
-				</Typography>
-				<TextField
-					id='email'
-					label='Email'
-					type='email'
-					placeholder='Email'
-					fullWidth
-					color='secondary'
-					className={
-						email.isTouched && !email.isValid
-							? clsx(classes.input, classes.error)
-							: classes.input
-					}
-					onChange={e =>
-						changeHandler(e, [VALIDATOR_REQUIRE(), VALIDATOR_EMAIL()])
-					}
-					onBlur={touchHandler}
-					value={email.value}
-					error={email.isTouched && !email.isValid}
-					helperText={
-						email.isTouched && !email.isValid
-							? 'Please enter a valid email address'
-							: ' '
-					}
-				/>
-				<Button
-					className={classes.button}
-					type='submit'
-					disabled={!email.isValid}
-					variant='contained'
-					color='secondary'
-					fullWidth
-				>
-					{loading ? (
-						<CircularProgress size={25} className={classes.submitProgress} />
-					) : (
-						'Send Email'
-					)}
-				</Button>
-				<Button
-					size='small'
-					className={classes.button3}
-					component={Link}
-					to='/login'
-				>
-					Back to Log In
-				</Button>
-			</form>
-		</>
+			<Button
+				className={classes.button}
+				type='submit'
+				disabled={!email.isValid}
+				variant='contained'
+				color='secondary'
+				fullWidth
+			>
+				{loading ? (
+					<CircularProgress size={25} className={classes.submitProgress} />
+				) : (
+					'Send Email'
+				)}
+			</Button>
+			<Button
+				size='small'
+				className={classes.button3}
+				component={Link}
+				to='/login'
+			>
+				Back to Log In
+			</Button>
+		</form>
 	);
 };
 

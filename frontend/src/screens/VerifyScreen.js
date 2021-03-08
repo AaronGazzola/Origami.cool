@@ -12,14 +12,13 @@ const VerifyScreen = ({ match, location, history }) => {
 	const dispatch = useDispatch();
 	const verifyToken = match.params.token;
 
-	const verifyUser = useSelector(state => state.verifyUser);
-	const { error: verifyUserError, success: verifyUserSuccess } = verifyUser;
+	const { error: verifyUserError, success: verifyUserSuccess } = useSelector(
+		state => state.verifyUser
+	);
 
-	const verifyEmailUpdate = useSelector(state => state.verifyEmailUpdate);
-	const {
-		error: verifyEmailError,
-		success: verifyEmailSuccess
-	} = verifyEmailUpdate;
+	const { error: verifyEmailError, success: verifyEmailSuccess } = useSelector(
+		state => state.verifyEmailUpdate
+	);
 
 	useEffect(() => {
 		if (verifyUserSuccess || verifyEmailSuccess || verifyEmailError) {

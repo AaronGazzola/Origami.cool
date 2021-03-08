@@ -16,9 +16,7 @@ import {
 import styles from 'styles/formStyles';
 import clsx from 'clsx';
 import { resetPasswordAction } from 'actions/userActions';
-import { RESET_PASSWORD_CLEAR } from 'constants/userConstants';
 import { Link } from 'react-router-dom';
-import Message from 'components/Message';
 
 const useStyles = styles;
 
@@ -66,8 +64,7 @@ const ResetPasswordScreen = ({ match, history }) => {
 	const dispatch = useDispatch();
 	const passwordToken = match.params.token;
 
-	const resetPassword = useSelector(state => state.resetPassword);
-	const { loading, error } = resetPassword;
+	const { loading } = useSelector(state => state.resetPassword);
 
 	const [formState, formDispatch] = useReducer(formReducer, initialFormState);
 	const { password, confirmPassword } = formState;
@@ -88,92 +85,83 @@ const ResetPasswordScreen = ({ match, history }) => {
 	};
 
 	return (
-		<>
-			<Message
-				error={error}
-				reset={() => dispatch({ type: RESET_PASSWORD_CLEAR })}
-				link={'/forgotPassword'}
-				linkText='back'
+		<form className={classes.form} onSubmit={submitHandler}>
+			<Typography variant='h2' style={{ textAlign: 'center' }}>
+				Reset Password
+			</Typography>
+			<TextField
+				id='password'
+				label='Password'
+				type='password'
+				placeholder='Password'
+				fullWidth
+				color='secondary'
+				className={
+					password.isTouched && !password.isValid
+						? clsx(classes.input, classes.error)
+						: classes.input
+				}
+				onChange={e =>
+					changeHandler(e, [
+						VALIDATOR_REQUIRE(),
+						VALIDATOR_MINLENGTH(6),
+						VALIDATOR_MAXLENGTH(30)
+					])
+				}
+				onBlur={touchHandler}
+				value={password.value}
+				error={password.isTouched && !password.isValid}
+				helperText={
+					password.isTouched && !password.isValid
+						? 'Password must be between 6 and 30 characters'
+						: ' '
+				}
 			/>
-
-			<form className={classes.form} onSubmit={submitHandler}>
-				<Typography variant='h2' style={{ textAlign: 'center' }}>
-					Reset Password
-				</Typography>
-				<TextField
-					id='password'
-					label='Password'
-					type='password'
-					placeholder='Password'
-					fullWidth
-					color='secondary'
-					className={
-						password.isTouched && !password.isValid
-							? clsx(classes.input, classes.error)
-							: classes.input
-					}
-					onChange={e =>
-						changeHandler(e, [
-							VALIDATOR_REQUIRE(),
-							VALIDATOR_MINLENGTH(6),
-							VALIDATOR_MAXLENGTH(30)
-						])
-					}
-					onBlur={touchHandler}
-					value={password.value}
-					error={password.isTouched && !password.isValid}
-					helperText={
-						password.isTouched && !password.isValid
-							? 'Password must be between 6 and 30 characters'
-							: ' '
-					}
-				/>
-				<TextField
-					id='confirmPassword'
-					label='Confirm Password'
-					type='password'
-					placeholder='Confirm Password'
-					fullWidth
-					color='secondary'
-					className={
-						confirmPassword.isTouched && !confirmPassword.isValid
-							? clsx(classes.input, classes.error)
-							: classes.input
-					}
-					onChange={e => changeHandler(e, [])}
-					onBlur={touchHandler}
-					value={confirmPassword.value}
-					error={confirmPassword.isTouched && !confirmPassword.isValid}
-					helperText={
-						confirmPassword.isTouched && !confirmPassword.isValid
-							? 'Passwords must match'
-							: ' '
-					}
-				/>
-				<Button
-					className={classes.button}
-					type='submit'
-					disabled={!password.isValid || !confirmPassword.isValid}
-					variant='contained'
-					color='secondary'
-					fullWidth
-				>
-					{loading ? (
-						<CircularProgress size={25} className={classes.submitProgress} />
-					) : (
-						'Reset Password'
-					)}
-				</Button>
-				<Button
-					size='small'
-					className={classes.button3}
-					component={Link}
-					to='/login'
-				>
-					Back to Log In
-				</Button>
-			</form>
-		</>
+			<TextField
+				id='confirmPassword'
+				label='Confirm Password'
+				type='password'
+				placeholder='Confirm Password'
+				fullWidth
+				color='secondary'
+				className={
+					confirmPassword.isTouched && !confirmPassword.isValid
+						? clsx(classes.input, classes.error)
+						: classes.input
+				}
+				onChange={e => changeHandler(e, [])}
+				onBlur={touchHandler}
+				value={confirmPassword.value}
+				error={confirmPassword.isTouched && !confirmPassword.isValid}
+				helperText={
+					confirmPassword.isTouched && !confirmPassword.isValid
+						? 'Passwords must match'
+						: ' '
+				}
+			/>
+			<Button
+				className={classes.button}
+				type='submit'
+				disabled={!password.isValid || !confirmPassword.isValid}
+				variant='contained'
+				color='secondary'
+				fullWidth
+			>
+				{loading ? (
+					<CircularProgress size={25} className={classes.submitProgress} />
+				) : (
+					'Reset Password'
+				)}
+			</Button>
+			<Button
+				size='small'
+				className={classes.button3}
+				component={Link}
+				to='/login'
+			>
+				Back to Log In
+			</Button>
+		</form>
 	);
 };
 
