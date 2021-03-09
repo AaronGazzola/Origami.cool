@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import slugify from 'slugify';
 
 const reviewSchema = mongoose.Schema(
 	{
@@ -62,12 +63,23 @@ const productSchema = mongoose.Schema(
 			type: Number,
 			required: true,
 			default: 0
+		},
+		slug: {
+			type: String,
+			required: true,
+			unique: true
 		}
 	},
 	{
 		timestamps: true
 	}
 );
+
+productSchema.pre('validate', function () {
+	if (this.name) {
+		this.slug = slugify(this.name, { lower: true, strict: true });
+	}
+});
 
 const Product = mongoose.model('Product', productSchema);
 

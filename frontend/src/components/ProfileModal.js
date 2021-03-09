@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import clsx from 'clsx';
-import styles from 'styles/formStyles';
+import useStyles from 'styles/formStyles';
 import {
 	Fade,
 	Modal,
@@ -32,8 +32,6 @@ import {
 } from 'actions/userActions';
 import SnackBar from 'components/SnackBar';
 import { CANCEL_EMAIL_UPDATE_CLEAR } from 'constants/userConstants';
-
-const useStyles = styles;
 
 const ProfileModal = ({ open, setOpen, user }) => {
 	const classes = useStyles();

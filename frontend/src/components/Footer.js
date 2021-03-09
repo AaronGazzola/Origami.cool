@@ -1,9 +1,7 @@
 import React from 'react';
 import { Button, Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import styles from 'styles/appStyles';
-
-const useStyles = styles;
+import useStyles from 'styles/appStyles';
 
 const links = [
 	{

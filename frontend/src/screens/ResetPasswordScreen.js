@@ -13,12 +13,10 @@ import {
 	VALIDATOR_MAXLENGTH,
 	validate
 } from 'utils/validators';
-import styles from 'styles/formStyles';
+import useStyles from 'styles/formStyles';
 import clsx from 'clsx';
 import { resetPasswordAction } from 'actions/userActions';
 import { Link } from 'react-router-dom';
-
-const useStyles = styles;
 
 const initialFormState = {
 	password: {

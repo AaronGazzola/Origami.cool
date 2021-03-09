@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
-import styles from 'styles/formStyles';
+import useStyles from 'styles/formStyles';
 import {
 	Button,
 	CircularProgress,
@@ -11,8 +11,6 @@ import { VALIDATOR_REQUIRE, VALIDATOR_EMAIL, validate } from 'utils/validators';
 import { forgotPasswordAction } from 'actions/userActions';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-
-const useStyles = styles;
 
 const ForgotPasswordScreen = () => {
 	const classes = useStyles();

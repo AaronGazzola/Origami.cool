@@ -2,11 +2,6 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { verifyUserAction, verifyEmailUpdateAction } from 'actions/userActions';
 import { CircularProgress, Typography } from '@material-ui/core';
-import {
-	VERIFY_USER_CLEAR,
-	VERIFY_EMAIL_UPDATE_CLEAR
-} from 'constants/userConstants';
-import Message from 'components/Message';
 
 const VerifyScreen = ({ match, location, history }) => {
 	const dispatch = useDispatch();

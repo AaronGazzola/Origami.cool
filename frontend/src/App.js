@@ -19,6 +19,7 @@ import PageNotFoundScreen from 'screens/PageNotFoundScreen';
 import VerifyScreen from 'screens/VerifyScreen';
 import ResetPasswordScreen from 'screens/ResetPasswordScreen';
 import ForgotPasswordScreen from 'screens/ForgotPasswordScreen';
+import ProductScreen from 'screens/ProductScreen';
 import Message from 'components/Message';
 import SnackBar from 'components/SnackBar';
 import {
@@ -174,6 +175,7 @@ const App = () => {
 							<Route path='/profile' exact component={ProfileScreen} />
 							<Redirect from='/resetpassword' to='/profile' />
 							<Redirect from='/forgotpassword' exact to='/profile' />
+							<Route path='/product' component={ProductScreen} />
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
 					) : isAuth && user.isVerified ? (
@@ -186,6 +188,7 @@ const App = () => {
 							<Route path='/profile' exact component={ProfileScreen} />
 							<Redirect from='/resetpassword' to='/profile' />
 							<Redirect from='/forgotpassword' exact to='/profile' />
+							<Route path='/product' component={ProductScreen} />
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
 					) : (
@@ -207,6 +210,7 @@ const App = () => {
 								exact
 								component={ForgotPasswordScreen}
 							/>
+							<Route path='/product' component={ProductScreen} />
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
 					)}

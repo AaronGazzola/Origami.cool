@@ -20,13 +20,11 @@ import {
 	Menu,
 	ChevronRight
 } from '@material-ui/icons';
-import styles from 'styles/appStyles';
+import useStyles from 'styles/appStyles';
 import Logo from 'components/Logo';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
-const useStyles = styles;
 
 const Header = () => {
 	const classes = useStyles();
@@ -39,11 +37,13 @@ const Header = () => {
 		{
 			name: 'Shop',
 			link: '/',
-			icon: <Storefront />
+			icon: <Storefront />,
+			pages: ['/product']
 		},
 		{
 			name: 'Cart',
 			link: '/cart',
+			pages: ['/cart', '/checkout'],
 			icon: <ShoppingCart />
 		},
 		{
@@ -76,7 +76,9 @@ const Header = () => {
 									component={Link}
 									to={item.link}
 									className={
-										location.pathname === item.link
+										item.pages?.filter(page =>
+											location.pathname.startsWith(page)
+										).length > 0 || location.pathname === item.link
 											? clsx(classes.selected, classes.navButton)
 											: classes.navButton
 									}

@@ -1,7 +1,5 @@
 import React from 'react';
-import styles from 'styles/appStyles';
-
-const useStyles = styles;
+import useStyles from 'styles/appStyles';
 
 const Logo = () => {
 	const classes = useStyles();

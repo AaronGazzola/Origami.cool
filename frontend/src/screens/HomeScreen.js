@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import clsx from 'clsx';
-import styles from 'styles/contentStyles';
+import useStyles from 'styles/contentStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProductsAction } from 'actions/productActions';
 import { CircularProgress, Grid, Paper, Typography } from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
-
-const useStyles = styles;
 
 const HomeScreen = () => {
 	const dispatch = useDispatch();
@@ -30,8 +29,7 @@ const HomeScreen = () => {
 			</Typography>
 			<Paper className={classes.paper}>
 				<Typography className={classes.text}>
-					Hi, my name's Aaron. I folded these models developed this eCommerce
-					web application.
+					Hi, my name's Aaron. I fold origami and develop web applications.
 				</Typography>
 				<Typography className={classes.text}>
 					Like this web app? Want one just as awesome? Visit{' '}
@@ -44,18 +42,19 @@ const HomeScreen = () => {
 			{loading && (
 				<CircularProgress className={classes.margin2} thickness={2} />
 			)}
-			<Grid container>
+			<Grid container justify='center' className={classes.margin2}>
 				{products?.map(product => (
 					<Grid
 						key={product._id}
 						item
-						xs
-						sm={12}
+						xs={12}
 						md={4}
 						container
 						direction='column'
 						alignItems='center'
 						className={classes.productListItem}
+						component={Link}
+						to={`/product/${product.slug}`}
 					>
 						<img
 							className={classes.productListImage}

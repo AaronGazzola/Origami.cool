@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
-import styles from 'styles/formStyles';
+import useStyles from 'styles/formStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import {
 	CircularProgress,
@@ -11,8 +11,6 @@ import {
 } from '@material-ui/core';
 import useAuthForm from 'hooks/authFormHook';
 import { loginAction, signupAction } from 'actions/userActions';
-
-const useStyles = styles;
 
 const AuthScreen = ({ setEmail }) => {
 	const classes = useStyles();

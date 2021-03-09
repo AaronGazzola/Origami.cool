@@ -77,14 +77,21 @@ const styles = makeStyles(theme => ({
 	heroMargin: {
 		marginTop: 'calc(50vw - 100px)'
 	},
+	margin2: {
+		margin: theme.spacing(2)
+	},
 	productListImage: {
 		width: '100%'
 	},
 	productListItem: {
-		padding: theme.spacing(2)
-	},
-	margin2: {
-		margin: theme.spacing(2)
+		color: theme.palette.text.primary,
+		textDecoration: 'none',
+		padding: theme.spacing(2),
+		transition: 'all .3s ease',
+		'&:hover': {
+			transform: 'scale(1.08)',
+			cursor: 'pointer'
+		}
 	},
 	productListTitle: {
 		fontSize: '1.1rem',
