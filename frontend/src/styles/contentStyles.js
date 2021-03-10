@@ -104,6 +104,15 @@ const styles = makeStyles(theme => ({
 	productListPrice: {
 		marginTop: theme.spacing(0.5),
 		fontStyle: 'italic'
+	},
+	productImage: {
+		width: '100%',
+		padding: theme.spacing(1)
+	},
+	pointer: {
+		'&:hover': {
+			cursor: 'pointer'
+		}
 	}
 }));
 

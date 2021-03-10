@@ -33,7 +33,10 @@ import {
 	CANCEL_EMAIL_UPDATE_CLEAR,
 	VERIFY_EMAIL_UPDATE_CLEAR
 } from 'constants/userConstants';
-import { GET_PRODUCTS_CLEAR } from 'constants/productConstants';
+import {
+	GET_PRODUCTS_CLEAR,
+	GET_PRODUCT_CLEAR
+} from 'constants/productConstants';
 import { sendVerifyUserAction } from 'actions/userActions';
 import { getProductsAction } from 'actions/productActions';
 
@@ -72,7 +75,8 @@ const App = () => {
 			error: verifyEmailUpdateError,
 			success: verifyEmailUpdateSuccess
 		},
-		getProducts: { error: getProductsError }
+		getProducts: { error: getProductsError },
+		getProduct: { error: getProductError }
 	} = useSelector(state => state);
 
 	useEffect(() => {
@@ -98,7 +102,8 @@ const App = () => {
 							userUpdateProfileError ||
 							cancelEmailUpdateError ||
 							verifyEmailUpdateError ||
-							getProductsError
+							getProductsError ||
+							getProductError
 						}
 						success={
 							signupSuccess ||
@@ -126,6 +131,8 @@ const App = () => {
 								? VERIFY_EMAIL_UPDATE_CLEAR
 								: getProductsError
 								? GET_PRODUCTS_CLEAR
+								: getProductError
+								? GET_PRODUCT_CLEAR
 								: null
 						}
 						actionText={
@@ -175,7 +182,7 @@ const App = () => {
 							<Route path='/profile' exact component={ProfileScreen} />
 							<Redirect from='/resetpassword' to='/profile' />
 							<Redirect from='/forgotpassword' exact to='/profile' />
-							<Route path='/product' component={ProductScreen} />
+							<Route path='/product/:slug' component={ProductScreen} />
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
 					) : isAuth && user.isVerified ? (
@@ -188,7 +195,7 @@ const App = () => {
 							<Route path='/profile' exact component={ProfileScreen} />
 							<Redirect from='/resetpassword' to='/profile' />
 							<Redirect from='/forgotpassword' exact to='/profile' />
-							<Route path='/product' component={ProductScreen} />
+							<Route path='/product/:slug' component={ProductScreen} />
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
 					) : (
@@ -210,7 +217,7 @@ const App = () => {
 								exact
 								component={ForgotPasswordScreen}
 							/>
-							<Route path='/product' component={ProductScreen} />
+							<Route path='/product/:slug' component={ProductScreen} />
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
 					)}

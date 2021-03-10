@@ -13,7 +13,10 @@ import {
 	cancelEmailUpdateReducer,
 	verifyEmailUpdateReducer
 } from 'reducers/userReducers';
-import { getProductsReducer } from 'reducers/productReducers';
+import {
+	getProductsReducer,
+	getProductReducer
+} from 'reducers/productReducers';
 
 const reducer = combineReducers({
 	signup: signupReducer,
@@ -26,7 +29,8 @@ const reducer = combineReducers({
 	userUpdateProfile: userUpdateProfileReducer,
 	cancelEmailUpdate: cancelEmailUpdateReducer,
 	verifyEmailUpdate: verifyEmailUpdateReducer,
-	getProducts: getProductsReducer
+	getProducts: getProductsReducer,
+	getProduct: getProductReducer
 });
 
 const userFromStorage = localStorage.getItem('user')

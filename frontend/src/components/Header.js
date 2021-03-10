@@ -66,7 +66,9 @@ const Header = () => {
 		<>
 			<AppBar className={classes.appBar} color='transparent' position='static'>
 				<Toolbar className={classes.toolBar}>
-					<Logo />
+					<Link to='/'>
+						<Logo />
+					</Link>
 					{!matchesXs && (
 						<div>
 							{navItems.map(item => (
