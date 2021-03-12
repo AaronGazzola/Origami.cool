@@ -101,23 +101,28 @@ const ImageSlider = ({ images }) => {
 								width: `${Math.ceil(images.length / 3) * 100}%`,
 								transform: `translateX(${
 									row * -(100 / Math.ceil(images.length / 3))
-								}%)`
+								}%) translateZ(0) scale(1, 1)`
 							}}
 						>
 							{images.map((image, index) => (
 								<div
 									key={image.path}
-									className={classes.listImage}
+									className={
+										index === activeImage
+											? clsx(classes.listImageContainer, classes.border)
+											: classes.listImageContainer
+									}
 									style={{
 										width: `${33.3333 / Math.ceil(images.length / 3)}%`
 									}}
+									onClick={() => handleImageSelect(index)}
 								>
-									<img
-										className={index === activeImage ? classes.border : null}
-										onClick={() => handleImageSelect(index)}
-										src={image.path}
-										alt={image.label}
-									/>
+									<div
+										className={classes.listImage}
+										style={{
+											backgroundImage: `url(${image.path})`
+										}}
+									></div>
 								</div>
 							))}
 						</div>

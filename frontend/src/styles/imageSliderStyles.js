@@ -38,22 +38,19 @@ const styles = makeStyles(theme => ({
 		transition: 'transform 1s ease',
 		backfaceVisibility: 'hidden'
 	},
+	listImageContainer: {
+		padding: theme.spacing(1),
+		height: '100%',
+		overflow: 'visible'
+	},
 	listImage: {
 		position: 'relative',
 		height: '100%',
-		backfaceVisibility: 'hidden',
-		'& img': {
-			backfaceVisibility: 'hidden',
-			padding: theme.spacing(1),
-			maxWidth: '100%',
-			maxHeight: '100%',
-			position: 'absolute',
-			top: '50%',
-			left: '50%',
-			transform: 'translate(-50%, -50%)',
-			'&:hover': {
-				cursor: 'pointer'
-			}
+		backgroundPosition: 'center',
+		backgroundRepeat: 'no-repeat',
+		backgroundSize: 'contain',
+		'&:hover': {
+			cursor: 'pointer'
 		}
 	},
 	activeButton: {
@@ -76,7 +73,7 @@ const styles = makeStyles(theme => ({
 		right: 0
 	},
 	border: {
-		border: `1px solid ${theme.palette.primary.main}`
+		borderTop: `1px solid ${theme.palette.secondary.main}`
 	},
 	slideLeft: {
 		zIndex: 2,
