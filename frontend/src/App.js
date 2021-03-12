@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { logoutAction } from 'actions/userActions';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
-import styles from 'styles/appStyles';
+import useStyles from 'styles/appStyles';
 import HomeScreen from 'screens/HomeScreen';
 import AuthScreen from 'screens/AuthScreen';
 import ProfileScreen from 'screens/ProfileScreen';
@@ -39,8 +39,6 @@ import {
 } from 'constants/productConstants';
 import { sendVerifyUserAction } from 'actions/userActions';
 import { getProductsAction } from 'actions/productActions';
-
-const useStyles = styles;
 
 const theme = getTheme();
 

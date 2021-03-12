@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import clsx from 'clsx';
 import useStyles from 'styles/contentStyles';
 import {
 	Typography,
 	Grid,
-	Paper,
 	FormControl,
 	Button,
 	Select,
@@ -18,6 +16,7 @@ import { Skeleton, Rating } from '@material-ui/lab';
 import { AddShoppingCart } from '@material-ui/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProductAction } from 'actions/productActions';
+import ImageSlider from 'components/ImageSlider';
 
 // const reviewSection = (
 // 	<>
@@ -184,7 +183,6 @@ const ProductScreen = ({ match }) => {
 	const matchesSm = useMediaQuery(theme.breakpoints.down('sm'));
 	const { loading, product } = useSelector(state => state.getProduct);
 	const [qty, setQty] = useState(product?.countInStock === 0 ? 0 : 1);
-	const [activeImage, setActiveImage] = useState(0);
 
 	const addToCartHandler = () => {};
 
@@ -200,29 +198,19 @@ const ProductScreen = ({ match }) => {
 			alignItems='stretch'
 			// className={classes.productContainer}
 		>
-			<Grid container alignItems='center' justify='center' item xs={12} sm={6}>
+			<Grid
+				container
+				direction='column'
+				alignItems='center'
+				justify='center'
+				item
+				xs={12}
+				sm={6}
+			>
 				{loading ? (
 					<CircularProgress />
 				) : (
-					<>
-						<img
-							className={classes.productImage}
-							src={product?.images[activeImage].path}
-							alt={product?.images[activeImage].label}
-						/>
-						<Grid container>
-							{product?.images.map((image, index) => (
-								<Grid item xs={4} key={image.label}>
-									<img
-										onClick={() => setActiveImage(index)}
-										className={clsx(classes.productImage, classes.pointer)}
-										src={image.path}
-										alt={image.label}
-									/>
-								</Grid>
-							))}
-						</Grid>
-					</>
+					<ImageSlider images={product?.images} />
 				)}
 				{/* {!loading && !matchesXs && reviewSection} */}
 			</Grid>
