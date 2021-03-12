@@ -104,6 +104,15 @@ const ImageSlider = ({ images }) => {
 								}%) translateZ(0) scale(1, 1)`
 							}}
 						>
+							<div
+								className={classes.selector}
+								style={{
+									width: `${33.3333 / Math.ceil(images.length / 3)}%`,
+									transform: `translate(${activeImage * 100}%)`
+								}}
+							>
+								<div></div>
+							</div>
 							{images.map((image, index) => (
 								<div
 									key={image.path}

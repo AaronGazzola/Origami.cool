@@ -73,7 +73,7 @@ const styles = makeStyles(theme => ({
 		right: 0
 	},
 	border: {
-		borderTop: `1px solid ${theme.palette.secondary.main}`
+		// borderTop: `1px solid ${theme.palette.secondary.main}`
 	},
 	slideLeft: {
 		zIndex: 2,
@@ -108,6 +108,14 @@ const styles = makeStyles(theme => ({
 		},
 		'100%': {
 			opacity: 0
+		}
+	},
+	selector: {
+		position: 'absolute',
+		transition: 'transform 1s ease',
+		padding: theme.spacing(0, 1),
+		'& div': {
+			borderTop: `2px solid ${theme.palette.secondary.main}`
 		}
 	}
 }));
