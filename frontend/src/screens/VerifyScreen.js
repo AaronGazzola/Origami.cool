@@ -25,7 +25,16 @@ const VerifyScreen = ({ match, location, history }) => {
 		} else if (location.pathname.startsWith('/verifyemail')) {
 			dispatch(verifyEmailUpdateAction(verifyToken));
 		}
-	}, [dispatch, verifyToken, verifyUserSuccess, verifyEmailSuccess, history]);
+	}, [
+		dispatch,
+		verifyToken,
+		verifyUserSuccess,
+		verifyEmailSuccess,
+		history,
+		location.pathname,
+		verifyEmailError,
+		verifyUserError
+	]);
 
 	return (
 		<>

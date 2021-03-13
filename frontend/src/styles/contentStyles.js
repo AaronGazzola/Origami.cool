@@ -109,6 +109,15 @@ const styles = makeStyles(theme => ({
 		'&:hover': {
 			cursor: 'pointer'
 		}
+	},
+	productContainer: {
+		width: '100%',
+		height: 'min-content',
+		padding: theme.spacing(2),
+		margin: 0,
+		[theme.breakpoints.down('sm')]: {
+			padding: theme.spacing(1)
+		}
 	}
 }));
 

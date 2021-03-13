@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import useStyles from 'styles/imageSliderStyles';
-import { IconButton } from '@material-ui/core';
+import { IconButton, CircularProgress } from '@material-ui/core';
 import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 
 const ImageSlider = ({ images }) => {
@@ -9,6 +9,12 @@ const ImageSlider = ({ images }) => {
 	const [activeImage, setActiveImage] = useState(0);
 	const [prevImage, setPrevImage] = useState(0);
 	const [row, setRow] = useState(0);
+	const [imagesLoaded, setImagesLoaded] = useState([]);
+
+	const handleImageLoaded = e => {
+		setImagesLoaded([...imagesLoaded, e]);
+	};
+
 	const handleNextImage = () => {
 		if (activeImage < images.length - 1) {
 			setActiveImage(activeImage + 1);
@@ -44,6 +50,9 @@ const ImageSlider = ({ images }) => {
 		return (
 			<div className={classes.container}>
 				<div className={classes.active}>
+					{imagesLoaded.length < images.length && (
+						<CircularProgress className={classes.progress} />
+					)}
 					{activeImage > 0 && (
 						<IconButton
 							size='small'
@@ -67,33 +76,39 @@ const ImageSlider = ({ images }) => {
 							key={image.path}
 							src={image.path}
 							alt={image.label}
+							onLoad={e => handleImageLoaded(e)}
+							style={{ display: imagesLoaded.length < images.length && 'none' }}
 							className={
 								activeImage === index && activeImage > prevImage
 									? classes.slideLeft
 									: activeImage === index && activeImage < prevImage
 									? classes.slideRight
 									: index === 0 && activeImage === prevImage
-									? null
+									? classes.firstImage
 									: classes.fadeOut
 							}
 						/>
 					))}
 				</div>
 				<div className={classes.listWindowFrame}>
-					<IconButton
-						size='small'
-						className={clsx(classes.activeButton, classes.back)}
-						onClick={handlePrevRow}
-					>
-						<ChevronLeft fontSize='large' />
-					</IconButton>
-					<IconButton
-						size='small'
-						className={clsx(classes.activeButton, classes.next)}
-						onClick={handleNextRow}
-					>
-						<ChevronRight fontSize='large' />
-					</IconButton>
+					{row > 0 && (
+						<IconButton
+							size='small'
+							className={clsx(classes.activeButton, classes.back)}
+							onClick={handlePrevRow}
+						>
+							<ChevronLeft fontSize='large' />
+						</IconButton>
+					)}
+					{row < Math.floor(images.length / 3) && (
+						<IconButton
+							size='small'
+							className={clsx(classes.activeButton, classes.next)}
+							onClick={handleNextRow}
+						>
+							<ChevronRight fontSize='large' />
+						</IconButton>
+					)}
 					<div className={classes.listWindow}>
 						<div
 							className={classes.listRow}
@@ -101,7 +116,8 @@ const ImageSlider = ({ images }) => {
 								width: `${Math.ceil(images.length / 3) * 100}%`,
 								transform: `translateX(${
 									row * -(100 / Math.ceil(images.length / 3))
-								}%) translateZ(0) scale(1, 1)`
+								}%) translateZ(0) scale(1, 1)`,
+								display: imagesLoaded.length < images.length ? 'none' : null
 							}}
 						>
 							<div

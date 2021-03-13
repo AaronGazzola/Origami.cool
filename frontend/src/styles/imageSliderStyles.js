@@ -117,6 +117,16 @@ const styles = makeStyles(theme => ({
 		'& div': {
 			borderTop: `2px solid ${theme.palette.secondary.main}`
 		}
+	},
+	firstImage: {
+		zIndex: 2
+	},
+	progress: {
+		zIndex: 4,
+		position: 'absolute',
+		top: '50%',
+		left: '50%',
+		transform: 'translate(-50%, -50%)'
 	}
 }));
 

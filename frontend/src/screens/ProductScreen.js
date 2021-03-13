@@ -17,162 +17,7 @@ import { AddShoppingCart } from '@material-ui/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProductAction } from 'actions/productActions';
 import ImageSlider from 'components/ImageSlider';
-
-// const reviewSection = (
-// 	<>
-// 		<Typography
-// 			variant='h4'
-// 			style={{
-// 				textAlign: 'center',
-// 				marginBottom: theme.spacing(2),
-// 				marginTop: theme.spacing(3)
-// 			}}
-// 		>
-// 			Reviews
-// 		</Typography>
-// 		<>
-// 			{reviews.length === 0 ? (
-// 				<Paper
-// 					variant='outlined'
-// 					style={{ padding: theme.spacing(2), width: '100%' }}
-// 				>
-// 					<Typography variant='h6' style={{ fontSize: '1.1rem' }}>
-// 						No Reviews yet...
-// 					</Typography>
-// 				</Paper>
-// 			) : (
-// 				reviews.map(review => (
-// 					<Paper
-// 						key={review._id}
-// 						variant='outlined'
-// 						className={classes.reviewPaper}
-// 					>
-// 						<Typography variant='h6'>{review.title}</Typography>
-// 						<Grid
-// 							container
-// 							alignItems='center'
-// 							style={{ marginBottom: theme.spacing(1) }}
-// 						>
-// 							<Rating readOnly name={review.name} value={review.rating} />
-// 							<Typography variant='body1' className={classes.reviewName}>
-// 								{review.name}
-// 								<span>{review.createdAt.substring(0, 10)}</span>
-// 							</Typography>
-// 						</Grid>
-// 						<Typography variant='body1' className={classes.reviewComment}>
-// 							{review.comment}
-// 						</Typography>
-// 					</Paper>
-// 				))
-// 			)}
-// 		</>
-// 		{isAuth ? (
-// 			<Paper className={classes.reviewFormPaper} elevation={5}>
-// 				<form className={classes.reviewForm} onSubmit={submitHandler}>
-// 					<Typography
-// 						variant='h5'
-// 						style={{
-// 							textAlign: 'center',
-// 							marginBottom: theme.spacing(2),
-// 							fontWeight: 100
-// 						}}
-// 					>
-// 						Write a Customer Review:
-// 					</Typography>
-// 					<Rating
-// 						name='user-rating'
-// 						size='large'
-// 						value={rating}
-// 						precision={0.5}
-// 						onChange={(event, newValue) => {
-// 							setRating(newValue);
-// 						}}
-// 						onChangeActive={(event, newHover) => {
-// 							setHover(newHover);
-// 						}}
-// 					/>
-// 					{rating !== null && (
-// 						<Box mt={1}>{labels[hover !== -1 ? hover : rating]}</Box>
-// 					)}
-
-// 					<TextField
-// 						id='reviewTitle'
-// 						label='Review Title'
-// 						type='text'
-// 						placeholder='Review Title'
-// 						color='secondary'
-// 						fullWidth
-// 						onChange={changeHandler}
-// 						onBlur={touchHandler}
-// 						value={reviewTitle.value}
-// 						error={reviewTitle.isTouched && !reviewTitle.isValid}
-// 						helperText={
-// 							reviewTitle.isTouched && !reviewTitle.isValid
-// 								? 'Please enter a title'
-// 								: ' '
-// 						}
-// 						className={
-// 							reviewTitle.isTouched && !reviewTitle.isValid
-// 								? clsx(classes.input, classes.error)
-// 								: classes.input
-// 						}
-// 					/>
-
-// 					<TextField
-// 						id='reviewComment'
-// 						label='Review Comment'
-// 						type='text'
-// 						placeholder='Review Comment'
-// 						color='secondary'
-// 						variant='outlined'
-// 						multiline
-// 						fullWidth
-// 						onChange={changeHandler}
-// 						onBlur={touchHandler}
-// 						value={reviewComment.value}
-// 						error={reviewComment.isTouched && !reviewComment.isValid}
-// 						helperText={
-// 							reviewComment.isTouched && !reviewComment.isValid
-// 								? 'Please leave some feedback'
-// 								: ' '
-// 						}
-// 						className={
-// 							reviewComment.isTouched && !reviewComment.isValid
-// 								? clsx(classes.input, classes.error)
-// 								: classes.input
-// 						}
-// 					/>
-// 					<Button
-// 						color='primary'
-// 						type='submit'
-// 						variant='contained'
-// 						fullWidth
-// 						style={{
-// 							marginTop: theme.spacing(2)
-// 						}}
-// 						disabled={!reviewTitle.isValid || !reviewComment.isValid}
-// 					>
-// 						{createReviewLoading ? (
-// 							<CircularProgress
-// 								size={25}
-// 								style={{ color: '#fff' }}
-// 								className={classes.submitProgress}
-// 							/>
-// 						) : (
-// 							'Submit Review'
-// 						)}
-// 					</Button>
-// 				</form>
-// 			</Paper>
-// 		) : (
-// 			<Paper className={classes.reviewFormPaper}>
-// 				<Typography variant='h6' style={{ fontSize: '1.1rem' }}>
-// 					Please log in to write a review
-// 				</Typography>
-// 			</Paper>
-// 		)}
-// 	</>
-// );
+import ReviewSection from 'components/ReviewSection';
 
 const ProductScreen = ({ match }) => {
 	const slug = match.params.slug;
@@ -196,7 +41,7 @@ const ProductScreen = ({ match }) => {
 			spacing={matchesSm ? 2 : 5}
 			justify='flex-start'
 			alignItems='stretch'
-			// className={classes.productContainer}
+			className={classes.productContainer}
 		>
 			<Grid
 				container
@@ -205,14 +50,14 @@ const ProductScreen = ({ match }) => {
 				justify='center'
 				item
 				xs={12}
-				sm={6}
+				md={6}
 			>
 				{loading ? (
 					<CircularProgress />
 				) : (
 					<ImageSlider images={product?.images} />
 				)}
-				{/* {!loading && !matchesXs && reviewSection} */}
+				{/* {!loading && !matchesXs && ReviewSection} */}
 			</Grid>
 
 			<Grid
@@ -224,7 +69,7 @@ const ProductScreen = ({ match }) => {
 				// className={classes.container}
 				// spacing={3}
 				xs={12}
-				sm={6}
+				md={6}
 			>
 				<Grid
 					item
@@ -388,7 +233,7 @@ const ProductScreen = ({ match }) => {
 						alignItems='center'
 						direction='column'
 					>
-						{/* {!loading && reviewSection} */}
+						{/* {!loading && ReviewSection} */}
 					</Grid>
 				)}
 			</Grid>
