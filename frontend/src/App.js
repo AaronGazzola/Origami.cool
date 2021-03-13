@@ -35,7 +35,8 @@ import {
 } from 'constants/userConstants';
 import {
 	GET_PRODUCTS_CLEAR,
-	GET_PRODUCT_CLEAR
+	GET_PRODUCT_CLEAR,
+	CREATE_REVIEW_CLEAR
 } from 'constants/productConstants';
 import { sendVerifyUserAction } from 'actions/userActions';
 import { getProductsAction } from 'actions/productActions';
@@ -74,7 +75,8 @@ const App = () => {
 			success: verifyEmailUpdateSuccess
 		},
 		getProducts: { error: getProductsError },
-		getProduct: { error: getProductError }
+		getProduct: { error: getProductError },
+		createReview: { error: createReviewError, success: createReviewSuccess }
 	} = useSelector(state => state);
 
 	useEffect(() => {
@@ -101,7 +103,8 @@ const App = () => {
 							cancelEmailUpdateError ||
 							verifyEmailUpdateError ||
 							getProductsError ||
-							getProductError
+							getProductError ||
+							createReviewError
 						}
 						success={
 							signupSuccess ||
@@ -152,7 +155,8 @@ const App = () => {
 							userUpdateProfileSuccess ||
 							forgotPasswordSuccess ||
 							resetPasswordSuccess ||
-							cancelEmailUpdateSuccess
+							cancelEmailUpdateSuccess ||
+							createReviewSuccess
 						}
 						clearType={
 							sendVerifyUserSuccess
@@ -167,6 +171,8 @@ const App = () => {
 								? RESET_PASSWORD_CLEAR
 								: cancelEmailUpdateSuccess
 								? CANCEL_EMAIL_UPDATE_CLEAR
+								: createReviewSuccess
+								? CREATE_REVIEW_CLEAR
 								: null
 						}
 					/>

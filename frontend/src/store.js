@@ -15,7 +15,8 @@ import {
 } from 'reducers/userReducers';
 import {
 	getProductsReducer,
-	getProductReducer
+	getProductReducer,
+	createReviewReducer
 } from 'reducers/productReducers';
 
 const reducer = combineReducers({
@@ -30,7 +31,8 @@ const reducer = combineReducers({
 	cancelEmailUpdate: cancelEmailUpdateReducer,
 	verifyEmailUpdate: verifyEmailUpdateReducer,
 	getProducts: getProductsReducer,
-	getProduct: getProductReducer
+	getProduct: getProductReducer,
+	createReview: createReviewReducer
 });
 
 const userFromStorage = localStorage.getItem('user')

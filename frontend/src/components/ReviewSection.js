@@ -12,8 +12,9 @@ import {
 } from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
 import useStyles from 'styles/reviewSectionStyles';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { VALIDATOR_REQUIRE, validate } from 'utils/validators';
+import { createReviewAction } from 'actions/productActions';
 
 const labels = {
 	0.5: 'Useless',
@@ -28,10 +29,14 @@ const labels = {
 	5: 'Excellent +'
 };
 
-const ReviewSection = ({ reviews }) => {
+const ReviewSection = ({ product }) => {
+	const dispatch = useDispatch();
 	const theme = useTheme();
 	const classes = useStyles();
 	const { isAuth } = useSelector(state => state.userData);
+	const { loading: createReviewLoading } = useSelector(
+		state => state.createReview
+	);
 	const [rating, setRating] = useState(5);
 	const [hover, setHover] = useState(-1);
 	const [reviewForm, setReviewForm] = useState({
@@ -46,7 +51,6 @@ const ReviewSection = ({ reviews }) => {
 			isTouched: false
 		}
 	});
-	const [createReviewLoading, setCreateReviewLoading] = useState(false);
 	const { reviewTitle, reviewComment } = reviewForm;
 
 	const changeHandler = e => {
@@ -62,14 +66,13 @@ const ReviewSection = ({ reviews }) => {
 
 	const submitHandler = e => {
 		e.preventDefault();
-		// dispatch(
-		// 	createReviewAction(
-		// 		product._id,
-		// 		rating,
-		// 		reviewTitle.value,
-		// 		reviewComment.value
-		// 	)
-		// );
+		dispatch(
+			createReviewAction(product, {
+				rating,
+				title: reviewTitle.value,
+				comment: reviewComment.value
+			})
+		);
 	};
 
 	const touchHandler = e => {
@@ -91,7 +94,7 @@ const ReviewSection = ({ reviews }) => {
 				Reviews
 			</Typography>
 			<>
-				{reviews?.length === 0 ? (
+				{product.reviews.length === 0 ? (
 					<Paper
 						variant='outlined'
 						style={{ padding: theme.spacing(2), width: '100%' }}
@@ -101,7 +104,7 @@ const ReviewSection = ({ reviews }) => {
 						</Typography>
 					</Paper>
 				) : (
-					reviews?.map(review => (
+					product.reviews.map(review => (
 						<Paper
 							key={review._id}
 							variant='outlined'
@@ -203,20 +206,17 @@ const ReviewSection = ({ reviews }) => {
 							}
 						/>
 						<Button
-							color='primary'
+							color='secondary'
 							type='submit'
 							variant='contained'
 							fullWidth
-							style={{
-								marginTop: theme.spacing(2)
-							}}
+							className={classes.button}
 							disabled={!reviewTitle.isValid || !reviewComment.isValid}
 						>
 							{createReviewLoading ? (
 								<CircularProgress
 									size={25}
-									style={{ color: '#fff' }}
-									className={classes.submitProgress}
+									style={{ color: theme.palette.background.default }}
 								/>
 							) : (
 								'Submit Review'

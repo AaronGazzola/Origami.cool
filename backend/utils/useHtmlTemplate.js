@@ -136,8 +136,14 @@ const useHtmlTemplate = ({
                                                 <h1 class="title header h1" style="margin: 20px 0; line-height: 40px; width: 100%; color: #000000; font-family: Helvetica,Arial,sans-serif; padding-left: 10px; background-color: #FFFFFF; margin-bottom: 20px; margin-top: 0; height: min-content; font-weight: 500;">Hi ${
 																									user.name
 																								},</h1>
-                                                <p class="subtitle text p" style="display: block; color: #000000; line-height: 20px; font-family: Helvetica,Arial,sans-serif; margin: 0; padding-left: 10px; font-size: 20px; margin-bottom: 10px;">${message1}</p>
-                                                <p class="subtitle text p" style="display: block; color: #000000; line-height: 20px; font-family: Helvetica,Arial,sans-serif; margin: 0; padding-left: 10px; font-size: 20px; margin-bottom: 10px;">${message2}</p>
+                                                ${
+																									message1 &&
+																									`<p class="subtitle text p" style="display: block; color: #000000; line-height: 20px; font-family: Helvetica,Arial,sans-serif; margin: 0; padding-left: 10px; font-size: 20px; margin-bottom: 10px;">${message1}</p>`
+																								}
+                                                ${
+																									message2 &&
+																									`<p class="subtitle text p" style="display: block; color: #000000; line-height: 20px; font-family: Helvetica,Arial,sans-serif; margin: 0; padding-left: 10px; font-size: 20px; margin-bottom: 10px;">${message2}</p>`
+																								}
                                                   <div class="secondary-button button" style="background-color: #2A7855; background-color: rgba(42,120,85,1); margin-top: 10px;">
                                                     <table role="presentation" width="100%" align="left" border="0" cellpadding="0" cellspacing="0">
                                                       <tr>

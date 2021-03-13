@@ -5,7 +5,10 @@ import {
 	GET_PRODUCTS_FAIL,
 	GET_PRODUCT_REQUEST,
 	GET_PRODUCT_SUCCESS,
-	GET_PRODUCT_FAIL
+	GET_PRODUCT_FAIL,
+	CREATE_REVIEW_REQUEST,
+	CREATE_REVIEW_SUCCESS,
+	CREATE_REVIEW_FAIL
 } from 'constants/productConstants';
 
 export const getProductsAction = (name, email, password) => async dispatch => {
@@ -45,10 +48,7 @@ export const getProductAction = slug => async dispatch => {
 			headers: {}
 		};
 
-		const { data } = await axios.get(
-			`/api/v1/products/product/${slug}`,
-			config
-		);
+		const { data } = await axios.get(`/api/v1/products/${slug}`, config);
 
 		dispatch({
 			type: GET_PRODUCT_SUCCESS,
@@ -57,6 +57,45 @@ export const getProductAction = slug => async dispatch => {
 	} catch (error) {
 		dispatch({
 			type: GET_PRODUCT_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+		});
+	}
+};
+
+export const createReviewAction = (product, review) => async (
+	dispatch,
+	getState
+) => {
+	try {
+		dispatch({
+			type: CREATE_REVIEW_REQUEST
+		});
+
+		const {
+			userData: { token }
+		} = getState();
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`
+			}
+		};
+
+		await axios.post(`/api/v1/products/review/${product._id}`, review, config);
+
+		dispatch(getProductAction(product.slug));
+
+		dispatch({
+			type: CREATE_REVIEW_SUCCESS,
+			payload: 'Review posted'
+		});
+	} catch (error) {
+		dispatch({
+			type: CREATE_REVIEW_FAIL,
 			payload:
 				error.response && error.response.data.message
 					? error.response.data.message

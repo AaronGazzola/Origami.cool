@@ -70,6 +70,10 @@ const styles = makeStyles(theme => ({
 		'& label.Mui-focused': {
 			color: theme.palette.error.main
 		}
+	},
+	button: {
+		marginTop: theme.spacing(2),
+		color: theme.palette.background.default
 	}
 }));
 

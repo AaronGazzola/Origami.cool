@@ -58,7 +58,9 @@ const ProductScreen = ({ match }) => {
 				) : (
 					<ImageSlider images={product?.images} />
 				)}
-				{!loading && !matchesSm && <ReviewSection reviews={product?.reviews} />}
+				{!loading && !matchesSm && product && (
+					<ReviewSection product={product} />
+				)}
 			</Grid>
 
 			<Grid
@@ -199,7 +201,7 @@ const ProductScreen = ({ match }) => {
 						alignItems='center'
 						direction='column'
 					>
-						{!loading && <ReviewSection reviews={product?.reviews} />}
+						{!loading && product && <ReviewSection product={product} />}
 					</Grid>
 				)}
 			</Grid>
