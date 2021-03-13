@@ -17,10 +17,11 @@ import { Skeleton, Rating } from '@material-ui/lab';
 import { AddShoppingCart } from '@material-ui/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProductAction } from 'actions/productActions';
+import { addToCartAction } from 'actions/cartActions';
 import ImageSlider from 'components/ImageSlider';
 import ReviewSection from 'components/ReviewSection';
 
-const ProductScreen = ({ match }) => {
+const ProductScreen = ({ match, history }) => {
 	const slug = match.params.slug;
 	const classes = useStyles();
 	const dispatch = useDispatch();
@@ -28,13 +29,24 @@ const ProductScreen = ({ match }) => {
 	const matchesXs = useMediaQuery(theme.breakpoints.down('xs'));
 	const matchesSm = useMediaQuery(theme.breakpoints.down('sm'));
 	const { loading, product } = useSelector(state => state.getProduct);
+	const { loading: cartLoading, redirect: cartRedirect } = useSelector(
+		state => state.cart
+	);
 	const [qty, setQty] = useState(product?.countInStock === 0 ? 0 : 1);
 
-	const addToCartHandler = () => {};
+	const addToCartHandler = () => {
+		dispatch(addToCartAction(slug, qty));
+	};
 
 	useEffect(() => {
 		dispatch(getProductAction(slug));
 	}, []);
+
+	useEffect(() => {
+		if (cartRedirect) {
+			history.push('/cart');
+		}
+	}, [cartRedirect]);
 
 	return (
 		<Grid
@@ -193,7 +205,14 @@ const ProductScreen = ({ match }) => {
 						disabled={product?.countInStock === 0}
 						onClick={addToCartHandler}
 					>
-						Add to Cart
+						{cartLoading ? (
+							<CircularProgress
+								size={25}
+								style={{ color: theme.palette.background.default }}
+							/>
+						) : (
+							'Add to Cart'
+						)}
 					</Button>
 				</Grid>
 				{matchesSm && (

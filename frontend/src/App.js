@@ -20,6 +20,7 @@ import VerifyScreen from 'screens/VerifyScreen';
 import ResetPasswordScreen from 'screens/ResetPasswordScreen';
 import ForgotPasswordScreen from 'screens/ForgotPasswordScreen';
 import ProductScreen from 'screens/ProductScreen';
+import CartScreen from 'screens/CartScreen';
 import Message from 'components/Message';
 import SnackBar from 'components/SnackBar';
 import {
@@ -38,6 +39,7 @@ import {
 	GET_PRODUCT_CLEAR,
 	CREATE_REVIEW_CLEAR
 } from 'constants/productConstants';
+import { CART_CLEAR } from 'constants/cartConstants';
 import { sendVerifyUserAction } from 'actions/userActions';
 import { getProductsAction } from 'actions/productActions';
 
@@ -76,7 +78,8 @@ const App = () => {
 		},
 		getProducts: { error: getProductsError },
 		getProduct: { error: getProductError },
-		createReview: { error: createReviewError, success: createReviewSuccess }
+		createReview: { error: createReviewError, success: createReviewSuccess },
+		cart: { error: cartError, success: cartSuccess }
 	} = useSelector(state => state);
 
 	useEffect(() => {
@@ -104,7 +107,8 @@ const App = () => {
 							verifyEmailUpdateError ||
 							getProductsError ||
 							getProductError ||
-							createReviewError
+							createReviewError ||
+							cartError
 						}
 						success={
 							signupSuccess ||
@@ -134,6 +138,10 @@ const App = () => {
 								? GET_PRODUCTS_CLEAR
 								: getProductError
 								? GET_PRODUCT_CLEAR
+								: createReviewError
+								? CREATE_REVIEW_CLEAR
+								: cartError
+								? CART_CLEAR
 								: null
 						}
 						actionText={
@@ -156,7 +164,8 @@ const App = () => {
 							forgotPasswordSuccess ||
 							resetPasswordSuccess ||
 							cancelEmailUpdateSuccess ||
-							createReviewSuccess
+							createReviewSuccess ||
+							cartSuccess
 						}
 						clearType={
 							sendVerifyUserSuccess
@@ -175,6 +184,8 @@ const App = () => {
 								? CREATE_REVIEW_CLEAR
 								: userUpdateProfileSuccess
 								? USER_UPDATE_PROFILE_CLEAR
+								: cartSuccess
+								? CART_CLEAR
 								: null
 						}
 					/>
@@ -189,6 +200,7 @@ const App = () => {
 							<Redirect from='/resetpassword' to='/profile' />
 							<Redirect from='/forgotpassword' exact to='/profile' />
 							<Route path='/product/:slug' component={ProductScreen} />
+							<Route exact path='/cart' component={CartScreen} />
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
 					) : isAuth && user.isVerified ? (
@@ -202,6 +214,7 @@ const App = () => {
 							<Redirect from='/resetpassword' to='/profile' />
 							<Redirect from='/forgotpassword' exact to='/profile' />
 							<Route path='/product/:slug' component={ProductScreen} />
+							<Route exact path='/cart' component={CartScreen} />
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
 					) : (
@@ -224,6 +237,7 @@ const App = () => {
 								component={ForgotPasswordScreen}
 							/>
 							<Route path='/product/:slug' component={ProductScreen} />
+							<Redirect from='/cart' exact to='/login' />
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
 					)}

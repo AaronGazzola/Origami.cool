@@ -1,0 +1,10 @@
+export const CART_ADD_ITEM = 'CART_ADD_ITEM';
+export const CART_REMOVE_ITEM = 'CART_REMOVE_ITEM';
+export const CART_EMPTY = 'CART_EMPTY';
+export const CART_SAVE_PAYMENT_METHOD = 'CART_SAVE_PAYMENT_METHOD';
+export const CART_REQUEST = 'CART_REQUEST';
+export const CART_SUCCESS = 'CART_SUCCESS';
+export const CART_FAIL = 'CART_FAIL';
+export const CART_CLEAR = 'CART_CLEAR';
+export const CART_REDIRECT = 'CART_REDIRECT';
+export const CART_CLEAR_REDIRECT = 'CART_CLEAR_REDIRECT';
