@@ -30,7 +30,7 @@ const ImageSlider = ({ images }) => {
 		}
 	};
 	const handleNextRow = () => {
-		if (row < Math.floor(images.length / 3)) {
+		if (row < Math.ceil(images.length / 3) - 1) {
 			setRow(row + 1);
 		}
 	};
@@ -100,7 +100,7 @@ const ImageSlider = ({ images }) => {
 							<ChevronLeft fontSize='large' />
 						</IconButton>
 					)}
-					{row < Math.floor(images.length / 3) && (
+					{row < Math.ceil(images.length / 3) - 1 && (
 						<IconButton
 							size='small'
 							className={clsx(classes.activeButton, classes.next)}
@@ -145,12 +145,11 @@ const ImageSlider = ({ images }) => {
 									}}
 									onClick={() => handleImageSelect(index)}
 								>
-									<div
+									<img
+										src={image.path}
+										alt={image.label}
 										className={classes.listImage}
-										style={{
-											backgroundImage: `url(${image.path})`
-										}}
-									></div>
+									></img>
 								</div>
 							))}
 						</div>

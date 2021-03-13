@@ -46,10 +46,8 @@ const styles = makeStyles(theme => ({
 	},
 	listImage: {
 		position: 'relative',
-		height: '100%',
-		backgroundPosition: 'center',
-		backgroundRepeat: 'no-repeat',
-		backgroundSize: 'contain',
+		maxHeight: '100%',
+		maxWidth: '100%',
 		'&:hover': {
 			cursor: 'pointer'
 		}
@@ -114,6 +112,7 @@ const styles = makeStyles(theme => ({
 	selector: {
 		position: 'absolute',
 		transition: 'transform 1s ease',
+		backfaceVisibility: 'hidden',
 		padding: theme.spacing(0, 1),
 		'& div': {
 			borderTop: `2px solid ${theme.palette.secondary.main}`
