@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import clsx from 'clsx';
 import moment from 'moment';
 import {
-	Grid,
 	Paper,
 	Typography,
 	TextField,
@@ -16,6 +15,7 @@ import useStyles from 'styles/reviewSectionStyles';
 import { useSelector, useDispatch } from 'react-redux';
 import { VALIDATOR_REQUIRE, validate } from 'utils/validators';
 import { createReviewAction } from 'actions/productActions';
+import { ExpandMore } from '@material-ui/icons';
 
 const labels = {
 	0.5: 'Useless',
@@ -40,6 +40,8 @@ const ReviewSection = ({ product }) => {
 	);
 	const [rating, setRating] = useState(5);
 	const [hover, setHover] = useState(-1);
+	const initialDisplayCount = 3;
+	const [displayCount, setDisplayCount] = useState(initialDisplayCount);
 	const [reviewForm, setReviewForm] = useState({
 		reviewTitle: {
 			value: '',
@@ -82,10 +84,15 @@ const ReviewSection = ({ product }) => {
 			[e.target.id]: { ...reviewForm[e.target.id], isTouched: true }
 		});
 	};
+
+	const showMoreHandler = () => {
+		setDisplayCount(displayCount + initialDisplayCount);
+	};
+
 	return (
 		<>
 			<Typography variant='h4' className={classes.title}>
-				Reviews
+				Reviews:
 			</Typography>
 			{product.reviews.length === 0 ? (
 				<Paper
@@ -97,30 +104,48 @@ const ReviewSection = ({ product }) => {
 					</Typography>
 				</Paper>
 			) : (
-				product.reviews
-					.sort((a, b) => a.timestamp - b.timestamp)
-					.map(review => (
-						<Paper
-							key={review._id}
-							variant='outlined'
-							className={classes.reviewPaper}
-						>
-							<Typography variant='h6'>{review.title}</Typography>
-							<Rating readOnly value={review.rating} />
+				<>
+					{product.reviews
+						.sort(
+							(a, b) =>
+								moment(b.createdAt.substring(0, 19)).valueOf() -
+								moment(a.createdAt.substring(0, 19)).valueOf()
+						)
+						.slice(0, displayCount)
+						.map(review => (
+							<Paper
+								key={review._id}
+								variant='outlined'
+								className={classes.reviewPaper}
+							>
+								<Typography variant='h6'>{review.title}</Typography>
+								<Rating readOnly value={review.rating} />
 
-							<Typography variant='body1' className={classes.reviewComment}>
-								{review.comment}
-							</Typography>
-							<Typography varaint='body2' className={classes.author}>
-								By {review.name}
-							</Typography>
-							<Typography className={classes.date}>
-								{moment(review.createdAt.substring(0, 10)).format(
-									'Do MMM YYYY'
-								)}
-							</Typography>
-						</Paper>
-					))
+								<Typography variant='body1' className={classes.reviewComment}>
+									{review.comment}
+								</Typography>
+								<Typography varaint='body2' className={classes.author}>
+									By {review.name}
+								</Typography>
+								<Typography className={classes.date}>
+									{moment(review.createdAt.substring(0, 10)).format(
+										'Do MMM YYYY'
+									)}
+								</Typography>
+							</Paper>
+						))}
+					{product?.reviews.length > initialDisplayCount &&
+						product?.reviews.length > displayCount && (
+							<Button
+								variant='outlined'
+								color='secondary'
+								onClick={showMoreHandler}
+								endIcon={<ExpandMore />}
+							>
+								Showmore
+							</Button>
+						)}
+				</>
 			)}
 
 			{isAuth ? (
