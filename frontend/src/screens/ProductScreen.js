@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import useStyles from 'styles/contentStyles';
+import clsx from 'clsx';
+import useStyles from 'styles/productStyles';
 import {
 	Typography,
 	Grid,
@@ -57,7 +58,7 @@ const ProductScreen = ({ match }) => {
 				) : (
 					<ImageSlider images={product?.images} />
 				)}
-				{/* {!loading && !matchesXs && ReviewSection} */}
+				{!loading && !matchesSm && <ReviewSection reviews={product?.reviews} />}
 			</Grid>
 
 			<Grid
@@ -66,23 +67,12 @@ const ProductScreen = ({ match }) => {
 				direction='column'
 				alignItems='flex-start'
 				justify='flex-start'
-				// className={classes.container}
-				// spacing={3}
 				xs={12}
 				md={6}
 			>
-				<Grid
-					item
-					style={
-						matchesXs
-							? null
-							: matchesSm
-							? { paddingTop: 0, paddingBottom: 0 }
-							: null
-					}
-				>
+				<Grid item>
 					{loading ? (
-						<Skeleton type='text' animation='wave' width={200} />
+						<Skeleton type='text' animation='wave' width={200} height={100} />
 					) : (
 						<Typography className={classes.title} variant='h1'>
 							{product?.name}
@@ -93,30 +83,19 @@ const ProductScreen = ({ match }) => {
 					item
 					container
 					alignItems='center'
-					justify={
-						matchesXs ? 'space-between' : matchesSm ? 'center' : 'space-between'
-					}
-					direction={matchesXs ? 'row' : matchesSm ? 'column' : 'row'}
+					direction='row'
 					style={matchesXs ? null : matchesSm ? { paddingBottom: 0 } : null}
 				>
-					<Grid
-						xs
-						item
-						container
-						alignItems='flex-start'
-						justify={
-							matchesXs ? 'flex-start' : matchesSm ? 'center' : 'flex-start'
-						}
-						direction='row'
-					>
-						<span className={classes.dollarSign}>$</span>
+					<Grid xs item container alignItems='center' justify='flex-start'>
+						<Typography className={classes.dollarSign}>$</Typography>
 						{loading ? (
-							<Skeleton type='text' animation='wave' width={50} />
+							<Skeleton type='text' animation='wave' width={60} height={40} />
 						) : (
 							<Typography variant='h4' className={classes.price}>
 								{product?.price}
 							</Typography>
 						)}
+						<Typography className={classes.aud}>AUD</Typography>
 					</Grid>
 					<Grid
 						xs
@@ -124,10 +103,11 @@ const ProductScreen = ({ match }) => {
 						container
 						alignItems='center'
 						direction='row'
-						justify={matchesXs ? 'flex-end' : matchesSm ? 'center' : 'flex-end'}
+						justify='flex-end'
+						className={classes.ratingCotnainer}
 					>
 						{loading ? (
-							<Skeleton type='text' animation='wave' width={50} />
+							<Skeleton type='text' animation='wave' width={140} height={30} />
 						) : (
 							<Rating
 								precision={0.5}
@@ -136,33 +116,22 @@ const ProductScreen = ({ match }) => {
 								readOnly
 							/>
 						)}
-
-						<span style={{ marginTop: 2, marginLeft: 4 }}>
+						<Typography variant='body2'>
 							({product?.numReviews}) Reviews
-						</span>
+						</Typography>
 					</Grid>
 				</Grid>
 
-				<Grid item>
+				<Grid item className={classes.descriptionContainer}>
 					{loading ? (
 						<>
-							<Skeleton type='text' animation='wave' width={100} />
+							<Skeleton type='text' animation='wave' width={150} />
+							<Skeleton type='text' animation='wave' width={250} />
 							<Skeleton type='text' animation='wave' width={200} />
 							<Skeleton type='text' animation='wave' width={150} />
 						</>
 					) : (
-						<Typography
-							style={
-								matchesXs
-									? { fontSize: '1rem' }
-									: matchesSm
-									? { fontSize: '.9rem' }
-									: null
-							}
-							variant='body1'
-						>
-							{product?.description}
-						</Typography>
+						<Typography>{product?.description}</Typography>
 					)}
 				</Grid>
 				<Grid
@@ -171,8 +140,9 @@ const ProductScreen = ({ match }) => {
 					direction='column'
 					alignItems='center'
 					justify='flex-start'
-					className={matchesXs ? null : classes.sticky}
-					style={{ width: '100%' }}
+					className={
+						matchesXs ? classes.action : clsx(classes.action, classes.sticky)
+					}
 				>
 					<Grid
 						item
@@ -192,6 +162,7 @@ const ProductScreen = ({ match }) => {
 								labelId='item-quantity-select-label'
 								id='item-quantity-select'
 								value={qty}
+								color='secondary'
 								onChange={e => setQty(e.target.value)}
 							>
 								{[...Array(product?.countInStock).keys()].map(x => (
@@ -203,11 +174,7 @@ const ProductScreen = ({ match }) => {
 						</FormControl>
 						<Typography
 							variant='body2'
-							// style={
-							// 	product?.countInStock === 0
-							// 		? { color: theme.palette.error.dark }
-							// 		: null
-							// }
+							className={product?.countInStock === 0 ? classes.error : null}
 						>
 							{product?.countInStock} available
 						</Typography>
@@ -225,15 +192,14 @@ const ProductScreen = ({ match }) => {
 						Add to Cart
 					</Button>
 				</Grid>
-
-				{matchesXs && (
+				{matchesSm && (
 					<Grid
-						// style={{ borderTop: `2px solid ${theme.palette.grey[300]}` }}
+						className={classes.smallReviewSection}
 						container
 						alignItems='center'
 						direction='column'
 					>
-						{/* {!loading && ReviewSection} */}
+						{!loading && <ReviewSection reviews={product?.reviews} />}
 					</Grid>
 				)}
 			</Grid>
