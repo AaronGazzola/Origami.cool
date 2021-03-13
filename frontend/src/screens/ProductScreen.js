@@ -146,41 +146,43 @@ const ProductScreen = ({ match }) => {
 						matchesXs ? classes.action : clsx(classes.action, classes.sticky)
 					}
 				>
-					<Grid
-						item
-						container
-						direction='row'
-						justify='center'
-						alignItems='center'
-					>
-						<FormControl className={classes.qty}>
-							<InputLabel
-								className={classes.qtyLabel}
-								id='item-quantity-select-label'
-							>
-								Quantity
-							</InputLabel>
-							<Select
-								labelId='item-quantity-select-label'
-								id='item-quantity-select'
-								value={qty}
-								color='secondary'
-								onChange={e => setQty(e.target.value)}
-							>
-								{[...Array(product?.countInStock).keys()].map(x => (
-									<MenuItem key={x + 1} value={x + 1}>
-										{x + 1}
-									</MenuItem>
-								))}
-							</Select>
-						</FormControl>
-						<Typography
-							variant='body2'
-							className={product?.countInStock === 0 ? classes.error : null}
+					{!loading && (
+						<Grid
+							item
+							container
+							direction='row'
+							justify='center'
+							alignItems='center'
 						>
-							{product?.countInStock} available
-						</Typography>
-					</Grid>
+							<FormControl className={classes.qty}>
+								<InputLabel
+									className={classes.qtyLabel}
+									id='item-quantity-select-label'
+								>
+									Quantity
+								</InputLabel>
+								<Select
+									labelId='item-quantity-select-label'
+									id='item-quantity-select'
+									value={qty}
+									color='secondary'
+									onChange={e => setQty(e.target.value)}
+								>
+									{[...Array(product?.countInStock).keys()].map(x => (
+										<MenuItem key={x + 1} value={x + 1}>
+											{x + 1}
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
+							<Typography
+								variant='body2'
+								className={product?.countInStock === 0 ? classes.error : null}
+							>
+								{product?.countInStock} available
+							</Typography>
+						</Grid>
+					)}
 
 					<Button
 						fullWidth

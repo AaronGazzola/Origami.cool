@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
+import moment from 'moment';
 import {
 	Grid,
 	Paper,
@@ -83,65 +84,49 @@ const ReviewSection = ({ product }) => {
 	};
 	return (
 		<>
-			<Typography
-				variant='h4'
-				style={{
-					textAlign: 'center',
-					marginBottom: theme.spacing(2),
-					marginTop: theme.spacing(3)
-				}}
-			>
+			<Typography variant='h4' className={classes.title}>
 				Reviews
 			</Typography>
-			<>
-				{product.reviews.length === 0 ? (
-					<Paper
-						variant='outlined'
-						style={{ padding: theme.spacing(2), width: '100%' }}
-					>
-						<Typography variant='h6' style={{ fontSize: '1.1rem' }}>
-							No Reviews yet...
-						</Typography>
-					</Paper>
-				) : (
-					product.reviews.map(review => (
+			{product.reviews.length === 0 ? (
+				<Paper
+					variant='outlined'
+					style={{ padding: theme.spacing(2), width: '100%' }}
+				>
+					<Typography variant='h6' style={{ fontSize: '1.1rem' }}>
+						No Reviews yet...
+					</Typography>
+				</Paper>
+			) : (
+				product.reviews
+					.sort((a, b) => a.timestamp - b.timestamp)
+					.map(review => (
 						<Paper
 							key={review._id}
 							variant='outlined'
 							className={classes.reviewPaper}
 						>
 							<Typography variant='h6'>{review.title}</Typography>
-							<Grid
-								container
-								alignItems='center'
-								style={{ marginBottom: theme.spacing(1) }}
-							>
-								<Rating readOnly name={review.name} value={review.rating} />
-								<Typography variant='body1' className={classes.reviewName}>
-									{review.name}
-									<span>{review.createdAt.substring(0, 10)}</span>
-								</Typography>
-							</Grid>
+							<Rating readOnly value={review.rating} />
+
 							<Typography variant='body1' className={classes.reviewComment}>
 								{review.comment}
 							</Typography>
+							<Typography varaint='body2' className={classes.author}>
+								By {review.name}
+							</Typography>
+							<Typography className={classes.date}>
+								{moment(review.createdAt.substring(0, 10)).format(
+									'Do MMM YYYY'
+								)}
+							</Typography>
 						</Paper>
 					))
-				)}
-			</>
+			)}
+
 			{isAuth ? (
 				<Paper className={classes.reviewFormPaper} elevation={5}>
 					<form className={classes.reviewForm} onSubmit={submitHandler}>
-						<Typography
-							variant='h5'
-							style={{
-								textAlign: 'center',
-								marginBottom: theme.spacing(2),
-								fontWeight: 100
-							}}
-						>
-							Write a Customer Review:
-						</Typography>
+						<Typography variant='h5'>Write a Customer Review:</Typography>
 						<Rating
 							name='user-rating'
 							size='large'

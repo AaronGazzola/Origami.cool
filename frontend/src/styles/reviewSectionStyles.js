@@ -4,62 +4,40 @@ import { defaults } from 'sanitize-html';
 const styles = makeStyles(theme => ({
 	reviewPaper: {
 		width: '100%',
-		padding: theme.spacing(2),
+		padding: theme.spacing(3),
 		marginBottom: theme.spacing(2),
 		'& h6': {
 			fontWeight: 700,
-			fontSize: '1.1rem',
-			marginBottom: theme.spacing(1)
+			fontSize: '1.1rem'
 		}
 	},
-	reviewName: {
-		marginLeft: theme.spacing(1),
-		[theme.breakpoints.down('sm')]: {
-			fontSize: '.9rem'
-		},
-		'& span': {
-			fontStyle: 'italic',
-			fontSize: '.9rem',
-			marginLeft: theme.spacing(1),
-			[theme.breakpoints.down('sm')]: {
-				fontSize: '.8rem'
-			}
-		}
+	author: {
+		fontStyle: 'italic'
+	},
+	date: {
+		fontSize: '.8rem',
+		marginLeft: theme.spacing(1)
 	},
 	reviewComment: {
-		color: theme.palette.grey[800],
-		paddingLeft: theme.spacing(2),
-		[theme.breakpoints.down('sm')]: {
-			fontSize: '1rem',
-			paddingLeft: theme.spacing(1)
-		}
+		margin: theme.spacing(0, 2, 1, 2)
 	},
 	reviewFormPaper: {
 		width: '100%',
 		marginTop: theme.spacing(3),
 		marginBottom: theme.spacing(2),
+		padding: theme.spacing(4, 6, 4, 6),
 		[theme.breakpoints.down('md')]: {
-			padding: theme.spacing(2)
-		},
-		[theme.breakpoints.up('md')]: {
-			padding: theme.spacing(2),
-			paddingLeft: theme.spacing(3),
-			paddingRight: theme.spacing(3)
-		},
-		[theme.breakpoints.up('lg')]: {
-			padding: theme.spacing(4),
-			paddingLeft: theme.spacing(6),
-			paddingRight: theme.spacing(6)
+			padding: theme.spacing(3, 2, 3, 2)
 		}
 	},
 	reviewForm: {
 		display: 'flex',
 		flexDirection: 'column',
-		alignItems: 'center'
-	},
-	cartButton: {
-		[theme.breakpoints.down('xs')]: {
-			marginBottom: theme.spacing(3)
+		alignItems: 'center',
+		'& h5': {
+			textAlign: 'center',
+			marginBottom: theme.spacing(2),
+			fontWeight: 100
 		}
 	},
 	input: {
@@ -69,11 +47,27 @@ const styles = makeStyles(theme => ({
 	error: {
 		'& label.Mui-focused': {
 			color: theme.palette.error.main
+		},
+		'& .MuiInputBase-root': {
+			'& .MuiOutlinedInput-notchedOutline': {
+				borderColor: theme.palette.error.light
+			}
 		}
 	},
 	button: {
 		marginTop: theme.spacing(2),
 		color: theme.palette.background.default
+	},
+	title: {
+		textAlign: 'center',
+		fontFamily: "'Nanum Gothic', sans-serif",
+		fontStyle: 'italic',
+		marginBottom: theme.spacing(2),
+		marginTop: theme.spacing(3)
+	},
+	paper: {
+		padding: theme.spacing(2),
+		width: '100%'
 	}
 }));
 

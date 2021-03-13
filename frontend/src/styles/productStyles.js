@@ -41,6 +41,7 @@ const styles = makeStyles(theme => ({
 		width: 60
 	},
 	qtyLabel: {
+		color: theme.palette.text.primary,
 		'&.Mui-focused': {
 			color: theme.palette.secondary.main
 		}
