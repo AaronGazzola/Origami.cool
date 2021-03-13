@@ -173,6 +173,8 @@ const App = () => {
 								? CANCEL_EMAIL_UPDATE_CLEAR
 								: createReviewSuccess
 								? CREATE_REVIEW_CLEAR
+								: userUpdateProfileSuccess
+								? USER_UPDATE_PROFILE_CLEAR
 								: null
 						}
 					/>

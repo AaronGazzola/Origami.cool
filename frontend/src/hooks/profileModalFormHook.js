@@ -50,6 +50,12 @@ const useProfileModalForm = user => {
 				isTouched: false,
 				isChanged: false
 			},
+			country: {
+				value: user.address?.country || '',
+				isValid: !!user.address?.country,
+				isTouched: false,
+				isChanged: false
+			},
 			currentPassword: {
 				value: '',
 				isValid: false,
@@ -100,7 +106,8 @@ const useProfileModalForm = user => {
 					street1: state.inputs.street1,
 					city: state.inputs.city,
 					state: state.inputs.state,
-					postCode: state.inputs.postCode
+					postCode: state.inputs.postCode,
+					country: state.inputs.country
 				};
 			}
 			switch (action.type) {

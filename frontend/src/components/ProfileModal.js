@@ -55,7 +55,8 @@ const ProfileModal = ({ open, setOpen, user }) => {
 			email,
 			currentPassword,
 			newPassword,
-			confirmNewPassword
+			confirmNewPassword,
+			country
 		},
 		isValid,
 		passwordIsOpen,
@@ -110,7 +111,8 @@ const ProfileModal = ({ open, setOpen, user }) => {
 					street2: street2.value,
 					city: city.value,
 					state: state.value,
-					postCode: postCode.value
+					postCode: postCode.value,
+					country: country.value
 				}
 			};
 		}
@@ -348,6 +350,30 @@ const ProfileModal = ({ open, setOpen, user }) => {
 												helperText={
 													postCode.isTouched && !postCode.isValid
 														? 'Post Code is required'
+														: ' '
+												}
+											/>
+											<TextField
+												id='country'
+												label='Country'
+												type='text'
+												placeholder='Country'
+												fullWidth
+												color='secondary'
+												value={country.value}
+												onChange={e => changeHandler(e, [VALIDATOR_REQUIRE()])}
+												className={
+													country.isTouched && !country.isValid
+														? clsx(classes.listInput, classes.error)
+														: country.isChanged
+														? clsx(classes.listInput, classes.changed)
+														: classes.listInput
+												}
+												onBlur={touchHandler}
+												error={country.isTouched && !country.isValid}
+												helperText={
+													country.isTouched && !country.isValid
+														? 'Country is required'
 														: ' '
 												}
 											/>

@@ -29,15 +29,8 @@ const UserSchema = new mongoose.Schema({
 		street2: String,
 		city: String,
 		state: String,
-		postCode: String
-	},
-	formattedAddress: {
-		type: String,
-		required: false
-	},
-	place_id: {
-		type: String,
-		required: false
+		postCode: String,
+		country: String
 	},
 	password: {
 		type: String,
