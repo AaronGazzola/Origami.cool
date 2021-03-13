@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import useStyles from 'styles/imageSliderStyles';
 import { IconButton, CircularProgress } from '@material-ui/core';
@@ -111,13 +111,16 @@ const ImageSlider = ({ images }) => {
 					)}
 					<div className={classes.listWindow}>
 						<div
-							className={classes.listRow}
+							className={
+								imagesLoaded.length < images.length
+									? clsx(classes.listRow, classes.hidden)
+									: classes.listRow
+							}
 							style={{
 								width: `${Math.ceil(images.length / 3) * 100}%`,
 								transform: `translateX(${
 									row * -(100 / Math.ceil(images.length / 3))
-								}%) translateZ(0) scale(1, 1)`,
-								display: imagesLoaded.length < images.length ? 'none' : null
+								}%) translateZ(0) scale(1, 1)`
 							}}
 						>
 							<div
