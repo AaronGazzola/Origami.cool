@@ -6,7 +6,7 @@ const CartScreen = () => {
 	const dispatch = useDispatch();
 	useEffect(() => {
 		dispatch({ type: CART_CLEAR_REDIRECT });
-	}, []);
+	}, [dispatch]);
 	return <div>test</div>;
 };
 

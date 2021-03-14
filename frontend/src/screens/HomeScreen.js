@@ -13,7 +13,7 @@ const HomeScreen = () => {
 	const { loading, products } = useSelector(state => state.getProducts);
 	useEffect(() => {
 		dispatch(getProductsAction());
-	}, []);
+	}, [dispatch]);
 
 	return (
 		<>

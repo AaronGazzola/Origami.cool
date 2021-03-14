@@ -6,8 +6,7 @@ import {
 	CART_SUCCESS,
 	CART_FAIL,
 	CART_EMPTY,
-	CART_REDIRECT,
-	CART_CLEAR_REDIRECT
+	CART_REDIRECT
 } from 'constants/cartConstants';
 
 export const addToCartAction = (slug, qty) => async (dispatch, getState) => {

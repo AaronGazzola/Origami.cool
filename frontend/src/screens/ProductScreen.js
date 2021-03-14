@@ -40,13 +40,13 @@ const ProductScreen = ({ match, history }) => {
 
 	useEffect(() => {
 		dispatch(getProductAction(slug));
-	}, []);
+	}, [dispatch, slug]);
 
 	useEffect(() => {
 		if (cartRedirect) {
 			history.push('/cart');
 		}
-	}, [cartRedirect]);
+	}, [cartRedirect, history]);
 
 	return (
 		<Grid

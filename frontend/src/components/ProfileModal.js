@@ -67,7 +67,7 @@ const ProfileModal = ({ open, setOpen, user }) => {
 		formDispatch({
 			type: 'RESET'
 		});
-	}, [open, cancelEmailUpdateSuccess]);
+	}, [open, cancelEmailUpdateSuccess, formDispatch]);
 
 	const changeHandler = (e, validators) => {
 		formDispatch({
