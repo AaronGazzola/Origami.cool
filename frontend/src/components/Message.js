@@ -61,10 +61,16 @@ const Message = ({
 			classes={{ paper: classes.paper }}
 			open={!!success || !!error || !!alert}
 			onClose={
-				error === 'Not authorized to access content'
+				error === 'Please login to view this content' ||
+				error === 'You have been banned from accessing this content'
 					? () => {
 							dispatch({ type: clearType });
 							dispatch(logoutAction());
+					  }
+					: error === 'Not authorized to access content'
+					? () => {
+							dispatch({ type: clearType });
+							history.push('/');
 					  }
 					: () => dispatch({ type: clearType })
 			}
@@ -93,10 +99,16 @@ const Message = ({
 					<Button
 						className={!!success ? classes.success : classes.alert}
 						onClick={
-							error === 'Not authorized to access content'
+							error === 'Please login to view this content' ||
+							error === 'You have been banned from accessing this content'
 								? () => {
 										dispatch({ type: clearType });
 										dispatch(logoutAction());
+								  }
+								: error === 'Not authorized to access content'
+								? () => {
+										dispatch({ type: clearType });
+										history.push('/');
 								  }
 								: () => dispatch({ type: clearType })
 						}
