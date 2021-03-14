@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import useStyles from 'styles/contentStyles';
@@ -11,6 +11,7 @@ const HomeScreen = () => {
 	const dispatch = useDispatch();
 	const classes = useStyles();
 	const { loading, products } = useSelector(state => state.getProducts);
+
 	useEffect(() => {
 		dispatch(getProductsAction());
 	}, [dispatch]);

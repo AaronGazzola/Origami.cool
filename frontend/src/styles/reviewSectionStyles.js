@@ -67,6 +67,24 @@ const styles = makeStyles(theme => ({
 	paper: {
 		padding: theme.spacing(2),
 		width: '100%'
+	},
+	disabled: {
+		position: 'relative',
+		backgroundColor: theme.palette.grey[300],
+		color: theme.palette.grey[600]
+	},
+	disabledMessage: {
+		zIndex: 2,
+		position: 'absolute',
+		top: '50%',
+		left: '50%',
+		transform: 'translate(-50%, -50%)',
+		background: theme.palette.background.paper,
+		padding: theme.spacing(2)
+	},
+	divider: {
+		marginTop: theme.spacing(4),
+		width: '90%'
 	}
 }));
 

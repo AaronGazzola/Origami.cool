@@ -8,7 +8,8 @@ import {
 	Button,
 	CircularProgress,
 	Box,
-	useTheme
+	useTheme,
+	Divider
 } from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
 import useStyles from 'styles/reviewSectionStyles';
@@ -91,6 +92,7 @@ const ReviewSection = ({ product }) => {
 
 	return (
 		<>
+			<Divider className={classes.divider} />
 			<Typography variant='h4' className={classes.title}>
 				Reviews:
 			</Typography>
@@ -148,99 +150,108 @@ const ReviewSection = ({ product }) => {
 				</>
 			)}
 
-			{isAuth ? (
-				<Paper className={classes.reviewFormPaper} elevation={5}>
-					<form className={classes.reviewForm} onSubmit={submitHandler}>
-						<Typography variant='h5'>Write a Customer Review:</Typography>
-						<Rating
-							name='user-rating'
-							size='large'
-							value={rating}
-							precision={0.5}
-							onChange={(event, newValue) => {
-								setRating(newValue);
-							}}
-							onChangeActive={(event, newHover) => {
-								setHover(newHover);
-							}}
-						/>
-						{rating !== null && (
-							<Box mt={1}>{labels[hover !== -1 ? hover : rating]}</Box>
+			<Paper
+				className={
+					isAuth
+						? classes.reviewFormPaper
+						: clsx(classes.reviewFormPaper, classes.disabled)
+				}
+				elevation={5}
+			>
+				{!isAuth && (
+					<Paper className={classes.disabledMessage} variant='outlined'>
+						<Typography>
+							Please log in and make a purchase to leave a review
+						</Typography>
+					</Paper>
+				)}
+				<form className={classes.reviewForm} onSubmit={submitHandler}>
+					<Typography variant='h5'>Write a Customer Review:</Typography>
+					<Rating
+						disabled={!isAuth}
+						name='user-rating'
+						size='large'
+						value={rating}
+						precision={0.5}
+						onChange={(event, newValue) => {
+							setRating(newValue);
+						}}
+						onChangeActive={(event, newHover) => {
+							setHover(newHover);
+						}}
+					/>
+					{rating !== null && (
+						<Box mt={1}>{labels[hover !== -1 ? hover : rating]}</Box>
+					)}
+
+					<TextField
+						disabled={!isAuth}
+						id='reviewTitle'
+						label='Review Title'
+						type='text'
+						placeholder='Review Title'
+						color='secondary'
+						fullWidth
+						onChange={changeHandler}
+						onBlur={touchHandler}
+						value={reviewTitle.value}
+						error={reviewTitle.isTouched && !reviewTitle.isValid}
+						helperText={
+							reviewTitle.isTouched && !reviewTitle.isValid
+								? 'Please enter a title'
+								: ' '
+						}
+						className={
+							reviewTitle.isTouched && !reviewTitle.isValid
+								? clsx(classes.input, classes.error)
+								: classes.input
+						}
+					/>
+
+					<TextField
+						disabled={!isAuth}
+						id='reviewComment'
+						label='Review Comment'
+						type='text'
+						placeholder='Review Comment'
+						color='secondary'
+						variant='outlined'
+						multiline
+						fullWidth
+						onChange={changeHandler}
+						onBlur={touchHandler}
+						value={reviewComment.value}
+						error={reviewComment.isTouched && !reviewComment.isValid}
+						helperText={
+							reviewComment.isTouched && !reviewComment.isValid
+								? 'Please leave some feedback'
+								: ' '
+						}
+						className={
+							reviewComment.isTouched && !reviewComment.isValid
+								? clsx(classes.input, classes.error)
+								: classes.input
+						}
+					/>
+					<Button
+						color='secondary'
+						type='submit'
+						variant='contained'
+						fullWidth
+						className={classes.button}
+						disabled={!isAuth || !reviewTitle.isValid || !reviewComment.isValid}
+					>
+						{createReviewLoading ? (
+							<CircularProgress
+								size={25}
+								style={{ color: theme.palette.background.default }}
+							/>
+						) : (
+							'Submit Review'
 						)}
-
-						<TextField
-							id='reviewTitle'
-							label='Review Title'
-							type='text'
-							placeholder='Review Title'
-							color='secondary'
-							fullWidth
-							onChange={changeHandler}
-							onBlur={touchHandler}
-							value={reviewTitle.value}
-							error={reviewTitle.isTouched && !reviewTitle.isValid}
-							helperText={
-								reviewTitle.isTouched && !reviewTitle.isValid
-									? 'Please enter a title'
-									: ' '
-							}
-							className={
-								reviewTitle.isTouched && !reviewTitle.isValid
-									? clsx(classes.input, classes.error)
-									: classes.input
-							}
-						/>
-
-						<TextField
-							id='reviewComment'
-							label='Review Comment'
-							type='text'
-							placeholder='Review Comment'
-							color='secondary'
-							variant='outlined'
-							multiline
-							fullWidth
-							onChange={changeHandler}
-							onBlur={touchHandler}
-							value={reviewComment.value}
-							error={reviewComment.isTouched && !reviewComment.isValid}
-							helperText={
-								reviewComment.isTouched && !reviewComment.isValid
-									? 'Please leave some feedback'
-									: ' '
-							}
-							className={
-								reviewComment.isTouched && !reviewComment.isValid
-									? clsx(classes.input, classes.error)
-									: classes.input
-							}
-						/>
-						<Button
-							color='secondary'
-							type='submit'
-							variant='contained'
-							fullWidth
-							className={classes.button}
-							disabled={!reviewTitle.isValid || !reviewComment.isValid}
-						>
-							{createReviewLoading ? (
-								<CircularProgress
-									size={25}
-									style={{ color: theme.palette.background.default }}
-								/>
-							) : (
-								'Submit Review'
-							)}
-						</Button>
-					</form>
-				</Paper>
-			) : (
-				<Paper className={classes.reviewFormPaper}>
-					<Typography variant='h6' style={{ fontSize: '1.1rem' }}>
-						Please log in to write a review
-					</Typography>
-				</Paper>
-			)}
+					</Button>
+				</form>
+			</Paper>
 		</>
 	);
 };

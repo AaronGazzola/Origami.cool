@@ -118,6 +118,9 @@ const styles = makeStyles(theme => ({
 		[theme.breakpoints.down('sm')]: {
 			padding: theme.spacing(1)
 		}
+	},
+	hidden: {
+		display: 'none'
 	}
 }));
 

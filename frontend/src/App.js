@@ -237,7 +237,7 @@ const App = () => {
 								component={ForgotPasswordScreen}
 							/>
 							<Route path='/product/:slug' component={ProductScreen} />
-							<Redirect from='/cart' exact to='/login' />
+							<Route exact path='/cart' component={CartScreen} />
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
 					)}

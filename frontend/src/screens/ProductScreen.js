@@ -93,13 +93,7 @@ const ProductScreen = ({ match, history }) => {
 						</Typography>
 					)}
 				</Grid>
-				<Grid
-					item
-					container
-					alignItems='center'
-					direction='row'
-					style={matchesXs ? null : matchesSm ? { paddingBottom: 0 } : null}
-				>
+				<Grid item container alignItems='center' direction='row'>
 					<Grid xs item container alignItems='center' justify='flex-start'>
 						<Typography className={classes.dollarSign}>$</Typography>
 						{loading ? (
@@ -154,9 +148,7 @@ const ProductScreen = ({ match, history }) => {
 					direction='column'
 					alignItems='center'
 					justify='flex-start'
-					className={
-						matchesXs ? classes.action : clsx(classes.action, classes.sticky)
-					}
+					className={clsx(classes.action, classes.sticky)}
 				>
 					{!loading && (
 						<Grid
