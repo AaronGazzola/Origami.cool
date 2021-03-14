@@ -17,7 +17,7 @@ const protect = asyncHandler(async (req, res, next) => {
 
 	// Check if token exists
 	if (!token) {
-		return next(new ErrorResponse('Not Authorised to access content', 401));
+		return next(new ErrorResponse('Not authorized to access content', 401));
 	}
 
 	try {
@@ -26,7 +26,7 @@ const protect = asyncHandler(async (req, res, next) => {
 		// Find user from token and add to request
 		req.user = await User.findById(decoded.id);
 		if (!req.user) {
-			return next(new ErrorResponse('Not Authorised to access content', 401));
+			return next(new ErrorResponse('Not authorized to access content', 401));
 		}
 		if (req.user.isBanned) {
 			return next(
@@ -38,7 +38,7 @@ const protect = asyncHandler(async (req, res, next) => {
 		}
 		next();
 	} catch (error) {
-		return next(new ErrorResponse('Not Authorised to access content', 401));
+		return next(new ErrorResponse('Not authorized to access content', 401));
 	}
 });
 
@@ -46,7 +46,7 @@ const admin = (req, res, next) => {
 	if (req.user && req.user.isAdmin) {
 		next();
 	} else {
-		return next(new ErrorResponse('Not Authorised to access content', 401));
+		return next(new ErrorResponse('Not authorized to access content', 401));
 	}
 };
 

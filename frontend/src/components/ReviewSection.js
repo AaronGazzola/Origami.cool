@@ -19,7 +19,7 @@ import {
 	VALIDATOR_MAXLENGTH,
 	validate
 } from 'utils/validators';
-import { createReviewAction } from 'actions/productActions';
+import { createReviewAction, updateReviewAction } from 'actions/productActions';
 import { ExpandMore } from '@material-ui/icons';
 
 const labels = {
@@ -39,37 +39,52 @@ const ReviewSection = ({ product }) => {
 	const dispatch = useDispatch();
 	const theme = useTheme();
 	const classes = useStyles();
-	const { isAuth } = useSelector(state => state.userData);
+	const { isAuth, user } = useSelector(state => state.userData);
 	const { loading: createReviewLoading } = useSelector(
 		state => state.createReview
 	);
-	const [rating, setRating] = useState(5);
+	const { loading: updateReviewLoading } = useSelector(
+		state => state.updateReview
+	);
 	const [hover, setHover] = useState(-1);
 	const initialDisplayCount = 3;
 	const [displayCount, setDisplayCount] = useState(initialDisplayCount);
+	const userReview = product.reviews.filter(
+		review => review.user === user._id
+	)[0];
+	const [rating, setRating] = useState(userReview?.rating || 5);
+
 	const [reviewForm, setReviewForm] = useState({
-		reviewTitle: {
-			value: '',
-			isValid: false,
+		title: {
+			value: userReview?.title || '',
+			isValid: !!userReview,
 			isTouched: false
 		},
-		reviewComment: {
-			value: '',
-			isValid: false,
+		comment: {
+			value: userReview?.comment || '',
+			isValid: !!userReview,
 			isTouched: false
-		}
+		},
+		isChanged: false
 	});
-	const { reviewTitle, reviewComment } = reviewForm;
+	const { title, comment, isChanged } = reviewForm;
 
-	const changeHandler = e => {
+	const changeHandler = (e, newRating) => {
+		const isChanged =
+			userReview && newRating
+				? newRating !== userReview.rating
+				: userReview
+				? e.target.value !== userReview[e.target.id]
+				: !!e.target.value;
 		setReviewForm({
 			...reviewForm,
+			isChanged,
 			[e.target.id]: {
 				...reviewForm[e.target.id],
 				value: e.target.value,
 				isValid: validate(e.target.value, [
 					VALIDATOR_REQUIRE(),
-					VALIDATOR_MAXLENGTH(e.target.id === 'reviewTitle' ? 75 : 300)
+					VALIDATOR_MAXLENGTH(e.target.id === 'title' ? 75 : 300)
 				])
 			}
 		});
@@ -77,12 +92,15 @@ const ReviewSection = ({ product }) => {
 
 	const submitHandler = e => {
 		e.preventDefault();
+		const review = {
+			rating,
+			title: title.value,
+			comment: comment.value
+		};
 		dispatch(
-			createReviewAction(product, {
-				rating,
-				title: reviewTitle.value,
-				comment: reviewComment.value
-			})
+			userReview
+				? updateReviewAction(product, review)
+				: createReviewAction(product, review)
 		);
 	};
 
@@ -163,7 +181,7 @@ const ReviewSection = ({ product }) => {
 						? classes.reviewFormPaper
 						: clsx(classes.reviewFormPaper, classes.disabled)
 				}
-				elevation={5}
+				elevation={2}
 			>
 				{!isAuth && (
 					<Paper className={classes.disabledMessage} variant='outlined'>
@@ -180,10 +198,11 @@ const ReviewSection = ({ product }) => {
 						size='large'
 						value={rating}
 						precision={0.5}
-						onChange={(event, newValue) => {
+						onChange={(e, newValue) => {
 							setRating(newValue);
+							changeHandler(e, newValue);
 						}}
-						onChangeActive={(event, newHover) => {
+						onChangeActive={(e, newHover) => {
 							setHover(newHover);
 						}}
 					/>
@@ -193,7 +212,7 @@ const ReviewSection = ({ product }) => {
 
 					<TextField
 						disabled={!isAuth}
-						id='reviewTitle'
+						id='title'
 						label='Review Title'
 						type='text'
 						placeholder='Review Title'
@@ -201,15 +220,15 @@ const ReviewSection = ({ product }) => {
 						fullWidth
 						onChange={changeHandler}
 						onBlur={touchHandler}
-						value={reviewTitle.value}
-						error={reviewTitle.isTouched && !reviewTitle.isValid}
+						value={title.value}
+						error={title.isTouched && !title.isValid}
 						helperText={
-							reviewTitle.isTouched && !reviewTitle.isValid
+							title.isTouched && !title.isValid
 								? 'Please enter a title under 75 characters'
 								: ' '
 						}
 						className={
-							reviewTitle.isTouched && !reviewTitle.isValid
+							title.isTouched && !title.isValid
 								? clsx(classes.input, classes.error)
 								: classes.input
 						}
@@ -217,7 +236,7 @@ const ReviewSection = ({ product }) => {
 
 					<TextField
 						disabled={!isAuth}
-						id='reviewComment'
+						id='comment'
 						label='Review Comment'
 						type='text'
 						placeholder='Review Comment'
@@ -227,15 +246,15 @@ const ReviewSection = ({ product }) => {
 						fullWidth
 						onChange={changeHandler}
 						onBlur={touchHandler}
-						value={reviewComment.value}
-						error={reviewComment.isTouched && !reviewComment.isValid}
+						value={comment.value}
+						error={comment.isTouched && !comment.isValid}
 						helperText={
-							reviewComment.isTouched && !reviewComment.isValid
+							comment.isTouched && !comment.isValid
 								? 'Please leave a comment under 300 characters'
 								: ' '
 						}
 						className={
-							reviewComment.isTouched && !reviewComment.isValid
+							comment.isTouched && !comment.isValid
 								? clsx(classes.input, classes.error)
 								: classes.input
 						}
@@ -246,13 +265,17 @@ const ReviewSection = ({ product }) => {
 						variant='contained'
 						fullWidth
 						className={classes.button}
-						disabled={!isAuth || !reviewTitle.isValid || !reviewComment.isValid}
+						disabled={
+							!isAuth || !title.isValid || !comment.isValid || !isChanged
+						}
 					>
-						{createReviewLoading ? (
+						{createReviewLoading || updateReviewLoading ? (
 							<CircularProgress
 								size={25}
 								style={{ color: theme.palette.background.default }}
 							/>
+						) : userReview ? (
+							'Update Review'
 						) : (
 							'Submit Review'
 						)}

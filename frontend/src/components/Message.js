@@ -10,6 +10,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { logoutAction } from 'actions/userActions';
 
 const useStyles = makeStyles(theme => ({
 	success: {
@@ -59,7 +60,14 @@ const Message = ({
 		<Dialog
 			classes={{ paper: classes.paper }}
 			open={!!success || !!error || !!alert}
-			onClose={() => dispatch({ type: clearType })}
+			onClose={
+				error === 'Not authorized to access content'
+					? () => {
+							dispatch({ type: clearType });
+							dispatch(logoutAction());
+					  }
+					: () => dispatch({ type: clearType })
+			}
 			transitionDuration={{ exit: 0 }}
 		>
 			<DialogTitle
@@ -84,7 +92,14 @@ const Message = ({
 				{ok && (
 					<Button
 						className={!!success ? classes.success : classes.alert}
-						onClick={() => dispatch({ type: clearType })}
+						onClick={
+							error === 'Not authorized to access content'
+								? () => {
+										dispatch({ type: clearType });
+										dispatch(logoutAction());
+								  }
+								: () => dispatch({ type: clearType })
+						}
 					>
 						OK
 					</Button>

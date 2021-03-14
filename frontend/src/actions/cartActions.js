@@ -22,7 +22,8 @@ export const addToCartAction = (slug, qty) => async (dispatch, getState) => {
 		dispatch({
 			type: CART_ADD_ITEM,
 			payload: {
-				product: _id,
+				productId: _id,
+				productSlug: slug,
 				name,
 				image,
 				price,

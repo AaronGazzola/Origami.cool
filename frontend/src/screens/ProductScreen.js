@@ -26,7 +26,6 @@ const ProductScreen = ({ match, history }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const theme = useTheme();
-	const matchesXs = useMediaQuery(theme.breakpoints.down('xs'));
 	const matchesSm = useMediaQuery(theme.breakpoints.down('sm'));
 	const { loading, product } = useSelector(state => state.getProduct);
 	const { loading: cartLoading, redirect: cartRedirect } = useSelector(

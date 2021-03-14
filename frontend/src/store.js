@@ -16,7 +16,8 @@ import {
 import {
 	getProductsReducer,
 	getProductReducer,
-	createReviewReducer
+	createReviewReducer,
+	updateReviewReducer
 } from 'reducers/productReducers';
 import { cartReducer } from 'reducers/cartReducers';
 
@@ -34,6 +35,7 @@ const reducer = combineReducers({
 	getProducts: getProductsReducer,
 	getProduct: getProductReducer,
 	createReview: createReviewReducer,
+	updateReview: updateReviewReducer,
 	cart: cartReducer
 });
 

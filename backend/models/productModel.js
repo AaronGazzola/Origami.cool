@@ -1,21 +1,6 @@
 import mongoose from 'mongoose';
 import slugify from 'slugify';
 
-const reviewSchema = mongoose.Schema(
-	{
-		name: { type: String, required: true },
-		title: { type: String, required: true, maxlength: 75 },
-		rating: { type: Number, required: true },
-		comment: { type: String, required: true, maxlength: 300 },
-		user: {
-			type: mongoose.Schema.Types.ObjectId,
-			required: true,
-			ref: 'User'
-		}
-	},
-	{ timestamps: true }
-);
-
 const productSchema = mongoose.Schema(
 	{
 		user: {
@@ -43,7 +28,7 @@ const productSchema = mongoose.Schema(
 			type: String,
 			default: ''
 		},
-		reviews: [reviewSchema],
+		reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }],
 		rating: {
 			type: Number,
 			required: true,

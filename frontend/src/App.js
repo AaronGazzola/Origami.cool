@@ -37,7 +37,8 @@ import {
 import {
 	GET_PRODUCTS_CLEAR,
 	GET_PRODUCT_CLEAR,
-	CREATE_REVIEW_CLEAR
+	CREATE_REVIEW_CLEAR,
+	UPDATE_REVIEW_CLEAR
 } from 'constants/productConstants';
 import { CART_CLEAR } from 'constants/cartConstants';
 import { sendVerifyUserAction } from 'actions/userActions';
@@ -79,6 +80,7 @@ const App = () => {
 		getProducts: { error: getProductsError },
 		getProduct: { error: getProductError },
 		createReview: { error: createReviewError, success: createReviewSuccess },
+		updateReview: { error: updateReviewError, success: updateReviewSuccess },
 		cart: { error: cartError, success: cartSuccess }
 	} = useSelector(state => state);
 
@@ -108,6 +110,7 @@ const App = () => {
 							getProductsError ||
 							getProductError ||
 							createReviewError ||
+							updateReviewError ||
 							cartError
 						}
 						success={
@@ -140,6 +143,8 @@ const App = () => {
 								? GET_PRODUCT_CLEAR
 								: createReviewError
 								? CREATE_REVIEW_CLEAR
+								: updateReviewError
+								? UPDATE_REVIEW_CLEAR
 								: cartError
 								? CART_CLEAR
 								: null
@@ -169,6 +174,7 @@ const App = () => {
 							resetPasswordSuccess ||
 							cancelEmailUpdateSuccess ||
 							createReviewSuccess ||
+							updateReviewSuccess ||
 							cartSuccess
 						}
 						clearType={
@@ -186,6 +192,8 @@ const App = () => {
 								? CANCEL_EMAIL_UPDATE_CLEAR
 								: createReviewSuccess
 								? CREATE_REVIEW_CLEAR
+								: updateReviewSuccess
+								? UPDATE_REVIEW_CLEAR
 								: userUpdateProfileSuccess
 								? USER_UPDATE_PROFILE_CLEAR
 								: cartSuccess
