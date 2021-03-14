@@ -4,8 +4,11 @@ const styles = makeStyles(theme => ({
 	container: {
 		width: '100%',
 		height: 'min-content',
+		overflow: 'hidden',
 		padding: theme.spacing(0, 4),
-		overflow: 'hidden'
+		[theme.breakpoints.down('sm')]: {
+			padding: theme.spacing(0, 3)
+		}
 	},
 	active: {
 		position: 'relative',

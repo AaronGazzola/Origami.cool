@@ -145,10 +145,14 @@ const App = () => {
 								: null
 						}
 						actionText={
-							loginError || sendVerifyUserError ? 'Resend Email' : 'Retry'
+							loginError?.startsWith('Please check your email') ||
+							sendVerifyUserError
+								? 'Resend Email'
+								: 'Retry'
 						}
 						action={
-							loginError || sendVerifyUserError
+							loginError?.startsWith('Please check your email') ||
+							sendVerifyUserError
 								? sendVerifyUserAction(authFormEmail)
 								: getProductsError
 								? getProductsAction()

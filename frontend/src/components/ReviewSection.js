@@ -14,7 +14,11 @@ import {
 import { Rating } from '@material-ui/lab';
 import useStyles from 'styles/reviewSectionStyles';
 import { useSelector, useDispatch } from 'react-redux';
-import { VALIDATOR_REQUIRE, validate } from 'utils/validators';
+import {
+	VALIDATOR_REQUIRE,
+	VALIDATOR_MAXLENGTH,
+	validate
+} from 'utils/validators';
 import { createReviewAction } from 'actions/productActions';
 import { ExpandMore } from '@material-ui/icons';
 
@@ -63,7 +67,10 @@ const ReviewSection = ({ product }) => {
 			[e.target.id]: {
 				...reviewForm[e.target.id],
 				value: e.target.value,
-				isValid: validate(e.target.value, [VALIDATOR_REQUIRE()])
+				isValid: validate(e.target.value, [
+					VALIDATOR_REQUIRE(),
+					VALIDATOR_MAXLENGTH(e.target.id === 'reviewTitle' ? 75 : 300)
+				])
 			}
 		});
 	};
@@ -198,7 +205,7 @@ const ReviewSection = ({ product }) => {
 						error={reviewTitle.isTouched && !reviewTitle.isValid}
 						helperText={
 							reviewTitle.isTouched && !reviewTitle.isValid
-								? 'Please enter a title'
+								? 'Please enter a title under 75 characters'
 								: ' '
 						}
 						className={
@@ -224,7 +231,7 @@ const ReviewSection = ({ product }) => {
 						error={reviewComment.isTouched && !reviewComment.isValid}
 						helperText={
 							reviewComment.isTouched && !reviewComment.isValid
-								? 'Please leave some feedback'
+								? 'Please leave a comment under 300 characters'
 								: ' '
 						}
 						className={
