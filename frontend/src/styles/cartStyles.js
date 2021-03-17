@@ -48,9 +48,10 @@ const styles = makeStyles(theme => ({
 	},
 	itemName: {
 		flex: 1,
-		fontWeight: 700,
-		fontSize: '1.1rem',
+		fontWeight: 100,
+		fontSize: '1.5rem',
 		[theme.breakpoints.down('sm')]: {
+			fontWeight: 700,
 			fontSize: '1rem'
 		},
 		[theme.breakpoints.down('xs')]: {
