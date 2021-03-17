@@ -62,7 +62,7 @@ export const removeFromCartAction = id => (dispatch, getState) => {
 	dispatch({ type: CART_SUCCESS });
 };
 
-export const emptyCartAction = () => (dispatch, getState) => {
+export const emptyCartAction = () => dispatch => {
 	dispatch({ type: CART_REQUEST });
 
 	dispatch({

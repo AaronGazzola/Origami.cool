@@ -43,11 +43,18 @@ const userFromStorage = localStorage.getItem('user')
 	? JSON.parse(localStorage.getItem('user'))
 	: null;
 
+const cartItemsFromStorage = localStorage.getItem('cartItems')
+	? JSON.parse(localStorage.getItem('cartItems'))
+	: null;
+
 const initialState = {
 	userData: {
 		user: userFromStorage?.user,
 		token: userFromStorage?.token,
 		isAuth: !!userFromStorage?.token
+	},
+	cart: {
+		cartItems: cartItemsFromStorage
 	}
 };
 

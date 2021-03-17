@@ -47,8 +47,9 @@ const CartScreen = ({ history }) => {
 					item
 					matchesXs
 					container
-					justify={matchesSm ? 'center' : 'flex-start'}
-					alignItems='flex-start'
+					justify='center'
+					alignItems='center'
+					className={classes.itemListGrid}
 				>
 					{loading ? (
 						<CircularProgress className={classes.loading} />
@@ -108,7 +109,7 @@ const CartScreen = ({ history }) => {
 
 								<IconButton
 									className={classes.deleteIcon}
-									onClick={() => dispatch(removeFromCartAction(item.product))}
+									onClick={() => dispatch(removeFromCartAction(item.productId))}
 								>
 									<Delete />
 								</IconButton>
@@ -125,17 +126,19 @@ const CartScreen = ({ history }) => {
 					justify={matchesXs ? 'flex-start' : 'flex-end'}
 					className={classes.subTotalGrid}
 				>
-					<Paper variant='outlined' className={classes.subTotal}>
-						<Typography>
-							Subtotal:{' '}
-							<span>
-								$
-								{cartItems
-									.reduce((acc, item) => acc + item.price * item.qty, 0)
-									.toFixed(2)}
-							</span>
-						</Typography>
-					</Paper>
+					{cartItems.length !== 0 && (
+						<Paper variant='outlined' className={classes.subTotal}>
+							<Typography>
+								Subtotal:{' '}
+								<span>
+									$
+									{cartItems
+										.reduce((acc, item) => acc + item.price * item.qty, 0)
+										.toFixed(2)}
+								</span>
+							</Typography>
+						</Paper>
+					)}
 					<Button
 						size='large'
 						variant='contained'

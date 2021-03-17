@@ -9,10 +9,10 @@ const styles = makeStyles(theme => ({
 	},
 	cartTitle: {
 		fontSize: '3rem',
+		marginBottom: theme.spacing(1),
 		padding: theme.spacing(1),
 		[theme.breakpoints.down('sm')]: {
-			fontSize: '2.5rem',
-			marginBottom: theme.spacing(1)
+			fontSize: '2.5rem'
 		}
 	},
 	emptyCart: {
@@ -20,8 +20,14 @@ const styles = makeStyles(theme => ({
 		marginTop: theme.spacing(1),
 		marginBottom: theme.spacing(1)
 	},
+	itemListGrid: {
+		'&.MuiGrid-root': {
+			paddingBottom: 0
+		}
+	},
 	cartItem: {
 		height: 200,
+		marginBottom: theme.spacing(3),
 		[theme.breakpoints.down('sm')]: {
 			height: 100
 		},
@@ -41,6 +47,7 @@ const styles = makeStyles(theme => ({
 		}
 	},
 	itemName: {
+		flex: 1,
 		fontWeight: 700,
 		fontSize: '1.1rem',
 		[theme.breakpoints.down('sm')]: {
@@ -57,6 +64,9 @@ const styles = makeStyles(theme => ({
 	},
 	itemPrice: {
 		fontStyle: 'italic',
+		[theme.breakpoints.up('sm')]: {
+			marginLeft: theme.spacing(2)
+		},
 		[theme.breakpoints.down('sm')]: {
 			fontSize: '.9rem'
 		},
@@ -65,8 +75,15 @@ const styles = makeStyles(theme => ({
 		}
 	},
 	subTotalGrid: {
+		[theme.breakpoints.up('sm')]: {
+			'&.MuiGrid-root': {
+				padding: theme.spacing(0, 2, 2, 0)
+			}
+		},
 		[theme.breakpoints.down('xs')]: {
-			marginTop: theme.spacing(2)
+			'&.MuiGrid-root': {
+				padding: 0
+			}
 		}
 	},
 	subTotal: {
@@ -81,13 +98,13 @@ const styles = makeStyles(theme => ({
 		color: theme.palette.text.primary
 	},
 	loading: {
-		alignSelf: 'center',
-		marginTop: theme.spacing(2)
+		margin: theme.spacing(3)
 	},
 	deleteIcon: {
 		color: theme.palette.error.dark,
 		[theme.breakpoints.up('sm')]: {
-			paddingRight: theme.spacing(5)
+			marginLeft: theme.spacing(2),
+			marginRight: theme.spacing(3)
 		},
 		[theme.breakpoints.down('xs')]: {
 			marginTop: theme.spacing(2),
@@ -96,11 +113,11 @@ const styles = makeStyles(theme => ({
 	},
 	checkoutButton: {
 		padding: theme.spacing(2),
-		marginLeft: theme.spacing(2),
+		margin: theme.spacing(0, 0, 0, 2),
 		width: 200,
 		[theme.breakpoints.down('xs')]: {
 			width: 'min-content',
-			marginTop: theme.spacing(2)
+			margin: theme.spacing(2, 0, 0, 0)
 		}
 	}
 }));
