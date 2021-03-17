@@ -29,11 +29,8 @@ const styles = makeStyles(theme => ({
 		width: '100%'
 	},
 	sticky: {
-		[theme.breakpoints.up('md')]: {
-			position: 'sticky',
-			top: theme.spacing(2),
-			height: 'min-content'
-		}
+		position: 'sticky',
+		top: -theme.spacing(1)
 	},
 	qty: {
 		marginRight: theme.spacing(2),

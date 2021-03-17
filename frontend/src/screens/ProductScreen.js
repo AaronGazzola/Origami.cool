@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import clsx from 'clsx';
+import React, { useEffect, useState, useRef } from 'react';
 import useStyles from 'styles/productStyles';
 import {
 	Typography,
@@ -32,6 +31,7 @@ const ProductScreen = ({ match, history }) => {
 		state => state.cart
 	);
 	const [qty, setQty] = useState(product?.countInStock === 0 ? 0 : 1);
+	const action = useRef(null);
 
 	const addToCartHandler = () => {
 		dispatch(addToCartAction(slug, qty));
@@ -46,6 +46,17 @@ const ProductScreen = ({ match, history }) => {
 			history.push('/cart');
 		}
 	}, [cartRedirect, history]);
+
+	const [sticky, setSticky] = useState(false);
+
+	useEffect(() => {
+		window.addEventListener('resize', handleResize);
+		return () => window.removeEventListener('resize', handleResize);
+	}, []);
+
+	const handleResize = () => {
+		setSticky(action.current?.offsetHeight < window.innerHeight);
+	};
 
 	return (
 		<Grid
@@ -82,6 +93,9 @@ const ProductScreen = ({ match, history }) => {
 				justify='flex-start'
 				xs={12}
 				md={6}
+				className={sticky ? classes.sticky : null}
+				ref={action}
+				style={{ height: 'min-content' }}
 			>
 				<Grid item>
 					{loading ? (
@@ -147,7 +161,7 @@ const ProductScreen = ({ match, history }) => {
 					direction='column'
 					alignItems='center'
 					justify='flex-start'
-					className={clsx(classes.action, classes.sticky)}
+					className={classes.action}
 				>
 					{!loading && (
 						<Grid

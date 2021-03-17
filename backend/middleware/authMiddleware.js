@@ -17,7 +17,7 @@ const protect = asyncHandler(async (req, res, next) => {
 
 	// Check if token exists
 	if (!token) {
-		return next(new ErrorResponse('Not authorized to access content', 401));
+		return next(new ErrorResponse('Please login to view this content', 401));
 	}
 
 	try {
@@ -26,19 +26,19 @@ const protect = asyncHandler(async (req, res, next) => {
 		// Find user from token and add to request
 		req.user = await User.findById(decoded.id);
 		if (!req.user) {
-			return next(new ErrorResponse('Not authorized to access content', 401));
+			return next(new ErrorResponse('Please login to view this content', 401));
 		}
 		if (req.user.isBanned) {
 			return next(
 				new ErrorResponse(
-					'You have been banned from accessing this content by the administrator(s)',
+					'You have been banned from accessing this content',
 					401
 				)
 			);
 		}
 		next();
 	} catch (error) {
-		return next(new ErrorResponse('Not authorized to access content', 401));
+		return next(new ErrorResponse('Please login to view this content', 401));
 	}
 });
 
