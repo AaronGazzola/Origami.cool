@@ -8,7 +8,8 @@ const styles = makeStyles(theme => ({
 		fontSize: '3rem',
 		margin: theme.spacing(1),
 		[theme.breakpoints.down('xs')]: {
-			fontSize: '2rem'
+			fontSize: '2.5rem',
+			textAlign: 'center'
 		}
 	},
 	accordionSummary: {
@@ -82,60 +83,7 @@ const styles = makeStyles(theme => ({
 			fontSize: '1.1rem'
 		}
 	},
-	cartItem: {
-		width: '100%',
-		height: 100,
-		display: 'flex',
-		justifyContent: 'flex-start',
-		alignItems: 'center',
-		marginBottom: theme.spacing(2),
-		[theme.breakpoints.down('xs')]: {
-			height: 80
-		}
-	},
-	productImage: {
-		height: '100%'
-	},
-	productTitle: {
-		padding: theme.spacing(2),
-		[theme.breakpoints.down('xs')]: {
-			padding: theme.spacing(1)
-		}
-	},
-	itemName: {
-		[theme.breakpoints.down('sm')]: {
-			fontSize: '.9rem'
-		},
-		[theme.breakpoints.down('xs')]: {
-			fontSize: '.8rem'
-		}
-	},
-	itemPrice: {
-		[theme.breakpoints.down('xs')]: {
-			fontSize: '.8rem'
-		},
-		[theme.breakpoints.down('sm')]: {
-			fontSize: '.9rem'
-		}
-	},
-	itemSubTotal: {
-		borderTop: `1px solid ${theme.palette.grey[500]}`,
-		marginTop: 3,
-		fontStyle: 'italic',
-		[theme.breakpoints.down('xs')]: {
-			fontSize: '.8rem'
-		},
-		[theme.breakpoints.down('sm')]: {
-			fontSize: '.9rem'
-		}
-	},
-	deleteIcon: {
-		color: theme.palette.grey[800]
-	},
-	link: {
-		textDecoration: 'none',
-		color: theme.palette.text.primary
-	},
+
 	orderButton: {
 		marginTop: theme.spacing(2)
 	},
@@ -146,6 +94,72 @@ const styles = makeStyles(theme => ({
 	addressButton: {
 		margin: theme.spacing(1),
 		minWidth: 160
+	},
+	cartItem: {
+		height: 100,
+		marginBottom: theme.spacing(3),
+		overflow: 'hidden',
+		backgroundColor: theme.palette.background.paper,
+		[theme.breakpoints.down('xs')]: {
+			height: 'min-content',
+			width: 'min-content'
+		},
+		'&:last-of-type': {
+			margin: 0
+		}
+	},
+	productImage: {
+		height: '100%',
+		// justifySelf: 'start',
+		[theme.breakpoints.down('xs')]: {
+			width: 200,
+			height: 'auto'
+		}
+	},
+	itemName: {
+		flex: 1,
+		fontWeight: 100,
+		fontSize: '1.5rem',
+		textAlign: 'center',
+		[theme.breakpoints.down('md')]: {
+			fontWeight: 700,
+			fontSize: '1rem'
+		},
+		[theme.breakpoints.down('xs')]: {
+			marginTop: theme.spacing(2)
+		}
+	},
+	select: {
+		[theme.breakpoints.down('xs')]: {
+			marginTop: theme.spacing(1)
+		}
+	},
+	itemPrice: {
+		fontStyle: 'italic',
+		[theme.breakpoints.up('sm')]: {
+			marginLeft: theme.spacing(2)
+		},
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '.9rem'
+		},
+		[theme.breakpoints.down('xs')]: {
+			marginTop: theme.spacing(2)
+		}
+	},
+	link: {
+		textDecoration: 'none',
+		color: theme.palette.text.primary
+	},
+	deleteIcon: {
+		color: theme.palette.error.dark,
+		[theme.breakpoints.up('sm')]: {
+			marginLeft: theme.spacing(2),
+			marginRight: theme.spacing(3)
+		},
+		[theme.breakpoints.down('xs')]: {
+			marginTop: theme.spacing(1),
+			marginBottom: theme.spacing(1)
+		}
 	}
 }));
 

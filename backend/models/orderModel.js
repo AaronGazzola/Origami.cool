@@ -20,8 +20,13 @@ const orderSchema = mongoose.Schema(
 				}
 			}
 		],
-		shippingAddress: {
-			type: String
+		address: {
+			street1: String,
+			street2: String,
+			city: String,
+			state: String,
+			postCode: String,
+			country: String
 		},
 		paymentMethod: {
 			type: String,
@@ -63,10 +68,6 @@ const orderSchema = mongoose.Schema(
 		},
 		deliveredAt: {
 			type: Date
-		},
-		delivery: {
-			type: String,
-			required: true
 		},
 		isCanceled: {
 			type: Boolean,

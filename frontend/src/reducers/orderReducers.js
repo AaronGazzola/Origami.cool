@@ -36,13 +36,18 @@ export const createOrderReducer = (state = {}, action) => {
 		case CREATE_ORDER_SUCCESS:
 			return {
 				loading: false,
-				success: true,
-				order: action.payload
+				success: 'Order confirmed',
+				order: action.payload.order
 			};
 		case CREATE_ORDER_FAIL:
-			return { loading: false, error: action.payload };
+			return {
+				loading: false,
+				error: action.payload
+					? action.payload
+					: 'Could not create order, please try again.'
+			};
 		case CREATE_ORDER_CLEAR:
-			return { error: null, success: null };
+			return { ...state, error: null, success: null };
 		default:
 			return state;
 	}

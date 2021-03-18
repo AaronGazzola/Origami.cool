@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import clsx from 'clsx';
 import { PayPalButton } from 'react-paypal-button-v2';
 import { Link, useHistory } from 'react-router-dom';
@@ -35,8 +36,7 @@ import {
 	List as ListIcon,
 	CheckCircleOutline as CheckCircleIcon,
 	CheckCircle as FullCheckCircleIcon,
-	PhoneEnabled as PhoneIcon,
-	Delete as DeleteIcon,
+	Delete,
 	ExpandLess,
 	ExpandMore
 } from '@material-ui/icons';
@@ -53,7 +53,10 @@ import {
 	UPDATE_ADDRESS_CLEAR,
 	USER_DETAILS_CLEAR
 } from 'constants/userConstants';
-import { CREATE_ORDER_CLEAR } from 'constants/orderConstants';
+import {
+	CREATE_ORDER_CLEAR,
+	CREATE_ORDER_FAIL
+} from 'constants/orderConstants';
 import useCheckoutForm from 'hooks/checkoutFormHook';
 import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH } from 'utils/validators';
 
@@ -76,6 +79,10 @@ const CheckoutScreen = () => {
 		success: userUpdateProfileSuccess
 	} = useSelector(state => state.userUpdateProfile);
 
+	const { loading: createOrderLoading } = useSelector(
+		state => state.createOrder
+	);
+
 	const [formState, formDispatch] = useCheckoutForm(address);
 	const {
 		expanded,
@@ -97,7 +104,7 @@ const CheckoutScreen = () => {
 	cart.itemsPrice = addDecimals(
 		cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
 	);
-	cart.shippingPrice = addDecimals(cart.itemsPrice > 100 ? 0 : 20);
+	cart.shippingPrice = addDecimals(9.97);
 
 	cart.taxPrice = addDecimals(Number((0.1 * cart.itemsPrice).toFixed(2)));
 
@@ -117,6 +124,23 @@ const CheckoutScreen = () => {
 	useEffect(() => {
 		formDispatch({ type: 'RESET', payload: address });
 	}, [address]);
+
+	useEffect(() => {
+		if (!sdkReady) {
+			const addPayPalScript = async () => {
+				const { data: clientId } = await axios.get('/api/v1/config/paypal');
+				const script = document.createElement('script');
+				script.type = 'text/javascript';
+				script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=AUD`;
+				script.async = true;
+				script.onload = () => {
+					setSdkReady(true);
+				};
+				document.body.appendChild(script);
+			};
+			addPayPalScript();
+		}
+	});
 
 	const setExpandedHandler = expandIndex => {
 		formDispatch({
@@ -160,13 +184,24 @@ const CheckoutScreen = () => {
 		);
 	};
 
-	const placeOrderHandler = () => {};
+	const placeOrderHandler = paymentResult => {
+		const orderInfo = {
+			orderItems: cartItems,
+			address,
+			paymentMethod: payment,
+			itemsPrice: cart.itemsPrice,
+			shippingPrice: cart.shippingPrice,
+			taxPrice: cart.taxPrice,
+			totalPrice: cart.totalPrice
+		};
+		dispatch(createOrderAction({ ...orderInfo, paymentResult }));
+	};
 
 	return (
 		<>
-			{/* <Backdrop className={classes.backdrop} open={!!createOrderLoading}>
-				<CircularProgress />
-			</Backdrop> */}
+			<Backdrop className={classes.backdrop} open={!!createOrderLoading}>
+				<CircularProgress color='secondary' />
+			</Backdrop>
 			<Grid container className={classes.container} spacing={3}>
 				<Typography variant='h1' className={classes.title}>
 					Secure Checkout
@@ -184,14 +219,16 @@ const CheckoutScreen = () => {
 						>
 							{!matchesXs && <LocalShippingIcon className={classes.icon1} />}
 							<Typography variant='h5' className={classes.heading}>
-								Shipping Information
+								Shipping Info{!matchesXs && 'rmation'}
 							</Typography>
 							{step > 0 && (
 								<>
 									<CheckCircleIcon className={classes.icon2} />
-									<Typography className={classes.summaryText}>
-										Delivery to {address?.street1}
-									</Typography>
+									{!matchesXs && (
+										<Typography className={classes.summaryText}>
+											Delivery to {address?.street1}
+										</Typography>
+									)}
 								</>
 							)}
 						</AccordionSummary>
@@ -222,7 +259,7 @@ const CheckoutScreen = () => {
 												? clsx(formClasses.outerList, formClasses.outerListOpen)
 												: formClasses.outerList
 										}
-										style={{ margin: 0 }}
+										style={{ margin: 0, width: '100%' }}
 									>
 										<ListItem button onClick={addressToggleHandler}>
 											<ListItemText
@@ -397,6 +434,7 @@ const CheckoutScreen = () => {
 														}
 													/>
 													<Button
+														size='large'
 														variant='contained'
 														color='secondary'
 														type='submit'
@@ -423,6 +461,7 @@ const CheckoutScreen = () => {
 						</AccordionDetails>
 						<AccordionActions>
 							<Button
+								size='large'
 								onClick={() => setExpandedHandler(1)}
 								variant='contained'
 								color='secondary'
@@ -450,9 +489,11 @@ const CheckoutScreen = () => {
 							{step > 1 && (
 								<>
 									<CheckCircleIcon className={classes.icon2} />
-									<Typography className={classes.summaryText}>
-										PayPal
-									</Typography>
+									{!matchesXs && (
+										<Typography className={classes.summaryText}>
+											PayPal
+										</Typography>
+									)}
 								</>
 							)}
 						</AccordionSummary>
@@ -478,6 +519,7 @@ const CheckoutScreen = () => {
 						</AccordionDetails>
 						<AccordionActions>
 							<Button
+								size='large'
 								onClick={() => setExpandedHandler(0)}
 								variant='outlined'
 								color='primary'
@@ -485,6 +527,7 @@ const CheckoutScreen = () => {
 								Back
 							</Button>
 							<Button
+								size='large'
 								onClick={() => setExpandedHandler(2)}
 								variant='contained'
 								color='secondary'
@@ -496,7 +539,7 @@ const CheckoutScreen = () => {
 					<Accordion
 						expanded={expanded === 2}
 						onChange={() => setExpandedHandler(2)}
-						disabled={step === 0}
+						disabled={step < 2}
 					>
 						<AccordionSummary
 							expandIcon={<ExpandMoreIcon />}
@@ -511,103 +554,83 @@ const CheckoutScreen = () => {
 							{step > 2 && (
 								<>
 									<CheckCircleIcon className={classes.icon2} />
-									<Typography className={classes.summaryText}>
-										Items Confirmed
-									</Typography>
+									{!matchesXs && (
+										<Typography className={classes.summaryText}>
+											Items Confirmed
+										</Typography>
+									)}
 								</>
 							)}
 						</AccordionSummary>
 						<AccordionDetails>
-							<Grid container direction='column' alignItems='flex-start'>
+							<Grid container direction='column' alignItems='center'>
 								{cartItems?.map(item => (
 									<Paper
-										elevation={2}
-										key={item.productId}
+										variant='outlined'
+										key={item.product}
 										className={classes.cartItem}
+										component={Grid}
+										container
+										alignItems='center'
+										justify='space-between'
+										direction={matchesXs ? 'column' : 'row'}
 									>
-										{!matchesXs && (
-											<Link
-												to={`/product/${item.productSlug}`}
-												className={classes.productImage}
-											>
-												<img
-													src={item?.image.path}
-													alt='product'
-													className={classes.productImage}
-												/>
-											</Link>
-										)}
-										<Grid
-											container
-											justify='space-around'
-											alignItems='center'
-											style={{ height: '100%', width: '100%' }}
-										>
-											<Grid
-												item
-												container
-												justify='center'
-												xs={6}
-												className={classes.productTitle}
-											>
-												<Link
-													className={classes.link}
-													to={`/product/${item.product}`}
-												>
-													<Typography className={classes.itemName}>
-														{item.name}
-													</Typography>
-												</Link>
-											</Grid>
-											<Grid item xs={2}>
-												<Select
-													labelId='item-quantity-select-label'
-													id={`item-${item.product}-quantity-select`}
-													value={item.qty}
-													onChange={e =>
-														dispatch(
-															addToCartAction(
-																item.product,
-																Number(e.target.value)
-															)
-														)
-													}
-												>
-													{[...Array(item.countInStock).keys()].map(x => (
-														<MenuItem key={x + 1} value={x + 1}>
-															{x + 1}
-														</MenuItem>
-													))}
-												</Select>
-											</Grid>
-											<Grid
-												item
-												xs={2}
-												container
-												direction='column'
-												alignItems='center'
-											>
-												<Typography className={classes.itemPrice}>
-													${item.price} {!matchesMd && `x ${item.qty}`}
-												</Typography>
-											</Grid>
+										<img
+											to={`/product/${item.productSlug}`}
+											component={Link}
+											src={item?.image.path}
+											alt={item?.image.label}
+											className={classes.productImage}
+										/>
 
-											<Grid item xs={2}>
-												<IconButton
-													onClick={() =>
-														dispatch(removeFromCartAction(item.product))
-													}
-												>
-													<DeleteIcon className={classes.deleteIcon} />
-												</IconButton>
-											</Grid>
-										</Grid>
+										<Typography
+											className={clsx(classes.itemName, classes.link)}
+											component={Link}
+											to={`/product/${item.productSlug}`}
+										>
+											{item.name}
+										</Typography>
+
+										<Select
+											className={classes.select}
+											labelId='item-quantity-select-label'
+											id={`${item.productSlug}-quantity-select`}
+											value={item.qty}
+											onChange={e =>
+												dispatch(
+													addToCartAction(
+														item.productSlug,
+														Number(e.target.value)
+													)
+												)
+											}
+										>
+											{[...Array(item.countInStock).keys()].map(x => (
+												<MenuItem key={x + 1} value={x + 1}>
+													{x + 1}
+												</MenuItem>
+											))}
+										</Select>
+
+										<Typography className={classes.itemPrice}>
+											${item.price * item.qty}
+										</Typography>
+
+										<IconButton
+											className={classes.deleteIcon}
+											onClick={() =>
+												dispatch(removeFromCartAction(item.product))
+											}
+										>
+											<Delete />
+										</IconButton>
 									</Paper>
 								))}
 							</Grid>
 						</AccordionDetails>
 						<AccordionActions>
 							<Button
+								size='large'
 								onClick={() => setExpandedHandler(1)}
 								variant='outlined'
 								color='primary'
@@ -615,6 +638,7 @@ const CheckoutScreen = () => {
 								Back
 							</Button>
 							<Button
+								size='large'
 								onClick={() => setExpandedHandler(3)}
 								variant={step === 3 ? 'outlined' : 'contained'}
 								color='secondary'
@@ -659,7 +683,7 @@ const CheckoutScreen = () => {
 						{step === 3 && (
 							<>
 								{cartItems.map(x => (
-									<Grid key={x.productId} container justify='space-between'>
+									<Grid key={x.product} container justify='space-between'>
 										<Typography>
 											{x.name.slice(0, 10)}
 											{x.name.length > 10 && '...'} x {x.qty}
@@ -678,31 +702,20 @@ const CheckoutScreen = () => {
 						{step === 3 && (
 							<Grid container justify='flex-end'>
 								<Typography style={{ fontWeight: 700 }}>
-									${cart.totalPrice}
+									${cart.totalPrice}{' '}
+									<span style={{ fontWeight: 500 }}>AUD</span>
 								</Typography>
 							</Grid>
 						)}
-						{step === 3 ? (
-							<Button
-								size='large'
-								variant='contained'
-								color='secondary'
-								className={classes.orderButton}
-								disabled={step === 3}
-								fullWidth
-								onClick={placeOrderHandler}
-							>
-								Place Order
-							</Button>
-						) : (
-							sdkReady && (
-								<div className={classes.orderButton}>
-									<PayPalButton
-										amount={cart.totalPrice}
-										onSuccess={placeOrderHandler}
-									/>
-								</div>
-							)
+						{step === 3 && sdkReady && (
+							<div className={classes.orderButton}>
+								<PayPalButton
+									amount={cart.totalPrice}
+									onSuccess={placeOrderHandler}
+									currency='AUD'
+									onError={() => dispatch({ type: CREATE_ORDER_FAIL })}
+								/>
+							</div>
 						)}
 					</Paper>
 				</Grid>

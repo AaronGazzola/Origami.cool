@@ -42,8 +42,10 @@ import {
 	UPDATE_REVIEW_CLEAR
 } from 'constants/productConstants';
 import { CART_CLEAR } from 'constants/cartConstants';
+import { CREATE_ORDER_CLEAR } from 'constants/orderConstants';
 import { sendVerifyUserAction } from 'actions/userActions';
 import { getProductsAction } from 'actions/productActions';
+import OrderScreen from './screens/OrderScreen';
 
 const theme = getTheme();
 
@@ -82,7 +84,8 @@ const App = () => {
 		getProduct: { error: getProductError },
 		createReview: { error: createReviewError, success: createReviewSuccess },
 		updateReview: { error: updateReviewError, success: updateReviewSuccess },
-		cart: { error: cartError, success: cartSuccess }
+		cart: { error: cartError, success: cartSuccess, cartItems },
+		createOrder: { error: createOrderError, success: createOrderSuccess, order }
 	} = useSelector(state => state);
 
 	useEffect(() => {
@@ -112,7 +115,8 @@ const App = () => {
 							getProductError ||
 							createReviewError ||
 							updateReviewError ||
-							cartError
+							cartError ||
+							createOrderError
 						}
 						success={
 							signupSuccess ||
@@ -148,6 +152,8 @@ const App = () => {
 								? UPDATE_REVIEW_CLEAR
 								: cartError
 								? CART_CLEAR
+								: createOrderError
+								? CREATE_ORDER_CLEAR
 								: null
 						}
 						actionText={
@@ -176,7 +182,8 @@ const App = () => {
 							cancelEmailUpdateSuccess ||
 							createReviewSuccess ||
 							updateReviewSuccess ||
-							cartSuccess
+							cartSuccess ||
+							createOrderSuccess
 						}
 						clearType={
 							sendVerifyUserSuccess
@@ -199,6 +206,8 @@ const App = () => {
 								? USER_UPDATE_PROFILE_CLEAR
 								: cartSuccess
 								? CART_CLEAR
+								: createOrderSuccess
+								? CREATE_ORDER_CLEAR
 								: null
 						}
 					/>
@@ -214,7 +223,14 @@ const App = () => {
 							<Redirect from='/forgotpassword' exact to='/profile' />
 							<Route path='/product/:slug' component={ProductScreen} />
 							<Route exact path='/cart' component={CartScreen} />
-							<Route exact path='/checkout' component={CheckoutScreen} />
+							<Route path='/order' exact component={OrderScreen} />
+							{order && cartItems?.length === 0 ? (
+								<Redirect from='/checkout' exact to='/order' />
+							) : cartItems?.length === 0 ? (
+								<Redirect from='/checkout' exact to='/cart' />
+							) : (
+								<Route exact path='/checkout' component={CheckoutScreen} />
+							)}
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
 					) : isAuth && user.isVerified ? (
@@ -229,7 +245,14 @@ const App = () => {
 							<Redirect from='/forgotpassword' exact to='/profile' />
 							<Route path='/product/:slug' component={ProductScreen} />
 							<Route exact path='/cart' component={CartScreen} />
-							<Route exact path='/checkout' component={CheckoutScreen} />
+							<Route path='/order' exact component={OrderScreen} />
+							{order && cartItems?.length === 0 ? (
+								<Redirect from='/checkout' exact to='/order' />
+							) : cartItems?.length === 0 ? (
+								<Redirect from='/checkout' exact to='/cart' />
+							) : (
+								<Route exact path='/checkout' component={CheckoutScreen} />
+							)}
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
 					) : (
@@ -254,6 +277,7 @@ const App = () => {
 							<Route path='/product/:slug' component={ProductScreen} />
 							<Route exact path='/cart' component={CartScreen} />
 							<Redirect from='/checkout' exact to='/login' />
+							<Redirect from='/order' exact to='/login' />
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
 					)}

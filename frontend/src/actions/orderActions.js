@@ -31,7 +31,7 @@ export const createOrderAction = order => async (dispatch, getState) => {
 		});
 
 		const {
-			auth: { token }
+			userData: { token }
 		} = getState();
 
 		const config = {
@@ -43,12 +43,12 @@ export const createOrderAction = order => async (dispatch, getState) => {
 
 		const { data } = await axios.post(`/api/v1/orders`, order, config);
 
-		dispatch(emptyCartAction());
-
 		dispatch({
 			type: CREATE_ORDER_SUCCESS,
 			payload: data
 		});
+
+		dispatch(emptyCartAction());
 	} catch (error) {
 		dispatch({
 			type: CREATE_ORDER_FAIL,

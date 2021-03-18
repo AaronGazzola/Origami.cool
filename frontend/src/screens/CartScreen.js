@@ -60,7 +60,7 @@ const CartScreen = ({ history }) => {
 						cartItems?.map(item => (
 							<Paper
 								variant='outlined'
-								key={item.productId}
+								key={item.product}
 								className={classes.cartItem}
 								component={Grid}
 								container
@@ -108,7 +108,7 @@ const CartScreen = ({ history }) => {
 
 								<IconButton
 									className={classes.deleteIcon}
-									onClick={() => dispatch(removeFromCartAction(item.productId))}
+									onClick={() => dispatch(removeFromCartAction(item.product))}
 								>
 									<Delete />
 								</IconButton>

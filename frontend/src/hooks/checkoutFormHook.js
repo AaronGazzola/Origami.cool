@@ -100,9 +100,7 @@ const useCheckoutForm = address => {
 					draft.addressIsOpen = !state.addressIsOpen;
 					break;
 				case 'RESET':
-					console.log(action.payload);
 					return initialFormState;
-					break;
 				default:
 					break;
 			}

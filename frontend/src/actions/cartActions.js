@@ -22,7 +22,7 @@ export const addToCartAction = (slug, qty) => async (dispatch, getState) => {
 		dispatch({
 			type: CART_ADD_ITEM,
 			payload: {
-				productId: _id,
+				product: _id,
 				productSlug: slug,
 				name,
 				image,
@@ -36,7 +36,7 @@ export const addToCartAction = (slug, qty) => async (dispatch, getState) => {
 			JSON.stringify(getState().cart.cartItems)
 		);
 
-		dispatch({ type: CART_SUCCESS, payload: 'Item added to cart' });
+		dispatch({ type: CART_SUCCESS, payload: 'Cart updated' });
 		dispatch({ type: CART_REDIRECT });
 	} catch (error) {
 		dispatch({
@@ -59,7 +59,7 @@ export const removeFromCartAction = id => (dispatch, getState) => {
 
 	localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems));
 
-	dispatch({ type: CART_SUCCESS });
+	dispatch({ type: CART_SUCCESS, payload: 'Cart updated' });
 };
 
 export const emptyCartAction = () => dispatch => {
