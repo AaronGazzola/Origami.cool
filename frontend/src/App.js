@@ -21,6 +21,7 @@ import ResetPasswordScreen from 'screens/ResetPasswordScreen';
 import ForgotPasswordScreen from 'screens/ForgotPasswordScreen';
 import ProductScreen from 'screens/ProductScreen';
 import CartScreen from 'screens/CartScreen';
+import CheckoutScreen from 'screens/CheckoutScreen';
 import Message from 'components/Message';
 import SnackBar from 'components/SnackBar';
 import {
@@ -213,6 +214,7 @@ const App = () => {
 							<Redirect from='/forgotpassword' exact to='/profile' />
 							<Route path='/product/:slug' component={ProductScreen} />
 							<Route exact path='/cart' component={CartScreen} />
+							<Route exact path='/checkout' component={CheckoutScreen} />
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
 					) : isAuth && user.isVerified ? (
@@ -227,6 +229,7 @@ const App = () => {
 							<Redirect from='/forgotpassword' exact to='/profile' />
 							<Route path='/product/:slug' component={ProductScreen} />
 							<Route exact path='/cart' component={CartScreen} />
+							<Route exact path='/checkout' component={CheckoutScreen} />
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
 					) : (
@@ -250,6 +253,7 @@ const App = () => {
 							/>
 							<Route path='/product/:slug' component={ProductScreen} />
 							<Route exact path='/cart' component={CartScreen} />
+							<Redirect from='/checkout' exact to='/login' />
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
 					)}

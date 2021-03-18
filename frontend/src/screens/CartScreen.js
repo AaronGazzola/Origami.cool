@@ -45,7 +45,6 @@ const CartScreen = ({ history }) => {
 				</Typography>
 				<Grid
 					item
-					matchesXs
 					container
 					justify='center'
 					alignItems='center'

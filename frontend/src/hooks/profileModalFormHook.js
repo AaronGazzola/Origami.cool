@@ -46,7 +46,7 @@ const useProfileModalForm = user => {
 			},
 			postCode: {
 				value: user.address?.postCode || '',
-				isValid: !!user.address?.postcode,
+				isValid: !!user.address?.postCode,
 				isTouched: false,
 				isChanged: false
 			},

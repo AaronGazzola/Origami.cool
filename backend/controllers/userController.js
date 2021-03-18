@@ -225,10 +225,12 @@ const userUpdateProfile = asyncHandler(async (req, res, next) => {
 	);
 
 	// update name
-	user.name = req.body.name;
+	if (req.body.name) {
+		user.name = req.body.name;
+	}
 
 	// if email is updated
-	if (req.body.email !== user.email) {
+	if (req.body.email && req.body.email !== user.email) {
 		//check for user with email
 		const foundUser = await User.findOne({ email: req.body.email });
 		if (foundUser) {
