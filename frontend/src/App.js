@@ -42,7 +42,10 @@ import {
 	UPDATE_REVIEW_CLEAR
 } from 'constants/productConstants';
 import { CART_CLEAR } from 'constants/cartConstants';
-import { CREATE_ORDER_CLEAR } from 'constants/orderConstants';
+import {
+	CREATE_ORDER_CLEAR,
+	SEND_ORDER_EMAIL_CLEAR
+} from 'constants/orderConstants';
 import { sendVerifyUserAction } from 'actions/userActions';
 import { getProductsAction } from 'actions/productActions';
 import OrderScreen from './screens/OrderScreen';
@@ -85,7 +88,15 @@ const App = () => {
 		createReview: { error: createReviewError, success: createReviewSuccess },
 		updateReview: { error: updateReviewError, success: updateReviewSuccess },
 		cart: { error: cartError, success: cartSuccess, cartItems },
-		createOrder: { error: createOrderError, success: createOrderSuccess, order }
+		createOrder: {
+			error: createOrderError,
+			success: createOrderSuccess,
+			order
+		},
+		sendOrderEmail: {
+			error: sendOrderEmailError,
+			success: sendOrderEmailSuccess
+		}
 	} = useSelector(state => state);
 
 	useEffect(() => {
@@ -116,7 +127,8 @@ const App = () => {
 							createReviewError ||
 							updateReviewError ||
 							cartError ||
-							createOrderError
+							createOrderError ||
+							sendOrderEmailError
 						}
 						success={
 							signupSuccess ||
@@ -154,6 +166,8 @@ const App = () => {
 								? CART_CLEAR
 								: createOrderError
 								? CREATE_ORDER_CLEAR
+								: sendOrderEmailError
+								? SEND_ORDER_EMAIL_CLEAR
 								: null
 						}
 						actionText={
@@ -183,7 +197,8 @@ const App = () => {
 							createReviewSuccess ||
 							updateReviewSuccess ||
 							cartSuccess ||
-							createOrderSuccess
+							createOrderSuccess ||
+							sendOrderEmailSuccess
 						}
 						clearType={
 							sendVerifyUserSuccess
@@ -208,6 +223,8 @@ const App = () => {
 								? CART_CLEAR
 								: createOrderSuccess
 								? CREATE_ORDER_CLEAR
+								: sendOrderEmailSuccess
+								? SEND_ORDER_EMAIL_CLEAR
 								: null
 						}
 					/>

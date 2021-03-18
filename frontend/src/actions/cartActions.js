@@ -17,7 +17,8 @@ export const addToCartAction = (slug, qty) => async (dispatch, getState) => {
 
 		const { data } = await axios.get(`/api/v1/products/${slug}`);
 		const { name, images, price, countInStock, _id } = data.product;
-		const image = images[0];
+		const imagePath = images[0].path;
+		const imageLabel = images[0].label;
 
 		dispatch({
 			type: CART_ADD_ITEM,
@@ -25,7 +26,8 @@ export const addToCartAction = (slug, qty) => async (dispatch, getState) => {
 				product: _id,
 				productSlug: slug,
 				name,
-				image,
+				imagePath,
+				imageLabel,
 				price,
 				countInStock,
 				qty

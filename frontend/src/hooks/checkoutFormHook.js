@@ -2,7 +2,7 @@ import { useReducer } from 'react';
 import { produce } from 'immer';
 import { validate } from 'utils/validators';
 
-const useCheckoutForm = address => {
+const useCheckoutForm = (address, name) => {
 	const initialFormState = {
 		expanded: 0,
 		step: 0,
@@ -12,6 +12,12 @@ const useCheckoutForm = address => {
 		addressFormIsChanged: false,
 		addressIsOpen: false,
 		addressInputs: {
+			addressName: {
+				value: name || '',
+				isValid: !!name,
+				isTouched: false,
+				isChanged: false
+			},
 			street1: {
 				value: address?.street1 || '',
 				isValid: !!address?.street1,
@@ -20,7 +26,7 @@ const useCheckoutForm = address => {
 			},
 			street2: {
 				value: address?.street2 || '',
-				isValid: !!address?.street2,
+				isValid: true,
 				isTouched: false,
 				isChanged: false
 			},

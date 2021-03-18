@@ -58,7 +58,11 @@ import {
 	CREATE_ORDER_FAIL
 } from 'constants/orderConstants';
 import useCheckoutForm from 'hooks/checkoutFormHook';
-import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH } from 'utils/validators';
+import {
+	VALIDATOR_REQUIRE,
+	VALIDATOR_MINLENGTH,
+	VALIDATOR_MAXLENGTH
+} from 'utils/validators';
 
 const CheckoutScreen = () => {
 	const classes = useStyles();
@@ -72,7 +76,7 @@ const CheckoutScreen = () => {
 	const [closeAddress, setCloseAddress] = useState(false);
 
 	const {
-		user: { address }
+		user: { address, name }
 	} = useSelector(state => state.userData);
 	const {
 		loading: userUpdateProfileLoading,
@@ -83,7 +87,7 @@ const CheckoutScreen = () => {
 		state => state.createOrder
 	);
 
-	const [formState, formDispatch] = useCheckoutForm(address);
+	const [formState, formDispatch] = useCheckoutForm(address, name);
 	const {
 		expanded,
 		step,
@@ -91,7 +95,15 @@ const CheckoutScreen = () => {
 		addressIsValid,
 		addressFormIsValid,
 		addressIsOpen,
-		addressInputs: { street1, street2, city, state, postCode, country }
+		addressInputs: {
+			addressName,
+			street1,
+			street2,
+			city,
+			state,
+			postCode,
+			country
+		}
 	} = formState;
 
 	const cart = useSelector(state => state.cart);
@@ -122,8 +134,8 @@ const CheckoutScreen = () => {
 	}, [closeAddress, addressIsOpen, userUpdateProfileSuccess]);
 
 	useEffect(() => {
-		formDispatch({ type: 'RESET', payload: address });
-	}, [address]);
+		formDispatch({ type: 'RESET' });
+	}, [address, name]);
 
 	useEffect(() => {
 		if (!sdkReady) {
@@ -172,6 +184,7 @@ const CheckoutScreen = () => {
 		setCloseAddress(true);
 		dispatch(
 			userUpdateProfileAction({
+				name: addressName.value,
 				address: {
 					street1: street1.value,
 					street2: street2.value,
@@ -237,6 +250,11 @@ const CheckoutScreen = () => {
 								<Grid item xs={12} sm={6}>
 									<Paper variant='outlined' className={classes.deliveryPaper}>
 										<Typography variant='h6'>Delivery Address:</Typography>
+										{address && (
+											<Typography className={classes.address}>
+												{name}
+											</Typography>
+										)}
 										{address &&
 											Object.keys(address).map(key =>
 												address[key] && key === 'state' ? (
@@ -272,6 +290,36 @@ const CheckoutScreen = () => {
 										<Collapse in={addressIsOpen} timeout='auto' unmountOnExit>
 											<form onSubmit={updateAddressHandler}>
 												<List className={formClasses.innerList}>
+													<TextField
+														id='addressName'
+														label='Name'
+														type='text'
+														placeholder='Name'
+														fullWidth
+														color='secondary'
+														value={addressName.value}
+														onChange={e =>
+															changeHandler(e, [
+																VALIDATOR_REQUIRE(),
+																VALIDATOR_MINLENGTH(2),
+																VALIDATOR_MAXLENGTH(30)
+															])
+														}
+														className={
+															addressName.isTouched && !addressName.isValid
+																? clsx(formClasses.listInput, formClasses.error)
+																: formClasses.listInput
+														}
+														onBlur={touchHandler}
+														error={
+															!addressName.isValid && addressName.isTouched
+														}
+														helperText={
+															addressName.isTouched && !addressName.isValid
+																? 'Please enter a name between 2 and 30 characters'
+																: ' '
+														}
+													/>
 													<TextField
 														id='street1'
 														label='Street Address Line 1'
@@ -578,8 +626,8 @@ const CheckoutScreen = () => {
 										<img
 											to={`/product/${item.productSlug}`}
 											component={Link}
-											src={item?.image.path}
-											alt={item?.image.label}
+											src={item?.imagePath}
+											alt={item?.imageLabel}
 											className={classes.productImage}
 										/>
 

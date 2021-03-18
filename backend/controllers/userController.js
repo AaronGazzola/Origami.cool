@@ -95,7 +95,7 @@ const sendVerifyUser = asyncHandler(async (req, res, next) => {
 
 	try {
 		await sendEmail({
-			type: 'ACTION',
+			type: 'VERIFY',
 			actionLink,
 			user,
 			baseUrl,
@@ -164,7 +164,7 @@ const forgotPassword = asyncHandler(async (req, res, next) => {
 
 	try {
 		await sendEmail({
-			type: 'ACTION',
+			type: 'VERIFY',
 			actionLink,
 			user,
 			baseUrl,
@@ -253,7 +253,7 @@ const userUpdateProfile = asyncHandler(async (req, res, next) => {
 		// send verification email
 		try {
 			await sendEmail({
-				type: 'ACTION',
+				type: 'VERIFY',
 				actionLink,
 				user,
 				baseUrl,

@@ -24,7 +24,6 @@ const CartScreen = ({ history }) => {
 	const theme = useTheme();
 	const classes = useStyles();
 	const matchesXs = useMediaQuery(theme.breakpoints.down('xs'));
-	const matchesSm = useMediaQuery(theme.breakpoints.down('sm'));
 	const { cartItems, loading } = useSelector(state => state.cart);
 
 	useEffect(() => {
@@ -71,8 +70,8 @@ const CartScreen = ({ history }) => {
 								<img
 									to={`/product/${item.productSlug}`}
 									component={Link}
-									src={item?.image.path}
-									alt={item?.image.label}
+									src={item?.imagePath}
+									alt={item?.imageLabel}
 									className={classes.productImage}
 								/>
 

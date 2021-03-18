@@ -43,6 +43,9 @@ const ProfileScreen = () => {
 						</Typography>
 						<Typography className={classes.text}>{user.email}</Typography>
 						<Divider className={classes.divider} />
+						{address && (
+							<Typography className={classes.address}>{user.name}</Typography>
+						)}
 						{address &&
 							Object.keys(address).map(key =>
 								address[key] && key === 'state' ? (

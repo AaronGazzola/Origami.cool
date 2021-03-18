@@ -3,6 +3,10 @@ import {
 	CREATE_ORDER_SUCCESS,
 	CREATE_ORDER_FAIL,
 	CREATE_ORDER_CLEAR,
+	SEND_ORDER_EMAIL_REQUEST,
+	SEND_ORDER_EMAIL_SUCCESS,
+	SEND_ORDER_EMAIL_FAIL,
+	SEND_ORDER_EMAIL_CLEAR,
 	USER_LIST_ORDERS_REQUEST,
 	USER_LIST_ORDERS_SUCCESS,
 	USER_LIST_ORDERS_FAIL,
@@ -48,6 +52,27 @@ export const createOrderReducer = (state = {}, action) => {
 			};
 		case CREATE_ORDER_CLEAR:
 			return { ...state, error: null, success: null };
+		default:
+			return state;
+	}
+};
+
+export const sendOrderEmailReducer = (state = {}, action) => {
+	switch (action.type) {
+		case SEND_ORDER_EMAIL_REQUEST:
+			return { loading: true };
+		case SEND_ORDER_EMAIL_SUCCESS:
+			return {
+				loading: false,
+				success: action.payload
+			};
+		case SEND_ORDER_EMAIL_FAIL:
+			return {
+				loading: false,
+				error: action.payload
+			};
+		case SEND_ORDER_EMAIL_CLEAR:
+			return {};
 		default:
 			return state;
 	}

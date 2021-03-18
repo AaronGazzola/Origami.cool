@@ -11,11 +11,11 @@ const sendEmail = async options => {
 		}
 	});
 
-	const [subject, html] = useHtmlTemplate(options);
+	const [mailList, subject, html] = useHtmlTemplate(options);
 
 	const message = {
 		from: `${process.env.FROM_NAME_DEV} <aaron@origami.cool>`,
-		to: options.user.newEmail ? options.user.newEmail : options.user.email,
+		to: mailList,
 		subject,
 		html
 	};

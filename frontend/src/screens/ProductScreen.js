@@ -185,11 +185,15 @@ const ProductScreen = ({ match, history }) => {
 									color='secondary'
 									onChange={e => setQty(e.target.value)}
 								>
-									{[...Array(product?.countInStock).keys()].map(x => (
-										<MenuItem key={x + 1} value={x + 1}>
-											{x + 1}
-										</MenuItem>
-									))}
+									{product?.countInStock === 0 ? (
+										<MenuItem value={0}>-</MenuItem>
+									) : (
+										[...Array(product?.countInStock).keys()].map(x => (
+											<MenuItem key={x + 1} value={x + 1}>
+												{x + 1}
+											</MenuItem>
+										))
+									)}
 								</Select>
 							</FormControl>
 							<Typography

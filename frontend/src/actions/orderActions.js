@@ -3,6 +3,9 @@ import {
 	CREATE_ORDER_REQUEST,
 	CREATE_ORDER_SUCCESS,
 	CREATE_ORDER_FAIL,
+	SEND_ORDER_EMAIL_REQUEST,
+	SEND_ORDER_EMAIL_SUCCESS,
+	SEND_ORDER_EMAIL_FAIL,
 	USER_LIST_ORDERS_REQUEST,
 	USER_LIST_ORDERS_SUCCESS,
 	USER_LIST_ORDERS_FAIL,
@@ -49,6 +52,7 @@ export const createOrderAction = order => async (dispatch, getState) => {
 		});
 
 		dispatch(emptyCartAction());
+		dispatch(sendConfirmOrderEmailAction(data.order));
 	} catch (error) {
 		dispatch({
 			type: CREATE_ORDER_FAIL,
@@ -59,6 +63,44 @@ export const createOrderAction = order => async (dispatch, getState) => {
 		});
 	}
 };
+
+export const sendConfirmOrderEmailAction = order => async (
+	dispatch,
+	getState
+) => {
+	try {
+		const {
+			userData: { token }
+		} = getState();
+
+		dispatch({
+			type: SEND_ORDER_EMAIL_REQUEST
+		});
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`
+			}
+		};
+
+		await axios.post('/api/v1/orders/sendemail', { order }, config);
+
+		dispatch({
+			type: SEND_ORDER_EMAIL_SUCCESS,
+			payload: `Confirmation email sent`
+		});
+	} catch (error) {
+		dispatch({
+			type: SEND_ORDER_EMAIL_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+		});
+	}
+};
+
 export const userListOrdersAction = () => async (dispatch, getState) => {
 	try {
 		dispatch({
