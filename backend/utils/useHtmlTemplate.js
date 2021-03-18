@@ -497,6 +497,9 @@ Origami.cool" border="0" style="display: block; max-width: 100%; white-space: pr
 																						: 'Send the item within 2 business days to the address below'
 																				}</p>
                                         <div class="address-container" style="border: 1px solid #E0E0E0; border-radius: 8px; display: block; margin: 0 auto; padding: 15px 25px; width: min-content;">
+                                        <p class="delivery-address text p" style="display: block; color: #000000; font-size: 16px; line-height: 20px; font-family: Helvetica,Arial,sans-serif; padding: 0; margin: 0 0 2px; white-space: nowrap;">${
+																					user.name
+																				}</p>
                                         ${Object.values(order.address)
 																					.map(
 																						value =>
