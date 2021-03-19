@@ -121,6 +121,29 @@ const styles = makeStyles(theme => ({
 	},
 	hidden: {
 		display: 'none'
+	},
+	profilePaperLoading: {
+		width: '100%',
+		height: '75px',
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	faintIcon: { color: theme.palette.grey[500] },
+	headerRow: {
+		'& th': {
+			fontWeight: 700,
+			[theme.breakpoints.down('md')]: {
+				padding: theme.spacing(1)
+			}
+		}
+	},
+	tableRow: {
+		'& td': {
+			[theme.breakpoints.down('md')]: {
+				padding: theme.spacing(1)
+			}
+		}
 	}
 }));
 

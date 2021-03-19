@@ -1,16 +1,37 @@
 import React, { useState, useEffect } from 'react';
+import moment from 'moment';
 import clsx from 'clsx';
-import { Button, Grid, Paper, Typography, Divider } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import {
+	Button,
+	Grid,
+	Paper,
+	Typography,
+	Divider,
+	CircularProgress,
+	Table,
+	TableContainer,
+	TableHead,
+	TableRow,
+	TableCell,
+	TableBody,
+	useTheme,
+	useMediaQuery
+} from '@material-ui/core';
+import { Block, HourglassEmpty } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutAction } from 'actions/userActions';
 import styles from 'styles/contentStyles';
-import ProfileModal from '../components/ProfileModal';
+import ProfileModal from 'components/ProfileModal';
+import { userListOrdersAction } from 'actions/orderActions';
 
 const useStyles = styles;
 
 const ProfileScreen = () => {
+	const theme = useTheme();
 	const classes = useStyles();
 	const dispatch = useDispatch();
+	const matchesXs = useMediaQuery(theme => theme.breakpoints.down('xs'));
 	const {
 		user: { address },
 		user
@@ -21,7 +42,15 @@ const ProfileScreen = () => {
 		success: userUpdateProfileSuccess
 	} = useSelector(state => state.userUpdateProfile);
 
+	const { orders, loading: userListOrdersLoading } = useSelector(
+		state => state.userListOrders
+	);
+
 	const [modalIsOpen, setModalIsOpen] = useState(false);
+
+	useEffect(() => {
+		dispatch(userListOrdersAction());
+	}, []);
 
 	useEffect(() => {
 		if (userUpdateProfileSuccess || userUpdateProfileError) {
@@ -33,7 +62,7 @@ const ProfileScreen = () => {
 		<>
 			<ProfileModal open={modalIsOpen} setOpen={setModalIsOpen} user={user} />
 			<Grid container spacing={5} className={classes.container}>
-				<Grid item xs={12} md={5} lg={4}>
+				<Grid item xs={12} md={4}>
 					<Typography variant='h1' className={classes.title}>
 						Profile
 					</Typography>
@@ -87,7 +116,152 @@ const ProfileScreen = () => {
 					<Typography variant='h1' className={classes.title}>
 						Orders
 					</Typography>
-					<Paper className={classes.paper}></Paper>
+					{userListOrdersLoading ? (
+						<Paper className={classes.profilePaperLoading}>
+							<CircularProgress />
+						</Paper>
+					) : orders?.length === 0 ? (
+						<Paper className={classes.profilePaperLoading}>
+							<Typography>No orders to display...</Typography>
+						</Paper>
+					) : (
+						<TableContainer component={Paper}>
+							<Table aria-label='simple table'>
+								<TableHead>
+									<TableRow className={classes.headerRow}>
+										{matchesXs ? (
+											<>
+												<TableCell align='center'>Paid</TableCell>
+												<TableCell align='center'>Sent</TableCell>
+												<TableCell align='center'></TableCell>
+											</>
+										) : (
+											<>
+												<TableCell align='center'>#</TableCell>
+												<TableCell align='center'>Order Date</TableCell>
+												<TableCell align='center'>Total</TableCell>
+												<TableCell align='center'>Paid</TableCell>
+												<TableCell align='center'>Sent</TableCell>
+												<TableCell align='center'></TableCell>
+											</>
+										)}
+									</TableRow>
+								</TableHead>
+								<TableBody>
+									{matchesXs
+										? orders
+												?.sort(
+													(a, b) =>
+														moment(b.createdAt.substring(0, 19)).valueOf() -
+														moment(a.createdAt.substring(0, 19)).valueOf()
+												)
+												.map(order => (
+													<TableRow
+														key={order._id}
+														className={classes.tableRow}
+													>
+														<TableCell align='center'>
+															{order.isPaid ? (
+																moment(order.paidAt.substring(0, 10)).format(
+																	'Do MMM'
+																)
+															) : (
+																<HourglassEmpty className={classes.faintIcon} />
+															)}
+														</TableCell>
+														<TableCell align='center'>
+															{order.isDelivered ? (
+																moment(
+																	order.deliveredAt.substring(0, 10)
+																).format('Do MMM')
+															) : (
+																<HourglassEmpty className={classes.faintIcon} />
+															)}
+														</TableCell>
+														<TableCell>
+															<Button
+																color='secondary'
+																component={Link}
+																to={`/order/${order._id}`}
+																className={classes.link}
+																style={{ fontWeight: 700 }}
+															>
+																Details
+															</Button>
+														</TableCell>
+													</TableRow>
+												))
+										: orders
+												?.sort(
+													(a, b) =>
+														moment(b.createdAt.substring(0, 19)).valueOf() -
+														moment(a.createdAt.substring(0, 19)).valueOf()
+												)
+												.map((order, i) => (
+													<TableRow
+														key={order._id}
+														className={classes.tableRow}
+													>
+														<TableCell align='center' scope='order'>
+															{i + 1}
+														</TableCell>
+														<TableCell align='center'>
+															{moment(order.createdAt.substring(0, 10)).format(
+																'Do MMM'
+															)}
+														</TableCell>
+														<TableCell align='center'>
+															${order.totalPrice}
+														</TableCell>
+														<TableCell align='center'>
+															{order.isPaid ? (
+																moment(order.paidAt.substring(0, 10)).format(
+																	'Do MMM'
+																)
+															) : (
+																<HourglassEmpty className={classes.faintIcon} />
+															)}
+														</TableCell>
+														<TableCell align='center'>
+															{order.isDelivered ? (
+																moment(
+																	order.deliveredAt.substring(0, 10)
+																).format('Do MMM')
+															) : (
+																<HourglassEmpty className={classes.faintIcon} />
+															)}
+														</TableCell>
+														<TableCell>
+															<Grid
+																container
+																direction='column'
+																alignItems='center'
+																justify='center'
+															>
+																{order.isCanceled && (
+																	<Typography
+																		style={{ color: theme.palette.error.main }}
+																	>
+																		Canceled
+																	</Typography>
+																)}
+																<Button
+																	color='secondary'
+																	component={Link}
+																	to={`/order/${order._id}`}
+																	className={classes.link}
+																	style={{ fontWeight: 700 }}
+																>
+																	Details
+																</Button>
+															</Grid>
+														</TableCell>
+													</TableRow>
+												))}
+								</TableBody>
+							</Table>
+						</TableContainer>
+					)}
 				</Grid>
 			</Grid>
 		</>
