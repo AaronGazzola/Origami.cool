@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import clsx from 'clsx';
 import { PayPalButton } from 'react-paypal-button-v2';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
 	List,
 	ListItem,
@@ -42,20 +42,14 @@ import {
 } from '@material-ui/icons';
 import { useTheme } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
-import Message from 'components/Message';
 import useStyles from 'styles/checkoutStyles';
 import useFormStyles from 'styles/formStyles';
 import { userUpdateProfileAction } from 'actions/userActions';
 import { addToCartAction, removeFromCartAction } from 'actions/cartActions';
 import { createOrderAction } from 'actions/orderActions';
-import { Skeleton } from '@material-ui/lab';
 import {
-	UPDATE_ADDRESS_CLEAR,
-	USER_DETAILS_CLEAR
-} from 'constants/userConstants';
-import {
-	CREATE_ORDER_CLEAR,
-	CREATE_ORDER_FAIL
+	CREATE_ORDER_FAIL,
+	CREATE_ORDER_REDIRECT_CLEAR
 } from 'constants/orderConstants';
 import useCheckoutForm from 'hooks/checkoutFormHook';
 import {
@@ -64,14 +58,12 @@ import {
 	VALIDATOR_MAXLENGTH
 } from 'utils/validators';
 
-const CheckoutScreen = () => {
+const CheckoutScreen = ({ history }) => {
 	const classes = useStyles();
 	const formClasses = useFormStyles();
 	const theme = useTheme();
 	const dispatch = useDispatch();
 	const matchesXs = useMediaQuery(theme.breakpoints.down('xs'));
-	const matchesSm = useMediaQuery(theme.breakpoints.down('sm'));
-	const matchesMd = useMediaQuery(theme.breakpoints.down('md'));
 	const [sdkReady, setSdkReady] = useState(false);
 	const [closeAddress, setCloseAddress] = useState(false);
 
@@ -83,7 +75,7 @@ const CheckoutScreen = () => {
 		success: userUpdateProfileSuccess
 	} = useSelector(state => state.userUpdateProfile);
 
-	const { loading: createOrderLoading } = useSelector(
+	const { loading: createOrderLoading, redirect, order } = useSelector(
 		state => state.createOrder
 	);
 
@@ -131,11 +123,18 @@ const CheckoutScreen = () => {
 			formDispatch({ type: 'TOGGLE' });
 			setCloseAddress(false);
 		}
-	}, [closeAddress, addressIsOpen, userUpdateProfileSuccess]);
+	}, [closeAddress, addressIsOpen, userUpdateProfileSuccess, formDispatch]);
 
 	useEffect(() => {
 		formDispatch({ type: 'RESET' });
-	}, [address, name]);
+	}, [address, name, formDispatch]);
+
+	useEffect(() => {
+		if (redirect) {
+			dispatch({ type: CREATE_ORDER_REDIRECT_CLEAR });
+			history.push(`/order/${order._id}`);
+		}
+	}, [redirect, history, order]);
 
 	useEffect(() => {
 		if (!sdkReady) {

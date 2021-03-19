@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -18,17 +18,41 @@ import useStyles from 'styles/cartStyles';
 import { CART_CLEAR_REDIRECT } from 'constants/cartConstants';
 import { Link } from 'react-router-dom';
 import { addToCartAction, removeFromCartAction } from 'actions/cartActions';
+import { getProductsAction } from 'actions/productActions';
 
 const CartScreen = ({ history }) => {
 	const dispatch = useDispatch();
 	const theme = useTheme();
 	const classes = useStyles();
 	const matchesXs = useMediaQuery(theme.breakpoints.down('xs'));
+	const [stockChecked, setStockChecked] = useState(false);
 	const { cartItems, loading } = useSelector(state => state.cart);
+	const { products } = useSelector(state => state.getProducts);
 
 	useEffect(() => {
 		dispatch({ type: CART_CLEAR_REDIRECT });
+		dispatch(getProductsAction());
 	}, [dispatch]);
+
+	// update cart if insufficient stock
+	useEffect(() => {
+		if (products?.length > 0 && cartItems?.length > 0 && !stockChecked) {
+			cartItems.forEach(item => {
+				products.forEach(product => {
+					if (product._id === item.product) {
+						if (product.countInStock === 0) {
+							console.log('test');
+							dispatch(removeFromCartAction(product._id));
+						} else if (product.countInStock < item.qty) {
+							console.log('test2');
+							dispatch(addToCartAction(product.slug, product.countInStock));
+						}
+					}
+				});
+			});
+			setStockChecked(true);
+		}
+	}, [products, cartItems, stockChecked, dispatch]);
 
 	return (
 		<>

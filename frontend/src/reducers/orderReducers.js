@@ -2,6 +2,7 @@ import {
 	CREATE_ORDER_REQUEST,
 	CREATE_ORDER_SUCCESS,
 	CREATE_ORDER_FAIL,
+	CREATE_ORDER_REDIRECT_CLEAR,
 	CREATE_ORDER_CLEAR,
 	SEND_ORDER_EMAIL_REQUEST,
 	SEND_ORDER_EMAIL_SUCCESS,
@@ -41,7 +42,8 @@ export const createOrderReducer = (state = {}, action) => {
 			return {
 				loading: false,
 				success: 'Order confirmed',
-				order: action.payload.order
+				order: action.payload.order,
+				redirect: true
 			};
 		case CREATE_ORDER_FAIL:
 			return {
@@ -50,6 +52,8 @@ export const createOrderReducer = (state = {}, action) => {
 					? action.payload
 					: 'Could not create order, please try again.'
 			};
+		case CREATE_ORDER_REDIRECT_CLEAR:
+			return { ...state, redirect: false };
 		case CREATE_ORDER_CLEAR:
 			return { ...state, error: null, success: null };
 		default:

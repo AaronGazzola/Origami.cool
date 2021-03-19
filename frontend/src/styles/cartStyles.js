@@ -66,7 +66,7 @@ const styles = makeStyles(theme => ({
 	itemPrice: {
 		fontStyle: 'italic',
 		[theme.breakpoints.up('sm')]: {
-			marginLeft: theme.spacing(2)
+			marginLeft: theme.spacing(3)
 		},
 		[theme.breakpoints.down('sm')]: {
 			fontSize: '.9rem'

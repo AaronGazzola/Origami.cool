@@ -19,6 +19,7 @@ import { getProductAction } from 'actions/productActions';
 import { addToCartAction } from 'actions/cartActions';
 import ImageSlider from 'components/ImageSlider';
 import ReviewSection from 'components/ReviewSection';
+import { CART_ADD_ITEM } from '../constants/cartConstants';
 
 const ProductScreen = ({ match, history }) => {
 	const slug = match.params.slug;
@@ -50,6 +51,7 @@ const ProductScreen = ({ match, history }) => {
 	const [sticky, setSticky] = useState(false);
 
 	useEffect(() => {
+		setSticky(action.current?.offsetHeight < window.innerHeight);
 		window.addEventListener('resize', handleResize);
 		return () => window.removeEventListener('resize', handleResize);
 	}, []);
@@ -207,6 +209,7 @@ const ProductScreen = ({ match, history }) => {
 
 					<Button
 						fullWidth
+						size='large'
 						variant='contained'
 						endIcon={<AddShoppingCart />}
 						className={classes.cartButton}

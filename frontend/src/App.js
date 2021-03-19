@@ -88,11 +88,7 @@ const App = () => {
 		createReview: { error: createReviewError, success: createReviewSuccess },
 		updateReview: { error: updateReviewError, success: updateReviewSuccess },
 		cart: { error: cartError, success: cartSuccess, cartItems },
-		createOrder: {
-			error: createOrderError,
-			success: createOrderSuccess,
-			order
-		},
+		createOrder: { error: createOrderError, success: createOrderSuccess },
 		sendOrderEmail: {
 			error: sendOrderEmailError,
 			success: sendOrderEmailSuccess
@@ -240,10 +236,8 @@ const App = () => {
 							<Redirect from='/forgotpassword' exact to='/profile' />
 							<Route path='/product/:slug' component={ProductScreen} />
 							<Route exact path='/cart' component={CartScreen} />
-							<Route path='/order' exact component={OrderScreen} />
-							{order && cartItems?.length === 0 ? (
-								<Redirect from='/checkout' exact to='/order' />
-							) : cartItems?.length === 0 ? (
+							<Route path='/order/:id' component={OrderScreen} />
+							{cartItems?.length === 0 ? (
 								<Redirect from='/checkout' exact to='/cart' />
 							) : (
 								<Route exact path='/checkout' component={CheckoutScreen} />
@@ -262,10 +256,8 @@ const App = () => {
 							<Redirect from='/forgotpassword' exact to='/profile' />
 							<Route path='/product/:slug' component={ProductScreen} />
 							<Route exact path='/cart' component={CartScreen} />
-							<Route path='/order' exact component={OrderScreen} />
-							{order && cartItems?.length === 0 ? (
-								<Redirect from='/checkout' exact to='/order' />
-							) : cartItems?.length === 0 ? (
+							<Route path='/order/:id' component={OrderScreen} />
+							{cartItems?.length === 0 ? (
 								<Redirect from='/checkout' exact to='/cart' />
 							) : (
 								<Route exact path='/checkout' component={CheckoutScreen} />
@@ -294,7 +286,7 @@ const App = () => {
 							<Route path='/product/:slug' component={ProductScreen} />
 							<Route exact path='/cart' component={CartScreen} />
 							<Redirect from='/checkout' exact to='/login' />
-							<Redirect from='/order' exact to='/login' />
+							<Redirect from='/order/:id' to='/login' />
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
 					)}

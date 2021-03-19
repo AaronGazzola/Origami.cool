@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React from 'react';
+// import { useDispatch } from 'react-redux';
 
 const OrderScreen = () => {
-	const dispatch = useDispatch();
+	// const dispatch = useDispatch();
 
 	return <div></div>;
 };
