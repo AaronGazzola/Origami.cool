@@ -99,7 +99,7 @@ export const userListOrdersReducer = (state = { orders: [] }, action) => {
 		case USER_LIST_ORDERS_FAIL:
 			return { loading: false, error: action.payload };
 		case USER_LIST_ORDERS_CLEAR:
-			return { orders: [] };
+			return { ...state, error: null, success: null };
 		default:
 			return state;
 	}

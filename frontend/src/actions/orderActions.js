@@ -111,7 +111,7 @@ export const userListOrdersAction = () => async (dispatch, getState) => {
 		});
 
 		const {
-			auth: { token }
+			userData: { token }
 		} = getState();
 
 		const config = {
@@ -121,7 +121,7 @@ export const userListOrdersAction = () => async (dispatch, getState) => {
 			}
 		};
 
-		const { data } = await axios.get(`/api/v1/orders/userorders`, config);
+		const { data } = await axios.get(`/api/v1/orders/myorders`, config);
 
 		dispatch({
 			type: USER_LIST_ORDERS_SUCCESS,

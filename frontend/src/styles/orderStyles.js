@@ -2,7 +2,10 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const styles = makeStyles(theme => ({
 	container: {
-		padding: theme.spacing(3)
+		padding: theme.spacing(3),
+		[theme.breakpoints.down('xs')]: {
+			padding: theme.spacing(1)
+		}
 	},
 	titleSkeleton: {
 		marginTop: -5,
@@ -21,7 +24,7 @@ const styles = makeStyles(theme => ({
 			margin: theme.spacing(1)
 		},
 		[theme.breakpoints.down('xs')]: {
-			fontSize: '1.5rem',
+			fontSize: '1.4rem',
 			whiteSpace: 'normal'
 		}
 	},

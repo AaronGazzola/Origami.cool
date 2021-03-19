@@ -173,10 +173,19 @@ const sendCancelEmail = asyncHandler(async (req, res, next) => {
 	res.status(201).json({ success: true });
 });
 
+// @desc    Get logged in user orders
+// @route   GET /api/orders/myorders
+// @access    Private
+const getUserOrders = asyncHandler(async (req, res) => {
+	const orders = await Order.find({ user: req.user._id });
+	res.status(200).json(orders);
+});
+
 export {
 	createOrder,
 	sendConfirmEmail,
 	getOrder,
 	cancelOrder,
-	sendCancelEmail
+	sendCancelEmail,
+	getUserOrders
 };

@@ -178,6 +178,10 @@ const CheckoutScreen = ({ history }) => {
 		formDispatch({ type: 'TOGGLE' });
 	};
 
+	useEffect(() => {
+		if (!addressIsValid && !addressIsOpen) addressToggleHandler();
+	}, [addressIsValid, addressToggleHandler, addressIsOpen]);
+
 	const updateAddressHandler = e => {
 		e.preventDefault();
 		setCloseAddress(true);

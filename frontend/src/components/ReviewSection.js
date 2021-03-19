@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import moment from 'moment';
 import {
@@ -20,6 +20,7 @@ import {
 	validate
 } from 'utils/validators';
 import { createReviewAction, updateReviewAction } from 'actions/productActions';
+import { userListOrdersAction } from 'actions/orderActions';
 import { ExpandMore } from '@material-ui/icons';
 
 const labels = {
@@ -46,13 +47,30 @@ const ReviewSection = ({ product }) => {
 	const { loading: updateReviewLoading } = useSelector(
 		state => state.updateReview
 	);
+	const { orders } = useSelector(state => state.userListOrders);
 	const [hover, setHover] = useState(-1);
 	const initialDisplayCount = 3;
 	const [displayCount, setDisplayCount] = useState(initialDisplayCount);
+	const [reviewEnabled, setReviewEnabled] = useState(false);
 	const userReview = product.reviews.filter(
 		review => review.user === user._id
 	)[0];
 	const [rating, setRating] = useState(userReview?.rating || 5);
+
+	useEffect(() => {
+		dispatch(userListOrdersAction());
+	}, []);
+
+	useEffect(() => {
+		if (
+			isAuth &&
+			orders?.find(
+				order => !!order.orderItems.find(item => item.product === product._id)
+			)
+		) {
+			setReviewEnabled(true);
+		}
+	}, [orders, product, isAuth]);
 
 	const [reviewForm, setReviewForm] = useState({
 		title: {
@@ -177,13 +195,13 @@ const ReviewSection = ({ product }) => {
 
 			<Paper
 				className={
-					isAuth
+					reviewEnabled
 						? classes.reviewFormPaper
 						: clsx(classes.reviewFormPaper, classes.disabled)
 				}
 				elevation={2}
 			>
-				{!isAuth && (
+				{!reviewEnabled && (
 					<Paper className={classes.disabledMessage} variant='outlined'>
 						<Typography>
 							Please log in and make a purchase to leave a review
@@ -193,7 +211,7 @@ const ReviewSection = ({ product }) => {
 				<form className={classes.reviewForm} onSubmit={submitHandler}>
 					<Typography variant='h5'>Write a Customer Review:</Typography>
 					<Rating
-						disabled={!isAuth}
+						disabled={!reviewEnabled}
 						name='user-rating'
 						size='large'
 						value={rating}
@@ -211,7 +229,7 @@ const ReviewSection = ({ product }) => {
 					)}
 
 					<TextField
-						disabled={!isAuth}
+						disabled={!reviewEnabled}
 						id='title'
 						label='Review Title'
 						type='text'
@@ -235,7 +253,7 @@ const ReviewSection = ({ product }) => {
 					/>
 
 					<TextField
-						disabled={!isAuth}
+						disabled={!reviewEnabled}
 						id='comment'
 						label='Review Comment'
 						type='text'
@@ -266,7 +284,7 @@ const ReviewSection = ({ product }) => {
 						fullWidth
 						className={classes.button}
 						disabled={
-							!isAuth || !title.isValid || !comment.isValid || !isChanged
+							!reviewEnabled || !title.isValid || !comment.isValid || !isChanged
 						}
 					>
 						{createReviewLoading || updateReviewLoading ? (

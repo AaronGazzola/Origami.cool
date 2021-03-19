@@ -46,7 +46,8 @@ import {
 	CREATE_ORDER_CLEAR,
 	SEND_ORDER_EMAIL_CLEAR,
 	GET_ORDER_CLEAR,
-	CANCEL_ORDER_CLEAR
+	CANCEL_ORDER_CLEAR,
+	USER_LIST_ORDERS_CLEAR
 } from 'constants/orderConstants';
 import { sendVerifyUserAction } from 'actions/userActions';
 import { getProductsAction } from 'actions/productActions';
@@ -101,7 +102,8 @@ const App = () => {
 		sendCancelOrderEmail: {
 			error: sendCancelOrderEmailError,
 			success: sendCancelOrderEmailSuccess
-		}
+		},
+		userListOrders: { error: userListOrdersError }
 	} = useSelector(state => state);
 
 	useEffect(() => {
@@ -136,7 +138,8 @@ const App = () => {
 							sendOrderEmailError ||
 							getOrderError ||
 							cancelOrderError ||
-							sendCancelOrderEmailError
+							sendCancelOrderEmailError ||
+							userListOrdersError
 						}
 						success={
 							signupSuccess ||
@@ -182,6 +185,8 @@ const App = () => {
 								? CANCEL_ORDER_CLEAR
 								: sendCancelOrderEmailError
 								? SEND_CANCEL_ORDER_EMAIL_CLEAR
+								: userListOrdersError
+								? USER_LIST_ORDERS_CLEAR
 								: null
 						}
 						actionText={
