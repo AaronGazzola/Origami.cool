@@ -100,4 +100,45 @@ const sendConfirmEmail = asyncHandler(async (req, res, next) => {
 	res.status(201).json({ success: true });
 });
 
-export { createOrder, sendConfirmEmail };
+// @desc    Get order by Id
+// @route   GET /api/orders/:id
+// @access    Private
+const getOrder = asyncHandler(async (req, res, next) => {
+	const orderId = req.params.id;
+	const order = await Order.findById(orderId).populate('user');
+	if (!order) {
+		return next(new ErrorResponse('Order not found', 404));
+	} else if (
+		order.user._id.toString() != req.user._id.toString() &&
+		!req.user.isAdmin
+	) {
+		return next(new ErrorResponse('Not authorized to access content', 404));
+	}
+	res.status(200).json({ success: true, order });
+});
+
+// @desc    Cancel order by id
+// @route   PUT /api/orders/:id/cancel
+// @access    Private
+const cancelOrder = asyncHandler(async (req, res, next) => {
+	const order = await Order.findById(req.params.id).populate(
+		'user',
+		'name email'
+	);
+
+	if (!order) {
+		return next(new ErrorResponse('Order not found', 400));
+	}
+	if (order.isCanceled) {
+		return next(new ErrorResponse('Order is already canceled', 400));
+	} else {
+		order.canceledAt = Date.now();
+		order.isCanceled = true;
+	}
+
+	const updatedOrder = await order.save();
+
+	res.status(201).json({ success: true, order: updatedOrder });
+});
+
+export { createOrder, sendConfirmEmail, getOrder, cancelOrder };

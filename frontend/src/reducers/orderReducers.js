@@ -28,10 +28,10 @@ import {
 	SET_DELIVERED_SUCCESS,
 	SET_DELIVERED_FAIL,
 	SET_DELIVERED_CLEAR,
-	SET_CANCELED_REQUEST,
-	SET_CANCELED_SUCCESS,
-	SET_CANCELED_FAIL,
-	SET_CANCELED_CLEAR
+	CANCEL_ORDER_REQUEST,
+	CANCEL_ORDER_SUCCESS,
+	CANCEL_ORDER_FAIL,
+	CANCEL_ORDER_CLEAR
 } from 'constants/orderConstants';
 
 export const createOrderReducer = (state = {}, action) => {
@@ -178,19 +178,19 @@ export const setDeliveredReducer = (state = {}, action) => {
 	}
 };
 
-export const setCanceledReducer = (state = {}, action) => {
+export const cancelOrderReducer = (state = {}, action) => {
 	switch (action.type) {
-		case SET_CANCELED_REQUEST:
+		case CANCEL_ORDER_REQUEST:
 			return { loading: true };
-		case SET_CANCELED_SUCCESS:
+		case CANCEL_ORDER_SUCCESS:
 			return {
 				loading: false,
 				success: true,
 				order: action.payload
 			};
-		case SET_CANCELED_FAIL:
+		case CANCEL_ORDER_FAIL:
 			return { loading: false, error: action.payload };
-		case SET_CANCELED_CLEAR:
+		case CANCEL_ORDER_CLEAR:
 			return {};
 		default:
 			return state;

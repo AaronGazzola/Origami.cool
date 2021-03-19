@@ -22,7 +22,9 @@ import {
 import { cartReducer } from 'reducers/cartReducers';
 import {
 	createOrderReducer,
-	sendOrderEmailReducer
+	sendOrderEmailReducer,
+	getOrderReducer,
+	cancelOrderReducer
 } from 'reducers/orderReducers';
 
 const reducer = combineReducers({
@@ -42,7 +44,9 @@ const reducer = combineReducers({
 	updateReview: updateReviewReducer,
 	cart: cartReducer,
 	createOrder: createOrderReducer,
-	sendOrderEmail: sendOrderEmailReducer
+	sendOrderEmail: sendOrderEmailReducer,
+	getOrder: getOrderReducer,
+	cancelOrder: cancelOrderReducer
 });
 
 const userFromStorage = localStorage.getItem('user')

@@ -21,9 +21,9 @@ import {
 	SET_DELIVERED_REQUEST,
 	SET_DELIVERED_SUCCESS,
 	SET_DELIVERED_FAIL,
-	SET_CANCELED_REQUEST,
-	SET_CANCELED_SUCCESS,
-	SET_CANCELED_FAIL
+	CANCEL_ORDER_REQUEST,
+	CANCEL_ORDER_SUCCESS,
+	CANCEL_ORDER_FAIL
 } from 'constants/orderConstants';
 import { emptyCartAction } from 'actions/cartActions';
 
@@ -142,7 +142,7 @@ export const getOrderAction = id => async (dispatch, getState) => {
 		});
 
 		const {
-			auth: { token }
+			userData: { token }
 		} = getState();
 
 		const config = {
@@ -156,7 +156,7 @@ export const getOrderAction = id => async (dispatch, getState) => {
 
 		dispatch({
 			type: GET_ORDER_SUCCESS,
-			payload: data
+			payload: data.order
 		});
 	} catch (error) {
 		dispatch({
@@ -290,14 +290,14 @@ export const setDeliveredAction = id => async (dispatch, getState) => {
 	}
 };
 
-export const setCanceledAction = id => async (dispatch, getState) => {
+export const cancelOrderAction = id => async (dispatch, getState) => {
 	try {
 		dispatch({
-			type: SET_CANCELED_REQUEST
+			type: CANCEL_ORDER_REQUEST
 		});
 
 		const {
-			auth: { token }
+			userData: { token }
 		} = getState();
 
 		const config = {
@@ -306,21 +306,15 @@ export const setCanceledAction = id => async (dispatch, getState) => {
 			}
 		};
 
-		const { data } = await axios.put(
-			`/api/v1/orders/${id}/setcanceled`,
-			{},
-			config
-		);
-
-		dispatch(listOrdersAction());
+		const { data } = await axios.put(`/api/v1/orders/${id}/cancel`, {}, config);
 
 		dispatch({
-			type: SET_CANCELED_SUCCESS,
+			type: CANCEL_ORDER_SUCCESS,
 			payload: data.order
 		});
 	} catch (error) {
 		dispatch({
-			type: SET_CANCELED_FAIL,
+			type: CANCEL_ORDER_FAIL,
 			payload:
 				error.response && error.response.data.message
 					? error.response.data.message

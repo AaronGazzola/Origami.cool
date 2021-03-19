@@ -390,7 +390,7 @@ Origami.cool" border="0" style="display: block; max-width: 100%; white-space: pr
                                               <td>
                                                 <table role="presentation" width="auto" align="center" border="0" cellspacing="0" cellpadding="0" class="button__table" style="margin: 0 auto; margin-top: 10px;">
                                                   <tr>
-                                                    <td align="center" class="button__cell" style="border-radius: 3px; padding: 6px 12px; background-color: #2A7855; background-color: rgba(42,120,85,1);" bgcolor="rgba(42,120,85,1)"><a href="https://heml.io" class="button__link" style="color: #FFFFFF; text-decoration: none; background-color: #2A7855; background-color: rgba(42,120,85,1); display: inline-block;"><span class="button__text" style="color: #FFFFFF; text-decoration: none;">
+                                                    <td align="center" class="button__cell" style="border-radius: 3px; padding: 6px 12px; background-color: #2A7855; background-color: rgba(42,120,85,1);" bgcolor="rgba(42,120,85,1)"><a href="${actionLink}" class="button__link" style="color: #FFFFFF; text-decoration: none; background-color: #2A7855; background-color: rgba(42,120,85,1); display: inline-block;"><span class="button__text" style="color: #FFFFFF; text-decoration: none;">
 								View ${type === 'ORDER_USER' ? 'Your ' : ''}Oder Online
 							</span></a></td>
                                                   </tr>
