@@ -72,10 +72,9 @@ const sendConfirmEmail = asyncHandler(async (req, res, next) => {
 	}`;
 	const actionLink = `${baseUrl}/order/${order._id}`;
 
-	// send verification email
 	try {
 		await sendEmail({
-			type: 'ORDER_USER',
+			type: 'CONFIRM_ORDER_USER',
 			actionLink,
 			order,
 			user: req.user,
@@ -83,7 +82,7 @@ const sendConfirmEmail = asyncHandler(async (req, res, next) => {
 			reason: `You have recieved this email because an account with your email address was used to place an order at Origami.cool, this is not a promotional email.`
 		});
 		await sendEmail({
-			type: 'ORDER_ADMIN',
+			type: 'CONFIRM_ORDER_ADMIN',
 			actionLink,
 			order,
 			user: req.user,
@@ -91,9 +90,6 @@ const sendConfirmEmail = asyncHandler(async (req, res, next) => {
 		});
 	} catch (error) {
 		console.log(error);
-		user.verifyUserToken = undefined;
-
-		await user.save({ validateBeforeSave: false });
 
 		return next(new ErrorResponse('Confirmation email could not be sent', 500));
 	}
@@ -141,4 +137,46 @@ const cancelOrder = asyncHandler(async (req, res, next) => {
 	res.status(201).json({ success: true, order: updatedOrder });
 });
 
-export { createOrder, sendConfirmEmail, getOrder, cancelOrder };
+// @desc    Send order cancelation email
+// @route   POST /api/orders/sendcancel
+// @access    Private
+const sendCancelEmail = asyncHandler(async (req, res, next) => {
+	const order = req.body.order;
+	// get base URL from request protocol and host domain
+	const baseUrl = `${req.protocol}://${
+		process.env.NODE_ENV === 'production' ? req.get('host') : 'localhost:3000'
+	}`;
+	const actionLink = `${baseUrl}/order/${order._id}`;
+
+	// send verification email
+	try {
+		await sendEmail({
+			type: 'CANCEL_ORDER_USER',
+			actionLink,
+			order,
+			user: req.user,
+			baseUrl,
+			reason: `You have recieved this email because an account with your email address was used to place an order at Origami.cool, this is not a promotional email.`
+		});
+		await sendEmail({
+			type: 'CANCEL_ORDER_ADMIN',
+			actionLink,
+			order,
+			user: req.user,
+			baseUrl
+		});
+	} catch (error) {
+		console.log(error);
+
+		return next(new ErrorResponse('Confirmation email could not be sent', 500));
+	}
+	res.status(201).json({ success: true });
+});
+
+export {
+	createOrder,
+	sendConfirmEmail,
+	getOrder,
+	cancelOrder,
+	sendCancelEmail
+};

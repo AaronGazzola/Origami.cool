@@ -6,7 +6,7 @@ const useHtmlTemplate = ({
 	user,
 	message1,
 	message2,
-	reason,
+	reason = '',
 	actionLink,
 	buttonText,
 	order,
@@ -213,11 +213,19 @@ const useHtmlTemplate = ({
           </body>
         </html>`
 			];
-		case 'ORDER_USER':
-		case 'ORDER_ADMIN':
+		case 'CONFIRM_ORDER_USER':
+		case 'CONFIRM_ORDER_ADMIN':
+		case 'CANCEL_ORDER_USER':
+		case 'CANCEL_ORDER_ADMIN':
 			return [
-				type === 'ORDER_USER' ? user.email : process.env.ADMIN_EMAIL_ADDRESS,
-				`Order Confirmation for order #${order._id}`,
+				type === 'CONFIRM_ORDER_USER' || type === 'CANCEL_ORDER_USER'
+					? user.email
+					: process.env.ADMIN_EMAIL_ADDRESS,
+				type === 'CONFIRM_ORDER_USER'
+					? `Thank you for your purchase`
+					: type === 'CONFIRM_ORDER_ADMIN'
+					? `Order received`
+					: `Order canceled`,
 				`
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" />
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -356,17 +364,22 @@ Origami.cool" border="0" style="display: block; max-width: 100%; white-space: pr
                                     <tr class="row__row">
                                       <td class="column col-sm-12" width="600" style="width: 100%" align="left" valign="top">
                                         <h1 class="title header h1" style="margin: 20px 0; line-height: 40px; width: 100%; color: #000000; font-family: Helvetica,Arial,sans-serif; padding-left: 10px; background-color: #FFFFFF; margin-bottom: 20px; margin-top: 0; height: min-content; font-weight: 500;">Hi ${
-																					type === 'ORDER_USER'
+																					type === 'CONFIRM_ORDER_USER' ||
+																					type === 'CANCEL_ORDER_USER'
 																						? user.name
 																						: process.env.FROM_NAME_DEV
 																				},</h1>
                                         <p class="subtitle text p" style="display: block; color: #000000; line-height: 20px; font-family: Helvetica,Arial,sans-serif; margin: 0; padding-left: 10px; font-size: 20px; margin-bottom: 10px;">${
-																					type === 'ORDER_USER'
+																					type === 'CONFIRM_ORDER_USER'
 																						? 'Your order has been confirmed!'
-																						: 'An order has been palced at Origami.cool!'
+																						: type === 'CONFIRM_ORDER_ADMIN'
+																						? 'An order has been palced at Origami.cool!'
+																						: type === 'CANCEL_ORDER_ADMIN'
+																						? 'A user has canceled an order from Origami.cool'
+																						: 'Your order has been canceled'
 																				}</p>
                                         ${
-																					type === 'ORDER_USER'
+																					type === 'CONFIRM_ORDER_USER'
 																						? `<p class="subtitle text p" style="display: block; color: #000000; line-height: 20px; font-family: Helvetica,Arial,sans-serif; margin: 0; padding-left: 10px; font-size: 20px; margin-bottom: 10px;">
                                         Thank you for shopping with Origami.cool </p>`
 																						: ''
@@ -380,7 +393,8 @@ Origami.cool" border="0" style="display: block; max-width: 100%; white-space: pr
                                     <tr class="row__row">
                                       <td class="column col-sm-12" width="600" style="width: 100%" align="left" valign="top">
                                         <p class="view-order-text text p" style="display: block; color: #000000; font-size: 16px; line-height: 20px; font-family: Helvetica,Arial,sans-serif; max-width: 400px; margin: 10px auto 0; text-align: center;">${
-																					type === 'ORDER_USER'
+																					type === 'CONFIRM_ORDER_USER' ||
+																					type === 'CANCEL_ORDER_USER'
 																						? 'You can track your order by clicking the button below, this order is also listed in your Profile at Origami.cool'
 																						: 'Click the button below to track the order, you can also view all orders via the admin menu'
 																				} </p>
@@ -391,7 +405,7 @@ Origami.cool" border="0" style="display: block; max-width: 100%; white-space: pr
                                                 <table role="presentation" width="auto" align="center" border="0" cellspacing="0" cellpadding="0" class="button__table" style="margin: 0 auto; margin-top: 10px;">
                                                   <tr>
                                                     <td align="center" class="button__cell" style="border-radius: 3px; padding: 6px 12px; background-color: #2A7855; background-color: rgba(42,120,85,1);" bgcolor="rgba(42,120,85,1)"><a href="${actionLink}" class="button__link" style="color: #FFFFFF; text-decoration: none; background-color: #2A7855; background-color: rgba(42,120,85,1); display: inline-block;"><span class="button__text" style="color: #FFFFFF; text-decoration: none;">
-								View ${type === 'ORDER_USER' ? 'Your ' : ''}Oder Online
+								View ${type === 'CONFIRM_ORDER_USER' ? 'Your ' : ''}Order Online
 							</span></a></td>
                                                   </tr>
                                                 </table>
@@ -492,20 +506,32 @@ Origami.cool" border="0" style="display: block; max-width: 100%; white-space: pr
                                       <td class="column col-sm-12" width="600" style="width: 100%" align="left" valign="top">
                                         <h2 class="header h2" style="line-height: 30px; width: 100%; color: #000000; font-family: Helvetica,Arial,sans-serif; height: min-content; font-weight: 500; margin: 0;">Delivery Information:</h2>
                                         <p class="delivery-text text p" style="display: block; color: #000000; font-size: 16px; line-height: 20px; font-family: Helvetica,Arial,sans-serif; margin: 15px;"> ${
-																					type === 'ORDER_USER'
+																					type === 'CONFIRM_ORDER_USER'
 																						? 'Your order will be sent within 2 business days to the address below.'
-																						: 'Send the item within 2 business days to the address below'
+																						: type === 'CONFIRM_ORDER_ADMIN'
+																						? 'Send the item within 2 business days to the address below'
+																						: type === 'CANCEL_ORDER_ADMIN'
+																						? 'If not sent, refund the cost of the order'
+																						: 'A refund will be provided if the order has not been sent'
 																				}</p>
                                         <div class="address-container" style="border: 1px solid #E0E0E0; border-radius: 8px; display: block; margin: 0 auto; padding: 15px 25px; width: min-content;">
                                         <p class="delivery-address text p" style="display: block; color: #000000; font-size: 16px; line-height: 20px; font-family: Helvetica,Arial,sans-serif; padding: 0; margin: 0 0 2px; white-space: nowrap;">${
-																					user.name
+																					type === 'CONFIRM_ORDER_ADMIN' ||
+																					type === 'CONFIRM_ORDER_USER'
+																						? user.name
+																						: ''
 																				}</p>
-                                        ${Object.values(order.address)
-																					.map(
-																						value =>
-																							`<p class="delivery-address text p" style="display: block; color: #000000; font-size: 16px; line-height: 20px; font-family: Helvetica,Arial,sans-serif; padding: 0; margin: 0 0 2px; white-space: nowrap;">${value}</p>`
-																					)
-																					.join('')}
+                                        ${
+																					type === 'CONFIRM_ORDER_ADMIN' ||
+																					type === 'CONFIRM_ORDER_USER'
+																						? Object.values(order.address)
+																								.map(
+																									value =>
+																										`<p class="delivery-address text p" style="display: block; color: #000000; font-size: 16px; line-height: 20px; font-family: Helvetica,Arial,sans-serif; padding: 0; margin: 0 0 2px; white-space: nowrap;">${value}</p>`
+																								)
+																								.join('')
+																						: ''
+																				}
                                         </div>
                                       </td>
                                     </tr>

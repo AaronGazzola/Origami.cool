@@ -51,10 +51,13 @@ const ProductScreen = ({ match, history }) => {
 	const [sticky, setSticky] = useState(false);
 
 	useEffect(() => {
-		setSticky(action.current?.offsetHeight < window.innerHeight);
 		window.addEventListener('resize', handleResize);
 		return () => window.removeEventListener('resize', handleResize);
 	}, []);
+
+	useEffect(() => {
+		setSticky(action.current?.offsetHeight < window.innerHeight);
+	}, [product, loading]);
 
 	const handleResize = () => {
 		setSticky(action.current?.offsetHeight < window.innerHeight);

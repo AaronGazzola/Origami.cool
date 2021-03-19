@@ -23,7 +23,10 @@ import {
 	SET_DELIVERED_FAIL,
 	CANCEL_ORDER_REQUEST,
 	CANCEL_ORDER_SUCCESS,
-	CANCEL_ORDER_FAIL
+	CANCEL_ORDER_FAIL,
+	SEND_CANCEL_ORDER_EMAIL_REQUEST,
+	SEND_CANCEL_ORDER_EMAIL_SUCCESS,
+	SEND_CANCEL_ORDER_EMAIL_FAIL
 } from 'constants/orderConstants';
 import { emptyCartAction } from 'actions/cartActions';
 
@@ -84,7 +87,7 @@ export const sendConfirmOrderEmailAction = order => async (
 			}
 		};
 
-		await axios.post('/api/v1/orders/sendemail', { order }, config);
+		await axios.post('/api/v1/orders/sendconfirm', { order }, config);
 
 		dispatch({
 			type: SEND_ORDER_EMAIL_SUCCESS,
@@ -310,11 +313,49 @@ export const cancelOrderAction = id => async (dispatch, getState) => {
 
 		dispatch({
 			type: CANCEL_ORDER_SUCCESS,
+			success: 'Order canceled',
 			payload: data.order
 		});
+		dispatch(sendCancelOrderEmailAction(data.order));
 	} catch (error) {
 		dispatch({
 			type: CANCEL_ORDER_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+		});
+	}
+};
+
+export const sendCancelOrderEmailAction = order => async (
+	dispatch,
+	getState
+) => {
+	try {
+		dispatch({
+			type: SEND_CANCEL_ORDER_EMAIL_REQUEST
+		});
+
+		const {
+			userData: { token }
+		} = getState();
+
+		const config = {
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		};
+
+		await axios.post(`/api/v1/orders/sendcancel`, { order }, config);
+
+		dispatch({
+			type: SEND_CANCEL_ORDER_EMAIL_SUCCESS,
+			payload: 'Order cancelation email sent'
+		});
+	} catch (error) {
+		dispatch({
+			type: SEND_CANCEL_ORDER_EMAIL_FAIL,
 			payload:
 				error.response && error.response.data.message
 					? error.response.data.message

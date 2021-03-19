@@ -51,6 +51,7 @@ import {
 import { sendVerifyUserAction } from 'actions/userActions';
 import { getProductsAction } from 'actions/productActions';
 import OrderScreen from './screens/OrderScreen';
+import { SEND_CANCEL_ORDER_EMAIL_CLEAR } from './constants/orderConstants';
 
 const theme = getTheme();
 
@@ -96,7 +97,11 @@ const App = () => {
 			success: sendOrderEmailSuccess
 		},
 		getOrder: { error: getOrderError },
-		cancelOrder: { error: cancelOrderError, success: cancelOrderSuccess }
+		cancelOrder: { error: cancelOrderError, success: cancelOrderSuccess },
+		sendCancelOrderEmail: {
+			error: sendCancelOrderEmailError,
+			success: sendCancelOrderEmailSuccess
+		}
 	} = useSelector(state => state);
 
 	useEffect(() => {
@@ -130,7 +135,8 @@ const App = () => {
 							createOrderError ||
 							sendOrderEmailError ||
 							getOrderError ||
-							cancelOrderError
+							cancelOrderError ||
+							sendCancelOrderEmailError
 						}
 						success={
 							signupSuccess ||
@@ -174,6 +180,8 @@ const App = () => {
 								? GET_ORDER_CLEAR
 								: cancelOrderError
 								? CANCEL_ORDER_CLEAR
+								: sendCancelOrderEmailError
+								? SEND_CANCEL_ORDER_EMAIL_CLEAR
 								: null
 						}
 						actionText={
@@ -205,7 +213,8 @@ const App = () => {
 							cartSuccess ||
 							createOrderSuccess ||
 							sendOrderEmailSuccess ||
-							cancelOrderSuccess
+							cancelOrderSuccess ||
+							sendCancelOrderEmailSuccess
 						}
 						clearType={
 							sendVerifyUserSuccess
@@ -234,6 +243,8 @@ const App = () => {
 								? SEND_ORDER_EMAIL_CLEAR
 								: cancelOrderSuccess
 								? CANCEL_ORDER_CLEAR
+								: sendCancelOrderEmailSuccess
+								? SEND_CANCEL_ORDER_EMAIL_CLEAR
 								: null
 						}
 					/>

@@ -63,7 +63,7 @@ const Message = ({
 		return (
 			<Dialog
 				classes={{ paper: classes.paper }}
-				open={confirm}
+				open={!!confirm}
 				onClose={() => setConfirm('')}
 				transitionDuration={{ exit: 0 }}
 			>

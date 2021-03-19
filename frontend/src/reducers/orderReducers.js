@@ -31,7 +31,11 @@ import {
 	CANCEL_ORDER_REQUEST,
 	CANCEL_ORDER_SUCCESS,
 	CANCEL_ORDER_FAIL,
-	CANCEL_ORDER_CLEAR
+	CANCEL_ORDER_CLEAR,
+	SEND_CANCEL_ORDER_EMAIL_REQUEST,
+	SEND_CANCEL_ORDER_EMAIL_SUCCESS,
+	SEND_CANCEL_ORDER_EMAIL_FAIL,
+	SEND_CANCEL_ORDER_EMAIL_CLEAR
 } from 'constants/orderConstants';
 
 export const createOrderReducer = (state = {}, action) => {
@@ -76,7 +80,7 @@ export const sendOrderEmailReducer = (state = {}, action) => {
 				error: action.payload
 			};
 		case SEND_ORDER_EMAIL_CLEAR:
-			return {};
+			return { ...state, error: null, success: null };
 		default:
 			return state;
 	}
@@ -114,7 +118,7 @@ export const getOrderReducer = (state = {}, action) => {
 		case GET_ORDER_FAIL:
 			return { loading: false, error: action.payload };
 		case GET_ORDER_CLEAR:
-			return {};
+			return { ...state, error: null, success: null };
 		default:
 			return state;
 	}
@@ -185,13 +189,31 @@ export const cancelOrderReducer = (state = {}, action) => {
 		case CANCEL_ORDER_SUCCESS:
 			return {
 				loading: false,
-				success: true,
-				order: action.payload
+				order: action.payload,
+				success: action.success
 			};
 		case CANCEL_ORDER_FAIL:
 			return { loading: false, error: action.payload };
 		case CANCEL_ORDER_CLEAR:
-			return {};
+			return { ...state, error: null, success: null };
+		default:
+			return state;
+	}
+};
+
+export const sendCancelOrderEmailReducer = (state = {}, action) => {
+	switch (action.type) {
+		case SEND_CANCEL_ORDER_EMAIL_REQUEST:
+			return { loading: true };
+		case SEND_CANCEL_ORDER_EMAIL_SUCCESS:
+			return {
+				loading: false,
+				success: action.payload
+			};
+		case SEND_CANCEL_ORDER_EMAIL_FAIL:
+			return { loading: false, error: action.payload };
+		case SEND_CANCEL_ORDER_EMAIL_CLEAR:
+			return { ...state, error: null, success: null };
 		default:
 			return state;
 	}

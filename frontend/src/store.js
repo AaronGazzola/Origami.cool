@@ -24,7 +24,8 @@ import {
 	createOrderReducer,
 	sendOrderEmailReducer,
 	getOrderReducer,
-	cancelOrderReducer
+	cancelOrderReducer,
+	sendCancelOrderEmailReducer
 } from 'reducers/orderReducers';
 
 const reducer = combineReducers({
@@ -46,7 +47,8 @@ const reducer = combineReducers({
 	createOrder: createOrderReducer,
 	sendOrderEmail: sendOrderEmailReducer,
 	getOrder: getOrderReducer,
-	cancelOrder: cancelOrderReducer
+	cancelOrder: cancelOrderReducer,
+	sendCancelOrderEmail: sendCancelOrderEmailReducer
 });
 
 const userFromStorage = localStorage.getItem('user')
