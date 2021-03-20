@@ -53,7 +53,7 @@ export const getProductsAction = () => async dispatch => {
 	}
 };
 
-export const getProductAction = id => async dispatch => {
+export const getProductAction = slug => async dispatch => {
 	try {
 		dispatch({
 			type: GET_PRODUCT_REQUEST
@@ -63,7 +63,7 @@ export const getProductAction = id => async dispatch => {
 			headers: {}
 		};
 
-		const { data } = await axios.get(`/api/v1/products/${id}`, config);
+		const { data } = await axios.get(`/api/v1/products/${slug}`, config);
 
 		dispatch({
 			type: GET_PRODUCT_SUCCESS,
@@ -102,7 +102,7 @@ export const createReviewAction = (product, review) => async (
 
 		await axios.post(`/api/v1/products/review/${product._id}`, review, config);
 
-		dispatch(getProductAction(product._id));
+		dispatch(getProductAction(product.slug));
 
 		dispatch({
 			type: CREATE_REVIEW_SUCCESS,
@@ -141,7 +141,7 @@ export const updateReviewAction = (product, review) => async (
 
 		await axios.put(`/api/v1/products/review/${product._id}`, review, config);
 
-		dispatch(getProductAction(product._id));
+		dispatch(getProductAction(product.slug));
 
 		dispatch({
 			type: UPDATE_REVIEW_SUCCESS,
@@ -245,11 +245,12 @@ export const createProductAction = product => async (dispatch, getState) => {
 			}
 		};
 
-		await axios.post(`/api/v1/products/`, { ...product }, config);
+		const { data } = await axios.post(`/api/v1/products/`, { product }, config);
 
 		dispatch({
 			type: CREATE_PRODUCT_SUCCESS,
-			payload: 'Product created'
+			payload: 'Product created',
+			product: data.product
 		});
 	} catch (error) {
 		dispatch({
@@ -282,11 +283,16 @@ export const updateProductAction = (product, id) => async (
 			}
 		};
 
-		await axios.post(`/api/v1/products/${id}`, { ...product }, config);
+		const { data } = await axios.post(
+			`/api/v1/products/${id}`,
+			{ product },
+			config
+		);
 
 		dispatch({
 			type: UPDATE_PRODUCT_SUCCESS,
-			payload: 'Product updated'
+			payload: 'Product updated',
+			product: data.product
 		});
 	} catch (error) {
 		dispatch({

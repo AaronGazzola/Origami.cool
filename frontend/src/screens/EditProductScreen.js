@@ -22,7 +22,8 @@ import {
 } from 'actions/productActions';
 import { VALIDATOR_REQUIRE, VALIDATOR_MAXLENGTH } from 'utils/validators';
 
-const EditProductScreen = ({ match }) => {
+const EditProductScreen = ({ match, history }) => {
+	const slug = match.params.slug;
 	const classes = useStyles();
 	const adminClasses = useAdminStyles();
 	const dispatch = useDispatch();
@@ -30,20 +31,19 @@ const EditProductScreen = ({ match }) => {
 	const {
 		product,
 		loading: getProductLoading,
-		success: getProductSuccess,
-		error: getProductError
+		success: getProductSuccess
 	} = useSelector(state => state.getProduct);
 
 	const {
 		loading: createProductLoading,
-		success: createProductSuccess,
-		error: createProductError
+		redirect: createProductRedirect,
+		product: createdProduct
 	} = useSelector(state => state.createProduct);
 
 	const {
 		loading: updateProductLoading,
-		success: updateProductSuccess,
-		error: updateProductError
+		redirect: updateProductRedirect,
+		product: updatedProduct
 	} = useSelector(state => state.updateProduct);
 
 	const [formState, formDispatch] = useProductForm(product);
@@ -51,16 +51,48 @@ const EditProductScreen = ({ match }) => {
 		formIsValid,
 		inputs: { name, description, price, images, countInStock }
 	} = formState;
-	console.log(formState);
 
 	useEffect(() => {
-		if (match.params.id !== product?._id) {
-			// dispatch(getProductAction(match.params.id));
+		if (slug && slug !== product?.slug) {
+			dispatch(getProductAction(slug));
 		}
-	}, [dispatch, match]);
+	}, [dispatch, slug]);
+
+	useEffect(() => {
+		if (getProductSuccess) {
+			formDispatch({ type: 'RESET' });
+		}
+	}, [getProductSuccess, formDispatch]);
+
+	useEffect(() => {
+		if (createProductRedirect) {
+			history.push(`/product/${createdProduct.slug}`);
+		} else if (updateProductRedirect) {
+			history.push(`/product/${updatedProduct.slug}`);
+		}
+	}, [
+		createProductRedirect,
+		updateProductRedirect,
+		updatedProduct,
+		createdProduct,
+		history
+	]);
 
 	const submitHandler = e => {
 		e.preventDefault();
+		const newProduct = {
+			// temporary image data
+			images: [{ path: '/images/bull1.jpg', label: 'bull' }],
+			name: name.value,
+			description: description.value,
+			price: price.value,
+			countInStock: countInStock.value
+		};
+		if (slug) {
+			dispatch(updateProductAction(newProduct, product?._id));
+		} else {
+			dispatch(createProductAction(newProduct));
+		}
 	};
 
 	const changeHandler = (e, validators) => {
@@ -84,7 +116,7 @@ const EditProductScreen = ({ match }) => {
 				alignItems='center'
 			>
 				<Typography className={classes.title} variant='h1'>
-					{match.params.id ? 'Edit Product' : 'Add Product'}
+					{slug ? 'Edit Product' : 'Add Product'}
 				</Typography>
 				{getProductLoading ? (
 					<CircularProgress className={classes.loading} />
@@ -100,7 +132,10 @@ const EditProductScreen = ({ match }) => {
 							color='secondary'
 							value={name.value}
 							onChange={e =>
-								changeHandler(e, [VALIDATOR_REQUIRE(), VALIDATOR_MAXLENGTH(50)])
+								changeHandler(e, [
+									VALIDATOR_REQUIRE(),
+									VALIDATOR_MAXLENGTH(100)
+								])
 							}
 							className={
 								name.isTouched && !name.isValid
@@ -113,13 +148,13 @@ const EditProductScreen = ({ match }) => {
 							error={name.isTouched && !name.isValid}
 							helperText={
 								name.isTouched && !name.isValid
-									? 'Please add a product name'
+									? 'Add a product name below 100 characters'
 									: ' '
 							}
 						/>
 						<TextField
 							multiline
-							rows={4}
+							rows={8}
 							id='description'
 							label='Description'
 							type='text'
@@ -131,7 +166,7 @@ const EditProductScreen = ({ match }) => {
 							onChange={e =>
 								changeHandler(e, [
 									VALIDATOR_REQUIRE(),
-									VALIDATOR_MAXLENGTH(250)
+									VALIDATOR_MAXLENGTH(1000)
 								])
 							}
 							className={
@@ -145,7 +180,7 @@ const EditProductScreen = ({ match }) => {
 							error={description.isTouched && !description.isValid}
 							helperText={
 								description.isTouched && !description.isValid
-									? 'Please add a product description'
+									? 'Add a product description below 1000 characters'
 									: ' '
 							}
 						/>
@@ -167,9 +202,7 @@ const EditProductScreen = ({ match }) => {
 							onBlur={touchHandler}
 							error={price.isTouched && !price.isValid}
 							helperText={
-								price.isTouched && !price.isValid
-									? 'Please specify a price'
-									: ' '
+								price.isTouched && !price.isValid ? 'Specify a price' : ' '
 							}
 							InputProps={{
 								startAdornment: (
@@ -197,7 +230,7 @@ const EditProductScreen = ({ match }) => {
 							error={countInStock.isTouched && !countInStock.isValid}
 							helperText={
 								countInStock.isTouched && !countInStock.isValid
-									? 'Please include the amount of stock available'
+									? 'Specify the amount of stock available'
 									: ' '
 							}
 						/>
@@ -211,7 +244,7 @@ const EditProductScreen = ({ match }) => {
 						>
 							{createProductLoading || updateProductLoading ? (
 								<CircularProgress style={{ color: '#fff' }} size={25} />
-							) : match.params.id ? (
+							) : slug ? (
 								'Update Product'
 							) : (
 								'Add Product'

@@ -46,7 +46,9 @@ import {
 	CREATE_REVIEW_CLEAR,
 	UPDATE_REVIEW_CLEAR,
 	DELETE_PRODUCT_CLEAR,
-	SET_PRODUCT_STOCK_CLEAR
+	SET_PRODUCT_STOCK_CLEAR,
+	CREATE_PRODUCT_CLEAR,
+	UPDATE_PRODUCT_CLEAR
 } from 'constants/productConstants';
 import { CART_CLEAR } from 'constants/cartConstants';
 import {
@@ -114,7 +116,9 @@ const App = () => {
 		setProductStock: {
 			error: setProductStockError,
 			success: setProductStockSuccess
-		}
+		},
+		createProduct: { error: createProductError, success: createProductSuccess },
+		updateProduct: { error: updateProductError, success: updateProductSuccess }
 	} = useSelector(state => state);
 
 	useEffect(() => {
@@ -152,7 +156,9 @@ const App = () => {
 							sendCancelOrderEmailError ||
 							userListOrdersError ||
 							setProductStockError ||
-							deleteProductError
+							deleteProductError ||
+							createProductError ||
+							updateProductError
 						}
 						success={
 							signupSuccess ||
@@ -204,6 +210,10 @@ const App = () => {
 								? DELETE_PRODUCT_CLEAR
 								: setProductStockError
 								? SET_PRODUCT_STOCK_CLEAR
+								: updateProductError
+								? UPDATE_PRODUCT_CLEAR
+								: createProductError
+								? CREATE_PRODUCT_CLEAR
 								: null
 						}
 						actionText={
@@ -238,7 +248,9 @@ const App = () => {
 							cancelOrderSuccess ||
 							sendCancelOrderEmailSuccess ||
 							deleteProductSuccess ||
-							setProductStockSuccess
+							setProductStockSuccess ||
+							updateProductSuccess ||
+							createProductSuccess
 						}
 						clearType={
 							sendVerifyUserSuccess
@@ -273,6 +285,10 @@ const App = () => {
 								? DELETE_PRODUCT_CLEAR
 								: setProductStockSuccess
 								? SET_PRODUCT_STOCK_CLEAR
+								: createProductSuccess
+								? CREATE_PRODUCT_CLEAR
+								: updateProductSuccess
+								? UPDATE_PRODUCT_CLEAR
 								: null
 						}
 					/>
@@ -294,7 +310,15 @@ const App = () => {
 								exact
 								component={ProductListScreen}
 							/>
-							<Route path='/admin/product/:id' component={EditProductScreen} />
+							<Route
+								path='/admin/product/:slug'
+								component={EditProductScreen}
+							/>
+							<Route
+								path='/admin/product'
+								exact
+								component={EditProductScreen}
+							/>
 							<Route path='/admin/users' exact component={UserListScreen} />
 							<Route path='/admin/orders' exact component={OrderListScreen} />
 							{cartItems?.length === 0 ? (

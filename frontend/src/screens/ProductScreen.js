@@ -19,6 +19,10 @@ import { getProductAction } from 'actions/productActions';
 import { addToCartAction } from 'actions/cartActions';
 import ImageSlider from 'components/ImageSlider';
 import ReviewSection from 'components/ReviewSection';
+import {
+	CREATE_PRODUCT_CLEAR_REDIRECT,
+	UPDATE_PRODUCT_CLEAR_REDIRECT
+} from 'constants/productConstants';
 
 const ProductScreen = ({ match, history }) => {
 	const slug = match.params.slug;
@@ -30,6 +34,13 @@ const ProductScreen = ({ match, history }) => {
 	const { loading: cartLoading, redirect: cartRedirect } = useSelector(
 		state => state.cart
 	);
+	const { redirect: createProductRedirect } = useSelector(
+		state => state.createProduct
+	);
+
+	const { redirect: updateProductRedirect } = useSelector(
+		state => state.updateProduct
+	);
 	const [qty, setQty] = useState(product?.countInStock === 0 ? 0 : 1);
 	const action = useRef(null);
 
@@ -38,14 +49,24 @@ const ProductScreen = ({ match, history }) => {
 	};
 
 	useEffect(() => {
-		dispatch(getProductAction(product._id));
-	}, [dispatch, product._id]);
+		dispatch(getProductAction(slug));
+	}, [dispatch, slug]);
 
 	useEffect(() => {
 		if (cartRedirect) {
 			history.push('/cart');
+		} else if (createProductRedirect) {
+			dispatch({ type: CREATE_PRODUCT_CLEAR_REDIRECT });
+		} else if (updateProductRedirect) {
+			dispatch({ type: UPDATE_PRODUCT_CLEAR_REDIRECT });
 		}
-	}, [cartRedirect, history]);
+	}, [
+		cartRedirect,
+		history,
+		updateProductRedirect,
+		createProductRedirect,
+		dispatch
+	]);
 
 	const [sticky, setSticky] = useState(false);
 

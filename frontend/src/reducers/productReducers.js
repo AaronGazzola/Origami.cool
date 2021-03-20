@@ -27,10 +27,12 @@ import {
 	CREATE_PRODUCT_SUCCESS,
 	CREATE_PRODUCT_FAIL,
 	CREATE_PRODUCT_CLEAR,
+	CREATE_PRODUCT_CLEAR_REDIRECT,
 	UPDATE_PRODUCT_REQUEST,
 	UPDATE_PRODUCT_SUCCESS,
 	UPDATE_PRODUCT_FAIL,
-	UPDATE_PRODUCT_CLEAR
+	UPDATE_PRODUCT_CLEAR,
+	UPDATE_PRODUCT_CLEAR_REDIRECT
 } from 'constants/productConstants';
 
 export const getProductsReducer = (state = {}, action) => {
@@ -150,12 +152,16 @@ export const createProductReducer = (state = {}, action) => {
 		case CREATE_PRODUCT_SUCCESS:
 			return {
 				loading: false,
-				success: action.payload
+				success: action.payload,
+				product: action.product,
+				redirect: true
 			};
 		case CREATE_PRODUCT_FAIL:
 			return { loading: false, error: action.payload };
 		case CREATE_PRODUCT_CLEAR:
 			return { ...state, error: null, success: null };
+		case CREATE_PRODUCT_CLEAR_REDIRECT:
+			return { ...state, redirect: null };
 		default:
 			return state;
 	}
@@ -168,12 +174,16 @@ export const updateProductReducer = (state = {}, action) => {
 		case UPDATE_PRODUCT_SUCCESS:
 			return {
 				loading: false,
-				success: action.payload
+				success: action.payload,
+				product: action.product,
+				redirect: true
 			};
 		case UPDATE_PRODUCT_FAIL:
 			return { loading: false, error: action.payload };
 		case UPDATE_PRODUCT_CLEAR:
 			return { ...state, error: null, success: null };
+		case UPDATE_PRODUCT_CLEAR_REDIRECT:
+			return { ...state, redirect: null };
 		default:
 			return state;
 	}

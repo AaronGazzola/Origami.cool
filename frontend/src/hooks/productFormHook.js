@@ -44,7 +44,7 @@ const useProductForm = product => {
 					let inputIsValid = validate(action.payload.value, action.validators);
 					// determine whether input is changed
 					const inputIsChanged =
-						initialFormState.inputs[action.payload.id].value !==
+						initialFormState.inputs[action.payload.id].value.toString() !==
 						action.payload.value;
 					// loop over form inputs in state to set form validity
 					for (const inputId in state.inputs) {

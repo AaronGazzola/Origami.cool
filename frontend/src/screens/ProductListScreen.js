@@ -200,7 +200,7 @@ const ProductListScreen = ({ history, match }) => {
 											>
 												<IconButton
 													component={Link}
-													to={`/admin/product/${product._id}`}
+													to={`/admin/product/${product.slug}`}
 													color='secondary'
 												>
 													<EditIcon />

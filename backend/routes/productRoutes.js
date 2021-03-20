@@ -21,7 +21,7 @@ router
 	.put(protect, updateReview);
 router
 	.route('/:id')
-	.get(getProduct)
 	.delete(protect, admin, deleteProduct)
 	.post(protect, admin, updateProduct);
+router.route('/:slug').get(getProduct);
 export default router;

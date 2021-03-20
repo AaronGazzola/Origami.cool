@@ -19,7 +19,9 @@ const getProducts = asyncHandler(async (req, res) => {
 // @route   GET /api/products/:id
 // @access    Public
 const getProduct = asyncHandler(async (req, res, next) => {
-	const product = await Product.findById(req.params.id).populate('reviews');
+	const product = await Product.findOne({ slug: req.params.slug }).populate(
+		'reviews'
+	);
 
 	if (!product) {
 		return next(new ErrorResponse('Could not find product', 404));
@@ -151,12 +153,28 @@ const setCountInStock = asyncHandler(async (req, res, next) => {
 // @desc    Create new product
 // @route   POST /api/products/
 // @access    Private/admin
-const createProduct = asyncHandler(async (req, res, next) => {});
+const createProduct = asyncHandler(async (req, res, next) => {
+	const product = await Product.create({ ...req.body.product, user: req.user });
+
+	res.status(201).json({ product, success: true });
+});
 
 // @desc    Update product
 // @route   POST /api/products/:id
 // @access    Private/admin
-const updateProduct = asyncHandler(async (req, res, next) => {});
+const updateProduct = asyncHandler(async (req, res, next) => {
+	const product = await Product.findByIdAndUpdate(
+		req.params.id,
+		req.body.product
+	);
+	if (!product) {
+		return next(new ErrorResponse('Could not find product to update', 404));
+	}
+	res.status(201).json({
+		product,
+		success: true
+	});
+});
 
 export {
 	getProducts,
