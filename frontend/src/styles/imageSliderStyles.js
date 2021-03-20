@@ -14,6 +14,7 @@ const styles = makeStyles(theme => ({
 		position: 'relative',
 		paddingTop: '75%',
 		width: '100%',
+		margin: theme.spacing(1, 0),
 		'& img': {
 			maxWidth: '100%',
 			maxHeight: '100%',
@@ -45,12 +46,17 @@ const styles = makeStyles(theme => ({
 	listImageContainer: {
 		padding: theme.spacing(1),
 		height: '100%',
-		overflow: 'visible'
+		overflow: 'visible',
+		position: 'relative'
 	},
 	listImage: {
-		position: 'relative',
 		maxHeight: '100%',
 		maxWidth: '100%',
+		position: 'absolute',
+		top: '50%',
+		left: '50%',
+		transform: 'translate(-50%,-50%) scale(.9)',
+		backfaceVisibility: 'hidden',
 		'&:hover': {
 			cursor: 'pointer'
 		}
