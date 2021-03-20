@@ -5,7 +5,7 @@ const styles = makeStyles(theme => ({
 		marginBottom: theme.spacing(1)
 	},
 	subTitle: {
-		margin: theme.spacing(1, 0, 2, 0),
+		margin: theme.spacing(1, 0, 3, 0),
 		alignSelf: 'flex-start'
 	},
 	paper: {

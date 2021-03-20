@@ -22,6 +22,11 @@ import ForgotPasswordScreen from 'screens/ForgotPasswordScreen';
 import ProductScreen from 'screens/ProductScreen';
 import CartScreen from 'screens/CartScreen';
 import CheckoutScreen from 'screens/CheckoutScreen';
+import OrderScreen from 'screens/OrderScreen';
+import EditProductScreen from 'screens/EditProductScreen';
+import OrderListScreen from 'screens/OrderListScreen';
+import ProductListScreen from 'screens/ProductListScreen';
+import UserListScreen from 'screens/UserListScreen';
 import Message from 'components/Message';
 import SnackBar from 'components/SnackBar';
 import {
@@ -39,7 +44,9 @@ import {
 	GET_PRODUCTS_CLEAR,
 	GET_PRODUCT_CLEAR,
 	CREATE_REVIEW_CLEAR,
-	UPDATE_REVIEW_CLEAR
+	UPDATE_REVIEW_CLEAR,
+	DELETE_PRODUCT_CLEAR,
+	SET_PRODUCT_STOCK_CLEAR
 } from 'constants/productConstants';
 import { CART_CLEAR } from 'constants/cartConstants';
 import {
@@ -51,7 +58,6 @@ import {
 } from 'constants/orderConstants';
 import { sendVerifyUserAction } from 'actions/userActions';
 import { getProductsAction } from 'actions/productActions';
-import OrderScreen from './screens/OrderScreen';
 import { SEND_CANCEL_ORDER_EMAIL_CLEAR } from './constants/orderConstants';
 
 const theme = getTheme();
@@ -103,7 +109,12 @@ const App = () => {
 			error: sendCancelOrderEmailError,
 			success: sendCancelOrderEmailSuccess
 		},
-		userListOrders: { error: userListOrdersError }
+		userListOrders: { error: userListOrdersError },
+		deleteProduct: { error: deleteProductError, success: deleteProductSuccess },
+		setProductStock: {
+			error: setProductStockError,
+			success: setProductStockSuccess
+		}
 	} = useSelector(state => state);
 
 	useEffect(() => {
@@ -139,7 +150,9 @@ const App = () => {
 							getOrderError ||
 							cancelOrderError ||
 							sendCancelOrderEmailError ||
-							userListOrdersError
+							userListOrdersError ||
+							setProductStockError ||
+							deleteProductError
 						}
 						success={
 							signupSuccess ||
@@ -187,6 +200,10 @@ const App = () => {
 								? SEND_CANCEL_ORDER_EMAIL_CLEAR
 								: userListOrdersError
 								? USER_LIST_ORDERS_CLEAR
+								: deleteProductError
+								? DELETE_PRODUCT_CLEAR
+								: setProductStockError
+								? SET_PRODUCT_STOCK_CLEAR
 								: null
 						}
 						actionText={
@@ -219,7 +236,9 @@ const App = () => {
 							createOrderSuccess ||
 							sendOrderEmailSuccess ||
 							cancelOrderSuccess ||
-							sendCancelOrderEmailSuccess
+							sendCancelOrderEmailSuccess ||
+							deleteProductSuccess ||
+							setProductStockSuccess
 						}
 						clearType={
 							sendVerifyUserSuccess
@@ -250,6 +269,10 @@ const App = () => {
 								? CANCEL_ORDER_CLEAR
 								: sendCancelOrderEmailSuccess
 								? SEND_CANCEL_ORDER_EMAIL_CLEAR
+								: deleteProductSuccess
+								? DELETE_PRODUCT_CLEAR
+								: setProductStockSuccess
+								? SET_PRODUCT_STOCK_CLEAR
 								: null
 						}
 					/>
@@ -266,6 +289,18 @@ const App = () => {
 							<Route path='/product/:slug' component={ProductScreen} />
 							<Route exact path='/cart' component={CartScreen} />
 							<Route path='/order/:id' component={OrderScreen} />
+							<Route
+								path='/admin/products'
+								exact
+								component={ProductListScreen}
+							/>
+							<Route
+								path='/admin/editproduct'
+								exact
+								component={EditProductScreen}
+							/>
+							<Route path='/admin/users' exact component={UserListScreen} />
+							<Route path='/admin/orders' exact component={OrderListScreen} />
 							{cartItems?.length === 0 ? (
 								<Redirect from='/checkout' exact to='/cart' />
 							) : (
@@ -286,6 +321,7 @@ const App = () => {
 							<Route path='/product/:slug' component={ProductScreen} />
 							<Route exact path='/cart' component={CartScreen} />
 							<Route path='/order/:id' component={OrderScreen} />
+							<Redirect from='/admin' to='/profile' />
 							{cartItems?.length === 0 ? (
 								<Redirect from='/checkout' exact to='/cart' />
 							) : (
@@ -316,6 +352,7 @@ const App = () => {
 							<Route exact path='/cart' component={CartScreen} />
 							<Redirect from='/checkout' exact to='/login' />
 							<Redirect from='/order/:id' to='/login' />
+							<Redirect from='/admin' to='/login' />
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
 					)}

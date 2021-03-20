@@ -1,3 +1,4 @@
+import fs from 'fs';
 import ErrorResponse from '../utils/errorResponse.js';
 import Product from '../models/productModel.js';
 import Review from '../models/reviewModel.js';
@@ -102,4 +103,57 @@ const updateReview = asyncHandler(async (req, res, next) => {
 	res.status(201).json({ success: true });
 });
 
-export { getProducts, getProduct, createReview, updateReview };
+// @desc    Delete product
+// @route   DELETE /api/products/:id
+// @access    Private/admin
+const deleteProduct = asyncHandler(async (req, res, next) => {
+	const product = await Product.findById(req.params.id);
+	if (!product) {
+		return next(new ErrorResponse('Could not find product', 404));
+	}
+	// delete images
+	if (product.images.length > 0) {
+		product.images.forEach(image => {
+			// change absolute path to relative path
+			const relativeImagePath = `.${image.path}`;
+			fs.stat(relativeImagePath, (err, stat) => {
+				if (err == null) {
+					// file exists
+					// delete file
+					fs.unlink(relativeImagePath, async err => {
+						if (err) {
+							console.error(err);
+							return next(new ErrorResponse(`Problem with file upload`, 500));
+						}
+					});
+				} else if (err.code !== 'ENOENT') {
+					// error other than file does not exist
+					console.error(err);
+					return next(new ErrorResponse(`Problem with file upload`, 500));
+				}
+			});
+		});
+	}
+	await product.deleteOne();
+
+	res.status(200).json({ success: true });
+});
+
+// @desc    Set count in stock for product by id
+// @route   POST /api/products/stock/:id
+// @access    Private/admin
+const setCountInStock = asyncHandler(async (req, res, next) => {
+	const product = await Product.findById(req.params.id);
+	product.countInStock = req.body.countInStock;
+	await product.save();
+	res.status(201).json({ success: true });
+});
+
+export {
+	getProducts,
+	getProduct,
+	createReview,
+	updateReview,
+	deleteProduct,
+	setCountInStock
+};

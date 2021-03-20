@@ -17,7 +17,9 @@ import {
 	getProductsReducer,
 	getProductReducer,
 	createReviewReducer,
-	updateReviewReducer
+	updateReviewReducer,
+	setProductStockReducer,
+	deleteProductReducer
 } from 'reducers/productReducers';
 import { cartReducer } from 'reducers/cartReducers';
 import {
@@ -50,7 +52,9 @@ const reducer = combineReducers({
 	getOrder: getOrderReducer,
 	cancelOrder: cancelOrderReducer,
 	sendCancelOrderEmail: sendCancelOrderEmailReducer,
-	userListOrders: userListOrdersReducer
+	userListOrders: userListOrdersReducer,
+	setProductStock: setProductStockReducer,
+	deleteProduct: deleteProductReducer
 });
 
 const userFromStorage = localStorage.getItem('user')

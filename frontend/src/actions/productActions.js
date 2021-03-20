@@ -11,7 +11,13 @@ import {
 	CREATE_REVIEW_FAIL,
 	UPDATE_REVIEW_REQUEST,
 	UPDATE_REVIEW_SUCCESS,
-	UPDATE_REVIEW_FAIL
+	UPDATE_REVIEW_FAIL,
+	DELETE_PRODUCT_REQUEST,
+	DELETE_PRODUCT_SUCCESS,
+	DELETE_PRODUCT_FAIL,
+	SET_PRODUCT_STOCK_REQUEST,
+	SET_PRODUCT_STOCK_SUCCESS,
+	SET_PRODUCT_STOCK_FAIL
 } from 'constants/productConstants';
 
 export const getProductsAction = (name, email, password) => async dispatch => {
@@ -138,6 +144,76 @@ export const updateReviewAction = (product, review) => async (
 	} catch (error) {
 		dispatch({
 			type: UPDATE_REVIEW_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+		});
+	}
+};
+
+export const deleteProductAction = id => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: DELETE_PRODUCT_REQUEST
+		});
+
+		const {
+			userData: { token }
+		} = getState();
+
+		const config = {
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		};
+
+		await axios.delete(`/api/v1/products/${id}`, config);
+
+		dispatch({
+			type: DELETE_PRODUCT_SUCCESS,
+			payload: 'Product deleted'
+		});
+	} catch (error) {
+		dispatch({
+			type: DELETE_PRODUCT_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+		});
+	}
+};
+
+export const setProductStockAction = (id, countInStock) => async (
+	dispatch,
+	getState
+) => {
+	try {
+		dispatch({
+			type: SET_PRODUCT_STOCK_REQUEST
+		});
+
+		const {
+			userData: { token }
+		} = getState();
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`
+			}
+		};
+
+		await axios.post(`/api/v1/products/stock/${id}`, { countInStock }, config);
+
+		dispatch({
+			type: SET_PRODUCT_STOCK_SUCCESS,
+			payload: 'Stock count updated'
+		});
+	} catch (error) {
+		dispatch({
+			type: SET_PRODUCT_STOCK_FAIL,
 			payload:
 				error.response && error.response.data.message
 					? error.response.data.message

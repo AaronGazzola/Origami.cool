@@ -14,7 +14,15 @@ import {
 	UPDATE_REVIEW_REQUEST,
 	UPDATE_REVIEW_SUCCESS,
 	UPDATE_REVIEW_FAIL,
-	UPDATE_REVIEW_CLEAR
+	UPDATE_REVIEW_CLEAR,
+	DELETE_PRODUCT_REQUEST,
+	DELETE_PRODUCT_SUCCESS,
+	DELETE_PRODUCT_FAIL,
+	DELETE_PRODUCT_CLEAR,
+	SET_PRODUCT_STOCK_REQUEST,
+	SET_PRODUCT_STOCK_SUCCESS,
+	SET_PRODUCT_STOCK_FAIL,
+	SET_PRODUCT_STOCK_CLEAR
 } from 'constants/productConstants';
 
 export const getProductsReducer = (state = {}, action) => {
@@ -85,6 +93,42 @@ export const createReviewReducer = (state = {}, action) => {
 		case CREATE_REVIEW_FAIL:
 			return { loading: false, error: action.payload };
 		case CREATE_REVIEW_CLEAR:
+			return { ...state, error: null, success: null };
+		default:
+			return state;
+	}
+};
+
+export const deleteProductReducer = (state = {}, action) => {
+	switch (action.type) {
+		case DELETE_PRODUCT_REQUEST:
+			return { loading: true };
+		case DELETE_PRODUCT_SUCCESS:
+			return {
+				loading: false,
+				success: action.payload
+			};
+		case DELETE_PRODUCT_FAIL:
+			return { loading: false, error: action.payload };
+		case DELETE_PRODUCT_CLEAR:
+			return { ...state, error: null, success: null };
+		default:
+			return state;
+	}
+};
+
+export const setProductStockReducer = (state = {}, action) => {
+	switch (action.type) {
+		case SET_PRODUCT_STOCK_REQUEST:
+			return { loading: true };
+		case SET_PRODUCT_STOCK_SUCCESS:
+			return {
+				loading: false,
+				success: action.payload
+			};
+		case SET_PRODUCT_STOCK_FAIL:
+			return { loading: false, error: action.payload };
+		case SET_PRODUCT_STOCK_CLEAR:
 			return { ...state, error: null, success: null };
 		default:
 			return state;
