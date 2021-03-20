@@ -37,7 +37,7 @@ const ProductListScreen = ({ history, match }) => {
 	const theme = useTheme();
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const mediaSmUp = useMediaQuery(theme.breakpoints.up('sm'));
+	const matchesXs = useMediaQuery(theme.breakpoints.down('xs'));
 
 	const [confirmDelete, setConfirmDelete] = useState('');
 	const [refresh, setRefresh] = useState(true);
@@ -97,7 +97,7 @@ const ProductListScreen = ({ history, match }) => {
 					xs
 					justify='space-between'
 					alignItems='center'
-					direction={mediaSmUp ? 'row' : 'column'}
+					direction={!matchesXs ? 'row' : 'column'}
 				>
 					<Typography variant='h1' className={classes.title}>
 						Products
@@ -126,8 +126,12 @@ const ProductListScreen = ({ history, match }) => {
 							<TableHead>
 								<TableRow className={classes.tableRow}>
 									<TableCell align='center'>Name</TableCell>
-									<TableCell align='center'>Price</TableCell>
-									<TableCell align='center'>Stock</TableCell>
+									{!matchesXs && (
+										<>
+											<TableCell align='center'>Price</TableCell>
+											<TableCell align='center'>Stock</TableCell>
+										</>
+									)}
 									<TableCell align='center'></TableCell>
 								</TableRow>
 							</TableHead>
@@ -146,8 +150,12 @@ const ProductListScreen = ({ history, match }) => {
 							<TableHead>
 								<TableRow className={classes.tableRow}>
 									<TableCell align='left'>Name</TableCell>
-									<TableCell align='center'>Price</TableCell>
-									<TableCell align='center'>Stock</TableCell>
+									{!matchesXs && (
+										<>
+											<TableCell align='center'>Price</TableCell>
+											<TableCell align='center'>Stock</TableCell>
+										</>
+									)}
 									<TableCell align='center'></TableCell>
 								</TableRow>
 							</TableHead>
@@ -163,27 +171,31 @@ const ProductListScreen = ({ history, match }) => {
 												{product.name}
 											</Typography>
 										</TableCell>
-										<TableCell align='center'>${product.price}</TableCell>
+										{!matchesXs && (
+											<>
+												<TableCell align='center'>${product.price}</TableCell>
+												<TableCell align='center'>
+													<Select
+														labelId='item-count-select-label'
+														id={`${product._id}-count-select`}
+														value={product.countInStock}
+														onChange={e => setCountInStockHandler(e, product)}
+													>
+														{[...Array(100).keys()].map(x => (
+															<MenuItem key={x + 1} value={x + 1}>
+																{x + 1}
+															</MenuItem>
+														))}
+													</Select>
+												</TableCell>
+											</>
+										)}
 
-										<TableCell align='center'>
-											<Select
-												labelId='item-count-select-label'
-												id={`${product._id}-count-select`}
-												value={product.countInStock}
-												onChange={e => setCountInStockHandler(e, product)}
-											>
-												{[...Array(100).keys()].map(x => (
-													<MenuItem key={x + 1} value={x + 1}>
-														{x + 1}
-													</MenuItem>
-												))}
-											</Select>
-										</TableCell>
 										<TableCell align='right'>
 											<Grid
 												container
-												justify={mediaSmUp ? 'flex-end' : 'flex-start'}
-												direction={mediaSmUp ? 'row' : 'column'}
+												justify={!matchesXs ? 'flex-end' : 'flex-start'}
+												direction={!matchesXs ? 'row' : 'column'}
 												style={{ flexWrap: 'nowrap' }}
 											>
 												<IconButton

@@ -295,7 +295,7 @@ const App = () => {
 								component={ProductListScreen}
 							/>
 							<Route
-								path='/admin/editproduct'
+								path='/admin/product/:id'
 								exact
 								component={EditProductScreen}
 							/>

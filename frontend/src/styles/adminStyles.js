@@ -2,8 +2,9 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const styles = makeStyles(theme => ({
 	container: {
-		paddingLeft: theme.spacing(2),
-		paddingRight: theme.spacing(2)
+		[theme.breakpoints.up('sm')]: {
+			padding: theme.spacing(0, 2)
+		}
 	},
 	loadingPaper: {
 		width: '100%',
@@ -13,7 +14,7 @@ const styles = makeStyles(theme => ({
 		alignItems: 'center'
 	},
 	title: {
-		margin: theme.spacing(2)
+		margin: theme.spacing(2, 0)
 	},
 	button: {
 		marginRight: theme.spacing(1),
