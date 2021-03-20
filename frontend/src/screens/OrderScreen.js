@@ -18,8 +18,7 @@ import {
 	TableCell,
 	TableFooter,
 	Divider,
-	Button,
-	Dialog
+	Button
 } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
 import {
@@ -49,7 +48,7 @@ const OrderScreen = ({ match }) => {
 
 	useEffect(() => {
 		dispatch(getOrderAction(match.params.id));
-	}, [dispatch, canceledOrder]);
+	}, [dispatch, canceledOrder, match.params.id]);
 
 	useEffect(() => {
 		if (order?.isDelivered) {

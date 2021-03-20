@@ -41,10 +41,8 @@ const CartScreen = ({ history }) => {
 				products.forEach(product => {
 					if (product._id === item.product) {
 						if (product.countInStock === 0) {
-							console.log('test');
 							dispatch(removeFromCartAction(product._id));
 						} else if (product.countInStock < item.qty) {
-							console.log('test2');
 							dispatch(addToCartAction(product.slug, product.countInStock));
 						}
 					}

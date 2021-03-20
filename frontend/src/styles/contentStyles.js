@@ -4,9 +4,16 @@ const styles = makeStyles(theme => ({
 	title: {
 		marginBottom: theme.spacing(1)
 	},
+	subTitle: {
+		margin: theme.spacing(1, 0, 2, 0),
+		alignSelf: 'flex-start'
+	},
 	paper: {
 		padding: theme.spacing(2),
 		marginBottom: theme.spacing(1)
+	},
+	adminPaper: {
+		marginTop: theme.spacing(2)
 	},
 	text: {
 		marginTop: theme.spacing(1),

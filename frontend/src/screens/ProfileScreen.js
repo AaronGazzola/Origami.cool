@@ -15,10 +15,15 @@ import {
 	TableRow,
 	TableCell,
 	TableBody,
-	useTheme,
 	useMediaQuery
 } from '@material-ui/core';
-import { Block, HourglassEmpty } from '@material-ui/icons';
+import {
+	Block,
+	HourglassEmpty,
+	BusinessCenter,
+	People,
+	ListAlt
+} from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutAction } from 'actions/userActions';
 import styles from 'styles/contentStyles';
@@ -28,7 +33,6 @@ import { userListOrdersAction } from 'actions/orderActions';
 const useStyles = styles;
 
 const ProfileScreen = () => {
-	const theme = useTheme();
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const matchesXs = useMediaQuery(theme => theme.breakpoints.down('xs'));
@@ -50,7 +54,7 @@ const ProfileScreen = () => {
 
 	useEffect(() => {
 		dispatch(userListOrdersAction());
-	}, []);
+	}, [dispatch]);
 
 	useEffect(() => {
 		if (userUpdateProfileSuccess || userUpdateProfileError) {
@@ -111,6 +115,51 @@ const ProfileScreen = () => {
 							</Grid>
 						</Grid>
 					</Paper>
+					{user?.isAdmin && (
+						<>
+							<Paper
+								className={clsx(classes.paper, classes.adminPaper)}
+								component={Grid}
+								container
+								direction='column'
+								alignItems='center'
+							>
+								<Typography variant='h5' className={classes.subTitle}>
+									Admin Menu
+								</Typography>
+								<Button
+									className={classes.button}
+									startIcon={<BusinessCenter />}
+									color='primary'
+									component={Link}
+									to='/admin/products'
+									fullWidth
+								>
+									Products
+								</Button>
+								<Button
+									className={classes.button}
+									startIcon={<People />}
+									color='primary'
+									component={Link}
+									to='/admin/users'
+									fullWidth
+								>
+									Users
+								</Button>
+								<Button
+									className={classes.button}
+									startIcon={<ListAlt />}
+									color='primary'
+									component={Link}
+									to='/admin/orders'
+									fullWidth
+								>
+									Orders
+								</Button>
+							</Paper>
+						</>
+					)}
 				</Grid>
 				<Grid item xs={12} md={8}>
 					<Typography variant='h1' className={classes.title}>
@@ -174,6 +223,8 @@ const ProfileScreen = () => {
 																moment(
 																	order.deliveredAt.substring(0, 10)
 																).format('Do MMM')
+															) : order.isCanceled && !order.isDelivered ? (
+																<Block className={classes.faintIcon} />
 															) : (
 																<HourglassEmpty className={classes.faintIcon} />
 															)}
@@ -227,6 +278,8 @@ const ProfileScreen = () => {
 																moment(
 																	order.deliveredAt.substring(0, 10)
 																).format('Do MMM')
+															) : order.isCanceled && !order.isDelivered ? (
+																<Block className={classes.faintIcon} />
 															) : (
 																<HourglassEmpty className={classes.faintIcon} />
 															)}
@@ -238,13 +291,6 @@ const ProfileScreen = () => {
 																alignItems='center'
 																justify='center'
 															>
-																{order.isCanceled && (
-																	<Typography
-																		style={{ color: theme.palette.error.main }}
-																	>
-																		Canceled
-																	</Typography>
-																)}
 																<Button
 																	color='secondary'
 																	component={Link}

@@ -59,7 +59,7 @@ const ReviewSection = ({ product }) => {
 
 	useEffect(() => {
 		dispatch(userListOrdersAction());
-	}, []);
+	});
 
 	useEffect(() => {
 		if (

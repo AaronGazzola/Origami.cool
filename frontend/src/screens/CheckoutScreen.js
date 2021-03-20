@@ -44,6 +44,7 @@ import { useTheme } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import useStyles from 'styles/checkoutStyles';
 import useFormStyles from 'styles/formStyles';
+import { getProductsAction } from 'actions/productActions';
 import { userUpdateProfileAction } from 'actions/userActions';
 import { addToCartAction, removeFromCartAction } from 'actions/cartActions';
 import { createOrderAction } from 'actions/orderActions';
@@ -66,6 +67,7 @@ const CheckoutScreen = ({ history }) => {
 	const matchesXs = useMediaQuery(theme.breakpoints.down('xs'));
 	const [sdkReady, setSdkReady] = useState(false);
 	const [closeAddress, setCloseAddress] = useState(false);
+	const [stockChecked, setStockChecked] = useState(false);
 
 	const {
 		user: { address, name }
@@ -101,6 +103,30 @@ const CheckoutScreen = ({ history }) => {
 	const cart = useSelector(state => state.cart);
 	const { cartItems } = cart;
 
+	const { products } = useSelector(state => state.getProducts);
+
+	useEffect(() => {
+		dispatch(getProductsAction());
+	}, [dispatch]);
+
+	// update cart if insufficient stock
+	useEffect(() => {
+		if (products?.length > 0 && cartItems?.length > 0 && !stockChecked) {
+			cartItems.forEach(item => {
+				products.forEach(product => {
+					if (product._id === item.product) {
+						if (product.countInStock === 0) {
+							dispatch(removeFromCartAction(product._id));
+						} else if (product.countInStock < item.qty) {
+							dispatch(addToCartAction(product.slug, product.countInStock));
+						}
+					}
+				});
+			});
+			setStockChecked(true);
+		}
+	}, [products, cartItems, stockChecked, dispatch]);
+
 	// Calculat prices
 	const addDecimals = num => {
 		return (Math.round(num * 100) / 100).toFixed(2);
@@ -134,7 +160,7 @@ const CheckoutScreen = ({ history }) => {
 			dispatch({ type: CREATE_ORDER_REDIRECT_CLEAR });
 			history.push(`/order/${order._id}`);
 		}
-	}, [redirect, history, order]);
+	}, [redirect, history, order, dispatch]);
 
 	useEffect(() => {
 		if (!sdkReady) {
@@ -152,6 +178,12 @@ const CheckoutScreen = ({ history }) => {
 			addPayPalScript();
 		}
 	});
+
+	useEffect(() => {
+		if (!addressIsValid && !addressIsOpen) {
+			formDispatch({ type: 'TOGGLE' });
+		}
+	}, [addressIsValid, formDispatch, addressIsOpen]);
 
 	const setExpandedHandler = expandIndex => {
 		formDispatch({
@@ -177,10 +209,6 @@ const CheckoutScreen = ({ history }) => {
 	const addressToggleHandler = () => {
 		formDispatch({ type: 'TOGGLE' });
 	};
-
-	useEffect(() => {
-		if (!addressIsValid && !addressIsOpen) addressToggleHandler();
-	}, [addressIsValid, addressToggleHandler, addressIsOpen]);
 
 	const updateAddressHandler = e => {
 		e.preventDefault();

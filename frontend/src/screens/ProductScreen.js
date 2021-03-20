@@ -19,7 +19,6 @@ import { getProductAction } from 'actions/productActions';
 import { addToCartAction } from 'actions/cartActions';
 import ImageSlider from 'components/ImageSlider';
 import ReviewSection from 'components/ReviewSection';
-import { CART_ADD_ITEM } from '../constants/cartConstants';
 
 const ProductScreen = ({ match, history }) => {
 	const slug = match.params.slug;
