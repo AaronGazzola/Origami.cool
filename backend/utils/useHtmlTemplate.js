@@ -458,20 +458,6 @@ Origami.cool" border="0" style="display: block; max-width: 100%; white-space: pr
                                           <table class="row__table" width="100%" align="center" role="presentation" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
                                             <tr class="row__row">
                                               <td class="total-column column col-sm-6" width="225" style="margin: 0; padding: 0;width: 50%" align="left" valign="top">
-                                                <p class="total text p" style="font-size: 16px; line-height: 20px; font-family: Helvetica,Arial,sans-serif; width: min-content; padding: 0; color: #424242; display: block; margin: 0;">GST</p>
-                                              </td>
-                                              <td class="price-column column col-sm-6" width="225" style="margin: 0; padding: 0;width: 50%" align="left" valign="top">
-                                                <p class="total-price text p" style="font-size: 16px; line-height: 20px; font-family: Helvetica,Arial,sans-serif; width: min-content; padding: 0; color: #424242; display: block; margin: 0; margin-left: auto;">+$${
-																									order.taxPrice
-																								}</p>
-                                              </td>
-                                            </tr>
-                                          </table>
-                                        </div>
-                                        <div class="table-footer row" style="padding-left: 20px; padding-right: 10px;">
-                                          <table class="row__table" width="100%" align="center" role="presentation" border="0" cellpadding="0" cellspacing="0" style="table-layout: fixed;">
-                                            <tr class="row__row">
-                                              <td class="total-column column col-sm-6" width="225" style="margin: 0; padding: 0;width: 50%" align="left" valign="top">
                                                 <p class="total text p" style="font-size: 16px; line-height: 20px; font-family: Helvetica,Arial,sans-serif; width: min-content; padding: 0; color: #424242; display: block; margin: 0;">shipping</p>
                                               </td>
                                               <td class="price-column column col-sm-6" width="225" style="margin: 0; padding: 0;width: 50%" align="left" valign="top">

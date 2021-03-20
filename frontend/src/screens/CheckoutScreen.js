@@ -136,7 +136,7 @@ const CheckoutScreen = ({ history }) => {
 	);
 	cart.shippingPrice = addDecimals(9.97);
 
-	cart.taxPrice = addDecimals(Number((0.1 * cart.itemsPrice).toFixed(2)));
+	cart.taxPrice = 0;
 
 	cart.totalPrice = (
 		Number(cart.itemsPrice) +
@@ -770,10 +770,6 @@ const CheckoutScreen = ({ history }) => {
 										<Typography>${addDecimals(x.price * x.qty)}</Typography>
 									</Grid>
 								))}
-								<Grid container className={classes.mb1} justify='space-between'>
-									<Typography>GST</Typography>
-									<Typography>${cart.taxPrice}</Typography>
-								</Grid>
 							</>
 						)}
 						<Typography variant='h6'>Total</Typography>
