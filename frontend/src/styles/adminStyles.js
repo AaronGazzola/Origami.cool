@@ -48,6 +48,25 @@ const styles = makeStyles(theme => ({
 		textDecoration: 'none',
 		fontWeight: 700,
 		fontSize: '1.2rem'
+	},
+	backButton: {
+		marginTop: theme.spacing(2)
+	},
+	form: {
+		width: 500,
+		[theme.breakpoints.down('xs')]: {
+			width: 320
+		},
+		display: 'flex',
+		flexDirection: 'column',
+		alignItems: 'center'
+	},
+	input: {
+		marginTop: theme.spacing(2),
+		width: '90%',
+		'& .MuiInputLabel-shrink, p': {
+			fontWeight: 700
+		}
 	}
 }));
 

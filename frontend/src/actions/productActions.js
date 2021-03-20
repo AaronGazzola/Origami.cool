@@ -17,10 +17,16 @@ import {
 	DELETE_PRODUCT_FAIL,
 	SET_PRODUCT_STOCK_REQUEST,
 	SET_PRODUCT_STOCK_SUCCESS,
-	SET_PRODUCT_STOCK_FAIL
+	SET_PRODUCT_STOCK_FAIL,
+	CREATE_PRODUCT_REQUEST,
+	CREATE_PRODUCT_SUCCESS,
+	CREATE_PRODUCT_FAIL,
+	UPDATE_PRODUCT_REQUEST,
+	UPDATE_PRODUCT_SUCCESS,
+	UPDATE_PRODUCT_FAIL
 } from 'constants/productConstants';
 
-export const getProductsAction = (name, email, password) => async dispatch => {
+export const getProductsAction = () => async dispatch => {
 	try {
 		dispatch({
 			type: GET_PRODUCTS_REQUEST
@@ -47,7 +53,7 @@ export const getProductsAction = (name, email, password) => async dispatch => {
 	}
 };
 
-export const getProductAction = slug => async dispatch => {
+export const getProductAction = id => async dispatch => {
 	try {
 		dispatch({
 			type: GET_PRODUCT_REQUEST
@@ -57,7 +63,7 @@ export const getProductAction = slug => async dispatch => {
 			headers: {}
 		};
 
-		const { data } = await axios.get(`/api/v1/products/${slug}`, config);
+		const { data } = await axios.get(`/api/v1/products/${id}`, config);
 
 		dispatch({
 			type: GET_PRODUCT_SUCCESS,
@@ -96,7 +102,7 @@ export const createReviewAction = (product, review) => async (
 
 		await axios.post(`/api/v1/products/review/${product._id}`, review, config);
 
-		dispatch(getProductAction(product.slug));
+		dispatch(getProductAction(product._id));
 
 		dispatch({
 			type: CREATE_REVIEW_SUCCESS,
@@ -135,7 +141,7 @@ export const updateReviewAction = (product, review) => async (
 
 		await axios.put(`/api/v1/products/review/${product._id}`, review, config);
 
-		dispatch(getProductAction(product.slug));
+		dispatch(getProductAction(product._id));
 
 		dispatch({
 			type: UPDATE_REVIEW_SUCCESS,
@@ -214,6 +220,77 @@ export const setProductStockAction = (id, countInStock) => async (
 	} catch (error) {
 		dispatch({
 			type: SET_PRODUCT_STOCK_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+		});
+	}
+};
+
+export const createProductAction = product => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: CREATE_PRODUCT_REQUEST
+		});
+
+		const {
+			userData: { token }
+		} = getState();
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`
+			}
+		};
+
+		await axios.post(`/api/v1/products/`, { ...product }, config);
+
+		dispatch({
+			type: CREATE_PRODUCT_SUCCESS,
+			payload: 'Product created'
+		});
+	} catch (error) {
+		dispatch({
+			type: CREATE_PRODUCT_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+		});
+	}
+};
+
+export const updateProductAction = (product, id) => async (
+	dispatch,
+	getState
+) => {
+	try {
+		dispatch({
+			type: UPDATE_PRODUCT_REQUEST
+		});
+
+		const {
+			userData: { token }
+		} = getState();
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`
+			}
+		};
+
+		await axios.post(`/api/v1/products/${id}`, { ...product }, config);
+
+		dispatch({
+			type: UPDATE_PRODUCT_SUCCESS,
+			payload: 'Product updated'
+		});
+	} catch (error) {
+		dispatch({
+			type: UPDATE_PRODUCT_FAIL,
 			payload:
 				error.response && error.response.data.message
 					? error.response.data.message

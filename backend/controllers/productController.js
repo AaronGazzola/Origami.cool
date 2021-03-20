@@ -15,12 +15,11 @@ const getProducts = asyncHandler(async (req, res) => {
 	});
 });
 
-// @desc    get product by slug
-// @route   GET /api/products/:slug
+// @desc    get product by id
+// @route   GET /api/products/:id
 // @access    Public
 const getProduct = asyncHandler(async (req, res, next) => {
-	const slug = req.params.slug;
-	const product = await Product.findOne({ slug }).populate('reviews');
+	const product = await Product.findById(req.params.id).populate('reviews');
 
 	if (!product) {
 		return next(new ErrorResponse('Could not find product', 404));
@@ -149,11 +148,23 @@ const setCountInStock = asyncHandler(async (req, res, next) => {
 	res.status(201).json({ success: true });
 });
 
+// @desc    Create new product
+// @route   POST /api/products/
+// @access    Private/admin
+const createProduct = asyncHandler(async (req, res, next) => {});
+
+// @desc    Update product
+// @route   POST /api/products/:id
+// @access    Private/admin
+const updateProduct = asyncHandler(async (req, res, next) => {});
+
 export {
 	getProducts,
 	getProduct,
 	createReview,
 	updateReview,
 	deleteProduct,
-	setCountInStock
+	setCountInStock,
+	createProduct,
+	updateProduct
 };

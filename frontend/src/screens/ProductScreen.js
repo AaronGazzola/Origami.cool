@@ -38,8 +38,8 @@ const ProductScreen = ({ match, history }) => {
 	};
 
 	useEffect(() => {
-		dispatch(getProductAction(slug));
-	}, [dispatch, slug]);
+		dispatch(getProductAction(product._id));
+	}, [dispatch, product._id]);
 
 	useEffect(() => {
 		if (cartRedirect) {

@@ -294,11 +294,7 @@ const App = () => {
 								exact
 								component={ProductListScreen}
 							/>
-							<Route
-								path='/admin/product/:id'
-								exact
-								component={EditProductScreen}
-							/>
+							<Route path='/admin/product/:id' component={EditProductScreen} />
 							<Route path='/admin/users' exact component={UserListScreen} />
 							<Route path='/admin/orders' exact component={OrderListScreen} />
 							{cartItems?.length === 0 ? (
