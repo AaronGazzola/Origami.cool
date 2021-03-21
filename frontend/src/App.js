@@ -27,6 +27,7 @@ import EditProductScreen from 'screens/EditProductScreen';
 import OrderListScreen from 'screens/OrderListScreen';
 import ProductListScreen from 'screens/ProductListScreen';
 import UserListScreen from 'screens/UserListScreen';
+import AboutScreen from 'screens/AboutScreen';
 import Message from 'components/Message';
 import SnackBar from 'components/SnackBar';
 import {
@@ -365,6 +366,7 @@ const App = () => {
 							) : (
 								<Route exact path='/checkout' component={CheckoutScreen} />
 							)}
+							<Route path='/about' exact component={AboutScreen} />
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
 					) : isAuth && user.isVerified ? (
@@ -386,6 +388,7 @@ const App = () => {
 							) : (
 								<Route exact path='/checkout' component={CheckoutScreen} />
 							)}
+							<Route path='/about' exact component={AboutScreen} />
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
 					) : (
@@ -412,6 +415,7 @@ const App = () => {
 							<Redirect from='/checkout' exact to='/login' />
 							<Redirect from='/order/:id' to='/login' />
 							<Redirect from='/admin' to='/login' />
+							<Route path='/about' exact component={AboutScreen} />
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
 					)}

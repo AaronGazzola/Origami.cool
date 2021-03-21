@@ -151,6 +151,15 @@ const styles = makeStyles(theme => ({
 				padding: theme.spacing(1)
 			}
 		}
+	},
+	aboutPaper: {
+		padding: theme.spacing(2),
+		marginBottom: theme.spacing(3),
+		maxWidth: 700
+	},
+	shadow: {
+		marginTop: theme.spacing(2),
+		boxShadow: theme.shadows[5]
 	}
 }));
 

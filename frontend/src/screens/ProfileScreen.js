@@ -26,11 +26,9 @@ import {
 } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutAction } from 'actions/userActions';
-import styles from 'styles/contentStyles';
+import useStyles from 'styles/contentStyles';
 import ProfileModal from 'components/ProfileModal';
 import { userListOrdersAction } from 'actions/orderActions';
-
-const useStyles = styles;
 
 const ProfileScreen = () => {
 	const classes = useStyles();
