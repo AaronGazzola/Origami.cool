@@ -348,6 +348,49 @@ const sendTokenResponse = (user, statusCode, res) => {
 	});
 };
 
+// @desc      Get users
+// @route     GET /api/v1/users/
+// @access    Private/Admin
+const getUsers = asyncHandler(async (req, res, next) => {
+	const users = await User.find();
+
+	res.status(200).json({ success: true, users });
+});
+
+// @desc      Toggle user ban status
+// @route     POST /api/v1/users/ban
+// @access    Private/Admin
+const setBan = asyncHandler(async (req, res, next) => {
+	const user = await User.findById(req.params.id);
+	if (!user) {
+		return next(new ErrorResponse('Could not find user', 404));
+	}
+	user.isBanned = !user.isBanned;
+
+	await user.save();
+
+	res.status(200).json({
+		success: true
+	});
+});
+
+// @desc      Toggle user admin status
+// @route     POST /api/v1/users/admin
+// @access    Private/Admin
+const setAdmin = asyncHandler(async (req, res, next) => {
+	const user = await User.findById(req.params.id);
+	if (!user) {
+		return next(new ErrorResponse('Could not find user', 404));
+	}
+	user.isAdmin = !user.isAdmin;
+
+	await user.save();
+
+	res.status(200).json({
+		success: true
+	});
+});
+
 export {
 	login,
 	signup,
@@ -357,5 +400,8 @@ export {
 	resetPassword,
 	userUpdateProfile,
 	cancelEmailUpdate,
-	verifyEmailUpdate
+	verifyEmailUpdate,
+	setBan,
+	setAdmin,
+	getUsers
 };

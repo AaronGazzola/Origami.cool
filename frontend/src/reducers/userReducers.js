@@ -39,7 +39,19 @@ import {
 	VERIFY_EMAIL_UPDATE_REQUEST,
 	VERIFY_EMAIL_UPDATE_SUCCESS,
 	VERIFY_EMAIL_UPDATE_FAIL,
-	VERIFY_EMAIL_UPDATE_CLEAR
+	VERIFY_EMAIL_UPDATE_CLEAR,
+	GET_USERS_REQUEST,
+	GET_USERS_SUCCESS,
+	GET_USERS_FAIL,
+	GET_USERS_CLEAR,
+	SET_ADMIN_REQUEST,
+	SET_ADMIN_SUCCESS,
+	SET_ADMIN_FAIL,
+	SET_ADMIN_CLEAR,
+	SET_BAN_REQUEST,
+	SET_BAN_SUCCESS,
+	SET_BAN_FAIL,
+	SET_BAN_CLEAR
 } from 'constants/userConstants';
 
 export const signupReducer = (state = {}, action) => {
@@ -217,6 +229,58 @@ export const verifyEmailUpdateReducer = (state = {}, action) => {
 		case VERIFY_EMAIL_UPDATE_FAIL:
 			return { loading: false, error: action.payload };
 		case VERIFY_EMAIL_UPDATE_CLEAR:
+			return { error: null, success: null };
+		default:
+			return state;
+	}
+};
+export const getUsersReducer = (state = {}, action) => {
+	switch (action.type) {
+		case GET_USERS_REQUEST:
+			return { loading: true };
+		case GET_USERS_SUCCESS:
+			return {
+				loading: false,
+				success: true,
+				users: action.payload
+			};
+		case GET_USERS_FAIL:
+			return { loading: false, error: action.payload };
+		case GET_USERS_CLEAR:
+			return { error: null, success: null };
+		default:
+			return state;
+	}
+};
+export const setBanReducer = (state = {}, action) => {
+	switch (action.type) {
+		case SET_BAN_REQUEST:
+			return { loading: true };
+		case SET_BAN_SUCCESS:
+			return {
+				loading: false,
+				success: action.payload
+			};
+		case SET_BAN_FAIL:
+			return { loading: false, error: action.payload };
+		case SET_BAN_CLEAR:
+			return { error: null, success: null };
+		default:
+			return state;
+	}
+};
+export const setAdminReducer = (state = {}, action) => {
+	switch (action.type) {
+		case SET_ADMIN_REQUEST:
+			return { loading: true };
+		case SET_ADMIN_SUCCESS:
+			return {
+				loading: false,
+				success: action.payload
+			};
+		case SET_ADMIN_FAIL:
+			return { loading: false, error: action.payload };
+		case SET_ADMIN_CLEAR:
 			return { error: null, success: null };
 		default:
 			return state;

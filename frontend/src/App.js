@@ -38,7 +38,10 @@ import {
 	RESET_PASSWORD_CLEAR,
 	USER_UPDATE_PROFILE_CLEAR,
 	CANCEL_EMAIL_UPDATE_CLEAR,
-	VERIFY_EMAIL_UPDATE_CLEAR
+	VERIFY_EMAIL_UPDATE_CLEAR,
+	GET_USERS_CLEAR,
+	SET_BAN_CLEAR,
+	SET_ADMIN_CLEAR
 } from 'constants/userConstants';
 import {
 	GET_PRODUCTS_CLEAR,
@@ -120,7 +123,10 @@ const App = () => {
 		},
 		createProduct: { error: createProductError, success: createProductSuccess },
 		updateProduct: { error: updateProductError, success: updateProductSuccess },
-		uploadImage: { error: uploadImageError }
+		uploadImage: { error: uploadImageError },
+		getUsers: { error: getUsersError },
+		setBan: { error: setBanError, success: setBanSuccess },
+		setAdmin: { error: setAdminError, success: setAdminSuccess }
 	} = useSelector(state => state);
 
 	useEffect(() => {
@@ -161,7 +167,10 @@ const App = () => {
 							deleteProductError ||
 							createProductError ||
 							updateProductError ||
-							uploadImageError
+							uploadImageError ||
+							getUsersError ||
+							setBanError ||
+							setAdminError
 						}
 						success={
 							signupSuccess ||
@@ -219,6 +228,12 @@ const App = () => {
 								? CREATE_PRODUCT_CLEAR
 								: uploadImageError
 								? UPLOAD_IMAGE_CLEAR
+								: getUsersError
+								? GET_USERS_CLEAR
+								: setBanError
+								? SET_BAN_CLEAR
+								: setAdminError
+								? SET_ADMIN_CLEAR
 								: null
 						}
 						actionText={
@@ -255,7 +270,9 @@ const App = () => {
 							deleteProductSuccess ||
 							setProductStockSuccess ||
 							updateProductSuccess ||
-							createProductSuccess
+							createProductSuccess ||
+							setBanSuccess ||
+							setAdminSuccess
 						}
 						clearType={
 							sendVerifyUserSuccess
@@ -294,6 +311,10 @@ const App = () => {
 								? CREATE_PRODUCT_CLEAR
 								: updateProductSuccess
 								? UPDATE_PRODUCT_CLEAR
+								: setBanSuccess
+								? SET_BAN_CLEAR
+								: setAdminSuccess
+								? SET_ADMIN_CLEAR
 								: null
 						}
 					/>

@@ -11,7 +11,10 @@ import {
 	resetPasswordReducer,
 	userUpdateProfileReducer,
 	cancelEmailUpdateReducer,
-	verifyEmailUpdateReducer
+	verifyEmailUpdateReducer,
+	getUsersReducer,
+	setBanReducer,
+	setAdminReducer
 } from 'reducers/userReducers';
 import {
 	getProductsReducer,
@@ -60,7 +63,10 @@ const reducer = combineReducers({
 	deleteProduct: deleteProductReducer,
 	createProduct: createProductReducer,
 	updateProduct: updateProductReducer,
-	uploadImage: uploadImageReducer
+	uploadImage: uploadImageReducer,
+	getUsers: getUsersReducer,
+	setBan: setBanReducer,
+	setAdmin: setAdminReducer
 });
 
 const userFromStorage = localStorage.getItem('user')

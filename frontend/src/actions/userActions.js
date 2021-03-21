@@ -28,7 +28,16 @@ import {
 	CANCEL_EMAIL_UPDATE_FAIL,
 	VERIFY_EMAIL_UPDATE_REQUEST,
 	VERIFY_EMAIL_UPDATE_SUCCESS,
-	VERIFY_EMAIL_UPDATE_FAIL
+	VERIFY_EMAIL_UPDATE_FAIL,
+	GET_USERS_REQUEST,
+	GET_USERS_SUCCESS,
+	GET_USERS_FAIL,
+	SET_BAN_REQUEST,
+	SET_BAN_SUCCESS,
+	SET_BAN_FAIL,
+	SET_ADMIN_REQUEST,
+	SET_ADMIN_SUCCESS,
+	SET_ADMIN_FAIL
 } from 'constants/userConstants';
 
 export const signupAction = (name, email, password) => async dispatch => {
@@ -83,6 +92,105 @@ export const sendVerifyUserAction = email => async dispatch => {
 	} catch (error) {
 		dispatch({
 			type: SEND_VERIFY_USER_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+		});
+	}
+};
+
+export const getUsersAction = () => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: GET_USERS_REQUEST
+		});
+
+		const {
+			userData: { token }
+		} = getState();
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`
+			}
+		};
+		const { data } = await axios.get('/api/v1/users/', config);
+
+		dispatch({
+			type: GET_USERS_SUCCESS,
+			payload: data.users
+		});
+	} catch (error) {
+		dispatch({
+			type: GET_USERS_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+		});
+	}
+};
+
+export const setBanAction = id => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: SET_BAN_REQUEST
+		});
+
+		const {
+			userData: { token }
+		} = getState();
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`
+			}
+		};
+		await axios.post(`/api/v1/users/ban/${id}`, {}, config);
+
+		dispatch({
+			type: SET_BAN_SUCCESS,
+			payload: 'User privilages updated'
+		});
+	} catch (error) {
+		dispatch({
+			type: SET_BAN_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+		});
+	}
+};
+
+export const setAdminAction = id => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: SET_ADMIN_REQUEST
+		});
+
+		const {
+			userData: { token }
+		} = getState();
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`
+			}
+		};
+		await axios.post(`/api/v1/users/admin/${id}`, {}, config);
+
+		dispatch({
+			type: SET_ADMIN_SUCCESS,
+			payload: 'User privilages updated'
+		});
+	} catch (error) {
+		dispatch({
+			type: SET_ADMIN_FAIL,
 			payload:
 				error.response && error.response.data.message
 					? error.response.data.message

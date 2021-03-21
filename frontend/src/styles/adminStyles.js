@@ -30,7 +30,9 @@ const styles = makeStyles(theme => ({
 		}
 	},
 	table: {
-		padding: theme.spacing(1, 2)
+		[theme.breakpoints.up('sm')]: {
+			padding: theme.spacing(1, 2)
+		}
 	},
 	error: {
 		color: theme.palette.error.main
@@ -125,6 +127,14 @@ const styles = makeStyles(theme => ({
 		'&:hover': {
 			color: theme.palette.error.main,
 			borderColor: theme.palette.error.main
+		}
+	},
+	banSwitch: {
+		'& .Mui-checked': {
+			color: theme.palette.error.main
+		},
+		'& .Mui-checked + .MuiSwitch-track': {
+			backgroundColor: theme.palette.error.light
 		}
 	}
 }));

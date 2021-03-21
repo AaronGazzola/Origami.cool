@@ -40,7 +40,6 @@ const ProductListScreen = ({ history, match }) => {
 	const matchesXs = useMediaQuery(theme.breakpoints.down('xs'));
 
 	const [confirmDelete, setConfirmDelete] = useState('');
-	const [refresh, setRefresh] = useState(true);
 	const [productToDelete, setProductToDelete] = useState('');
 	const [page, setPage] = useState(match.params.pageNumber || 0);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -181,7 +180,7 @@ const ProductListScreen = ({ history, match }) => {
 														value={product.countInStock}
 														onChange={e => setCountInStockHandler(e, product)}
 													>
-														{[...Array(100).keys()].map(x => (
+														{[...Array(1000).keys()].map(x => (
 															<MenuItem key={x + 1} value={x + 1}>
 																{x + 1}
 															</MenuItem>
