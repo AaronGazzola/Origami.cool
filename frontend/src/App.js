@@ -60,7 +60,9 @@ import {
 	SEND_ORDER_EMAIL_CLEAR,
 	GET_ORDER_CLEAR,
 	CANCEL_ORDER_CLEAR,
-	USER_LIST_ORDERS_CLEAR
+	USER_LIST_ORDERS_CLEAR,
+	LIST_ORDERS_CLEAR,
+	SET_DELIVERED_CLEAR
 } from 'constants/orderConstants';
 import { sendVerifyUserAction } from 'actions/userActions';
 import { getProductsAction } from 'actions/productActions';
@@ -126,7 +128,9 @@ const App = () => {
 		uploadImage: { error: uploadImageError },
 		getUsers: { error: getUsersError },
 		setBan: { error: setBanError, success: setBanSuccess },
-		setAdmin: { error: setAdminError, success: setAdminSuccess }
+		setAdmin: { error: setAdminError, success: setAdminSuccess },
+		listOrders: { error: listOrdersError },
+		setDelivered: { error: setDeliveredError, success: setDeliveredSuccess }
 	} = useSelector(state => state);
 
 	useEffect(() => {
@@ -170,7 +174,9 @@ const App = () => {
 							uploadImageError ||
 							getUsersError ||
 							setBanError ||
-							setAdminError
+							setAdminError ||
+							listOrdersError ||
+							setDeliveredError
 						}
 						success={
 							signupSuccess ||
@@ -234,6 +240,10 @@ const App = () => {
 								? SET_BAN_CLEAR
 								: setAdminError
 								? SET_ADMIN_CLEAR
+								: listOrdersError
+								? LIST_ORDERS_CLEAR
+								: setDeliveredError
+								? SET_DELIVERED_CLEAR
 								: null
 						}
 						actionText={
@@ -272,7 +282,8 @@ const App = () => {
 							updateProductSuccess ||
 							createProductSuccess ||
 							setBanSuccess ||
-							setAdminSuccess
+							setAdminSuccess ||
+							setDeliveredSuccess
 						}
 						clearType={
 							sendVerifyUserSuccess
@@ -315,6 +326,8 @@ const App = () => {
 								? SET_BAN_CLEAR
 								: setAdminSuccess
 								? SET_ADMIN_CLEAR
+								: setDeliveredSuccess
+								? SET_DELIVERED_CLEAR
 								: null
 						}
 					/>

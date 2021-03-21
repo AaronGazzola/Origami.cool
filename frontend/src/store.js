@@ -34,7 +34,9 @@ import {
 	getOrderReducer,
 	cancelOrderReducer,
 	sendCancelOrderEmailReducer,
-	userListOrdersReducer
+	userListOrdersReducer,
+	listOrdersReducer,
+	setDeliveredReducer
 } from 'reducers/orderReducers';
 
 const reducer = combineReducers({
@@ -66,7 +68,9 @@ const reducer = combineReducers({
 	uploadImage: uploadImageReducer,
 	getUsers: getUsersReducer,
 	setBan: setBanReducer,
-	setAdmin: setAdminReducer
+	setAdmin: setAdminReducer,
+	listOrders: listOrdersReducer,
+	setDelivered: setDeliveredReducer
 });
 
 const userFromStorage = localStorage.getItem('user')

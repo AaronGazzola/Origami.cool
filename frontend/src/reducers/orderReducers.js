@@ -20,10 +20,6 @@ import {
 	LIST_ORDERS_SUCCESS,
 	LIST_ORDERS_FAIL,
 	LIST_ORDERS_CLEAR,
-	SET_PAID_REQUEST,
-	SET_PAID_SUCCESS,
-	SET_PAID_FAIL,
-	SET_PAID_CLEAR,
 	SET_DELIVERED_REQUEST,
 	SET_DELIVERED_SUCCESS,
 	SET_DELIVERED_FAIL,
@@ -132,10 +128,7 @@ export const listOrdersReducer = (state = {}, action) => {
 			return {
 				loading: false,
 				success: true,
-				orders: action.payload.orders,
-				allOrders: action.payload.allOrders,
-				count: action.payload.count,
-				page: action.payload.page
+				orders: action.payload
 			};
 		case LIST_ORDERS_FAIL:
 			return { loading: false, error: action.payload };
@@ -145,24 +138,7 @@ export const listOrdersReducer = (state = {}, action) => {
 			return state;
 	}
 };
-export const setPaidReducer = (state = {}, action) => {
-	switch (action.type) {
-		case SET_PAID_REQUEST:
-			return { loading: true };
-		case SET_PAID_SUCCESS:
-			return {
-				loading: false,
-				success: true,
-				order: action.payload
-			};
-		case SET_PAID_FAIL:
-			return { loading: false, error: action.payload };
-		case SET_PAID_CLEAR:
-			return {};
-		default:
-			return state;
-	}
-};
+
 export const setDeliveredReducer = (state = {}, action) => {
 	switch (action.type) {
 		case SET_DELIVERED_REQUEST:
@@ -170,13 +146,12 @@ export const setDeliveredReducer = (state = {}, action) => {
 		case SET_DELIVERED_SUCCESS:
 			return {
 				loading: false,
-				success: true,
-				order: action.payload
+				success: action.payload
 			};
 		case SET_DELIVERED_FAIL:
 			return { loading: false, error: action.payload };
 		case SET_DELIVERED_CLEAR:
-			return {};
+			return { ...state, error: null, success: null };
 		default:
 			return state;
 	}

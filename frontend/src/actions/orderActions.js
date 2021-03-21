@@ -15,9 +15,6 @@ import {
 	LIST_ORDERS_REQUEST,
 	LIST_ORDERS_SUCCESS,
 	LIST_ORDERS_FAIL,
-	SET_PAID_REQUEST,
-	SET_PAID_SUCCESS,
-	SET_PAID_FAIL,
 	SET_DELIVERED_REQUEST,
 	SET_DELIVERED_SUCCESS,
 	SET_DELIVERED_FAIL,
@@ -172,21 +169,14 @@ export const getOrderAction = id => async (dispatch, getState) => {
 	}
 };
 
-export const listOrdersAction = (
-	keyword = '',
-	pageNumber = '',
-	pageSize = 10,
-	searchOptions = { paid: '', delivered: '', cancelled: '' }
-) => async (dispatch, getState) => {
+export const listOrdersAction = () => async (dispatch, getState) => {
 	try {
-		const { paid, delivered, cancelled } = searchOptions;
-
 		dispatch({
 			type: LIST_ORDERS_REQUEST
 		});
 
 		const {
-			auth: { token }
+			userData: { token }
 		} = getState();
 
 		const config = {
@@ -195,57 +185,15 @@ export const listOrdersAction = (
 			}
 		};
 
-		const { data } = await axios.get(
-			`/api/v1/orders?keyword=${keyword}&pageNumber=${pageNumber}&pageSize=${pageSize}&paid=${paid}&delivered=${delivered}&cancelled=${cancelled}`,
-			config
-		);
+		const { data } = await axios.get(`/api/v1/orders`, config);
 
 		dispatch({
 			type: LIST_ORDERS_SUCCESS,
-			payload: data
+			payload: data.orders
 		});
 	} catch (error) {
 		dispatch({
 			type: LIST_ORDERS_FAIL,
-			payload:
-				error.response && error.response.data.message
-					? error.response.data.message
-					: error.message
-		});
-	}
-};
-
-export const setPaidAction = id => async (dispatch, getState) => {
-	try {
-		dispatch({
-			type: SET_PAID_REQUEST
-		});
-
-		const {
-			auth: { token }
-		} = getState();
-
-		const config = {
-			headers: {
-				Authorization: `Bearer ${token}`
-			}
-		};
-
-		const { data } = await axios.put(
-			`/api/v1/orders/${id}/setpaid`,
-			{},
-			config
-		);
-
-		dispatch(listOrdersAction());
-
-		dispatch({
-			type: SET_PAID_SUCCESS,
-			payload: data.order
-		});
-	} catch (error) {
-		dispatch({
-			type: SET_PAID_FAIL,
 			payload:
 				error.response && error.response.data.message
 					? error.response.data.message
@@ -261,7 +209,7 @@ export const setDeliveredAction = id => async (dispatch, getState) => {
 		});
 
 		const {
-			auth: { token }
+			userData: { token }
 		} = getState();
 
 		const config = {
@@ -276,11 +224,9 @@ export const setDeliveredAction = id => async (dispatch, getState) => {
 			config
 		);
 
-		dispatch(listOrdersAction());
-
 		dispatch({
 			type: SET_DELIVERED_SUCCESS,
-			payload: data.order
+			payload: 'Order marked as delivered'
 		});
 	} catch (error) {
 		dispatch({
