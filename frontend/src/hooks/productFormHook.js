@@ -69,6 +69,25 @@ const useProductForm = product => {
 				case 'TOUCH':
 					draft.inputs[action.payload.id].isTouched = true;
 					break;
+				case 'UPLOAD_IMAGE':
+					draft.images = [...state.images, { path: action.payload, label: '' }];
+					let uploadValid = true;
+					for (const inputId in state.inputs) {
+						uploadValid = uploadValid && state.inputs[inputId].isValid;
+					}
+					draft.formIsValid = uploadValid;
+					break;
+				case 'DELETE_IMAGE':
+					draft.images = [...state.images].splice(action.payload + 1, 1);
+					let valid = true;
+					for (const inputId in state.inputs) {
+						valid = valid && state.inputs[inputId].isValid;
+					}
+					draft.formIsValid = valid;
+					break;
+				case 'IMAGE_LABEL':
+					draft.images[action.index].label = action.payload.value;
+					break;
 				case 'RESET':
 					return initialFormState;
 				default:

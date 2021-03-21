@@ -21,7 +21,8 @@ import {
 	setProductStockReducer,
 	deleteProductReducer,
 	updateProductReducer,
-	createProductReducer
+	createProductReducer,
+	uploadImageReducer
 } from 'reducers/productReducers';
 import { cartReducer } from 'reducers/cartReducers';
 import {
@@ -58,7 +59,8 @@ const reducer = combineReducers({
 	setProductStock: setProductStockReducer,
 	deleteProduct: deleteProductReducer,
 	createProduct: createProductReducer,
-	updateProduct: updateProductReducer
+	updateProduct: updateProductReducer,
+	uploadImage: uploadImageReducer
 });
 
 const userFromStorage = localStorage.getItem('user')

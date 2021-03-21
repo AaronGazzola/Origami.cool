@@ -1,8 +1,10 @@
 import fs from 'fs';
+import path from 'path';
 import ErrorResponse from '../utils/errorResponse.js';
 import Product from '../models/productModel.js';
 import Review from '../models/reviewModel.js';
 import asyncHandler from '../middleware/async.js';
+import moment from 'moment';
 
 // @desc    Fetch all products
 // @route   GET /api/products
@@ -154,25 +156,152 @@ const setCountInStock = asyncHandler(async (req, res, next) => {
 // @route   POST /api/products/
 // @access    Private/admin
 const createProduct = asyncHandler(async (req, res, next) => {
-	const product = await Product.create({ ...req.body.product, user: req.user });
+	const images = req.body.product.images;
+	// check for images
+	if (!images) {
+		return next(new ErrorResponse('Please include images', 400));
+	}
+	// move images from uploads to images
+	let movedImages = [];
+	images.forEach(image => {
+		const oldPath = image.path;
+		const newPath = oldPath.replace('uploads', 'images');
+		fs.rename(`.${oldPath}`, `.${newPath}`, err => {
+			if (err) {
+				return next(new ErrorResponse('Could not create product', 500));
+			}
+		});
+		movedImages.push({ path: newPath, label: image.label });
+	});
 
-	res.status(201).json({ product, success: true });
+	// delete remaining images in uploads folder
+	const directory = './uploads';
+	fs.readdir(directory, (err, files) => {
+		if (err) {
+			return next(new ErrorResponse('Could not create product', 500));
+		} else if (files.length) {
+			for (const file of files) {
+				fs.unlink(path.join(directory, file), err => {
+					if (err && err.code !== 'ENOENT') {
+						return next(new ErrorResponse('Could not create product', 500));
+					}
+				});
+			}
+		}
+	});
+
+	const product = await Product.create({
+		...req.body.product,
+		images: movedImages,
+		user: req.user
+	});
+
+	res.status(201).json({
+		product,
+		success: true
+	});
 });
 
 // @desc    Update product
 // @route   POST /api/products/:id
 // @access    Private/admin
 const updateProduct = asyncHandler(async (req, res, next) => {
-	const product = await Product.findByIdAndUpdate(
-		req.params.id,
-		req.body.product
-	);
+	const images = req.body.product.images;
+	// check for images
+	if (!images) {
+		return next(new ErrorResponse('Please include images', 400));
+	}
+	// move images from uploads to images
+	let newImages = [];
+	images.forEach(image => {
+		if (image.path.startsWith('/uploads')) {
+			const oldPath = image.path;
+			const newPath = oldPath.replace('uploads', 'images');
+			fs.rename(`.${oldPath}`, `.${newPath}`, err => {
+				if (err) {
+					return next(new ErrorResponse('Could not create product', 500));
+				}
+			});
+			newImages.push({ path: newPath, label: image.label });
+		} else {
+			newImages.push(image);
+		}
+	});
+
+	// delete remaining images in uploads folder
+	const directory = './uploads';
+	fs.readdir(directory, (err, files) => {
+		if (err) {
+			return next(new ErrorResponse('Could not create product', 500));
+		} else if (files.length) {
+			for (const file of files) {
+				fs.unlink(path.join(directory, file), err => {
+					if (err && err.code !== 'ENOENT') {
+						return next(new ErrorResponse('Could not create product', 500));
+					}
+				});
+			}
+		}
+	});
+
+	const product = await Product.findByIdAndUpdate(req.params.id, {
+		...req.body.product,
+		images: newImages
+	});
 	if (!product) {
 		return next(new ErrorResponse('Could not find product to update', 404));
 	}
 	res.status(201).json({
 		product,
 		success: true
+	});
+});
+
+// @desc    Upload Image
+// @route   POST /api/products/image
+// @access    Private/admin
+const uploadImage = asyncHandler(async (req, res, next) => {
+	// check for uploaded file
+	if (!req.files) {
+		return next(new ErrorResponse(`Please upload a file`, 400));
+	}
+
+	const file = Object.values(req.files)[0];
+
+	// Make sure the image is a photo
+	if (!file.mimetype.startsWith('image')) {
+		return next(new ErrorResponse(`Please upload an image file`, 400));
+	}
+
+	// Check filesize
+	if (file.size > process.env.MAX_FILE_UPLOAD) {
+		return next(
+			new ErrorResponse(
+				`Please upload an image smaller than ${
+					process.env.MAX_FILE_UPLOAD / 1000000
+				} Mb`,
+				400
+			)
+		);
+	}
+
+	// Create new custom filename
+	file.name = `${moment().valueOf()}${path.parse(file.name).ext}`;
+	//Create new image path
+	const newImagePath = `${process.env.FILE_UPLOAD_PATH}/${file.name}`;
+	// upload file
+	file.mv(newImagePath, async err => {
+		if (err) {
+			console.error(err);
+			return next(new ErrorResponse(`Problem with file upload`, 500));
+		}
+
+		const absoluteImagePath = newImagePath.slice(1);
+
+		res.status(200).json({
+			success: true,
+			image: absoluteImagePath
+		});
 	});
 });
 
@@ -184,5 +313,6 @@ export {
 	deleteProduct,
 	setCountInStock,
 	createProduct,
-	updateProduct
+	updateProduct,
+	uploadImage
 };

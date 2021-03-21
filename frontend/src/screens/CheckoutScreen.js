@@ -658,7 +658,7 @@ const CheckoutScreen = ({ history }) => {
 											to={`/product/${item.productSlug}`}
 											component={Link}
 											src={item?.imagePath}
-											alt={item?.imageLabel}
+											alt={item?.imageLabel || item?.name}
 											className={classes.productImage}
 										/>
 

@@ -50,7 +50,7 @@ const styles = makeStyles(theme => ({
 		fontSize: '1.2rem'
 	},
 	backButton: {
-		marginTop: theme.spacing(2)
+		marginTop: theme.spacing(3)
 	},
 	form: {
 		width: 500,
@@ -66,6 +66,65 @@ const styles = makeStyles(theme => ({
 		width: '90%',
 		'& .MuiInputLabel-shrink, p': {
 			fontWeight: 700
+		}
+	},
+	imageButton: {
+		position: 'relative',
+		margin: theme.spacing(3, 1, 2, 1),
+		padding: theme.spacing(1),
+		width: 'min-content',
+		maxWidth: '80%',
+		[theme.breakpoints.down('xs')]: {
+			maxWidth: '100%'
+		},
+		'& p': {
+			whiteSpace: 'nowrap',
+			textTransform: 'none',
+			marginTop: theme.spacing(1)
+		}
+	},
+	imageInput: {
+		position: 'absolute',
+		width: '100%',
+		height: '100%',
+		opacity: 0,
+		'&:hover': {
+			cursor: 'pointer'
+		}
+	},
+	imagePaper: {
+		padding: theme.spacing(2),
+		marginBottom: theme.spacing(2),
+		display: 'flex',
+		flexDirection: 'column',
+		alignItems: 'center',
+		background: theme.palette.background.default
+	},
+	stepper: {
+		width: 200,
+		margin: 'auto',
+		backgroundColor: 'none'
+	},
+	image: {
+		maxWidth: '100%',
+		marginLeft: 'auto',
+		marginRight: 'auto',
+		marginBottom: theme.spacing(1)
+	},
+	subtitleInput: {
+		marginBottom: theme.spacing(1)
+	},
+	deleteButton: {
+		display: 'block',
+		marginLeft: 'auto',
+		'& .MuiButton-label': {
+			display: 'flex',
+			flexDirection: 'row',
+			flexWrap: 'nowrap'
+		},
+		'&:hover': {
+			color: theme.palette.error.main,
+			borderColor: theme.palette.error.main
 		}
 	}
 }));

@@ -60,7 +60,7 @@ const HomeScreen = () => {
 						<img
 							className={classes.productListImage}
 							src={product.images[0].path}
-							alt={product.images[0].label}
+							alt={product.images[0].label || `${product.name} product image`}
 						/>
 						<Typography className={classes.productListTitle}>
 							{product.name}

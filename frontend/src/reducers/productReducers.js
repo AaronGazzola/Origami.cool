@@ -32,7 +32,11 @@ import {
 	UPDATE_PRODUCT_SUCCESS,
 	UPDATE_PRODUCT_FAIL,
 	UPDATE_PRODUCT_CLEAR,
-	UPDATE_PRODUCT_CLEAR_REDIRECT
+	UPDATE_PRODUCT_CLEAR_REDIRECT,
+	UPLOAD_IMAGE_REQUEST,
+	UPLOAD_IMAGE_SUCCESS,
+	UPLOAD_IMAGE_FAIL,
+	UPLOAD_IMAGE_CLEAR
 } from 'constants/productConstants';
 
 export const getProductsReducer = (state = {}, action) => {
@@ -184,6 +188,25 @@ export const updateProductReducer = (state = {}, action) => {
 			return { ...state, error: null, success: null };
 		case UPDATE_PRODUCT_CLEAR_REDIRECT:
 			return { ...state, redirect: null };
+		default:
+			return state;
+	}
+};
+
+export const uploadImageReducer = (state = {}, action) => {
+	switch (action.type) {
+		case UPLOAD_IMAGE_REQUEST:
+			return { loading: true };
+		case UPLOAD_IMAGE_SUCCESS:
+			return {
+				loading: false,
+				success: action.payload,
+				image: action.image
+			};
+		case UPLOAD_IMAGE_FAIL:
+			return { loading: false, error: action.payload };
+		case UPLOAD_IMAGE_CLEAR:
+			return { ...state, error: null, success: null };
 		default:
 			return state;
 	}

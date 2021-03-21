@@ -7,7 +7,8 @@ import {
 	deleteProduct,
 	setCountInStock,
 	createProduct,
-	updateProduct
+	updateProduct,
+	uploadImage
 } from '../controllers/productController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
@@ -19,6 +20,7 @@ router
 	.route('/review/:id')
 	.post(protect, createReview)
 	.put(protect, updateReview);
+router.route('/image').post(protect, admin, uploadImage);
 router
 	.route('/:id')
 	.delete(protect, admin, deleteProduct)

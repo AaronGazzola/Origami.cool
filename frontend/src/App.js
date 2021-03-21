@@ -48,7 +48,8 @@ import {
 	DELETE_PRODUCT_CLEAR,
 	SET_PRODUCT_STOCK_CLEAR,
 	CREATE_PRODUCT_CLEAR,
-	UPDATE_PRODUCT_CLEAR
+	UPDATE_PRODUCT_CLEAR,
+	UPLOAD_IMAGE_CLEAR
 } from 'constants/productConstants';
 import { CART_CLEAR } from 'constants/cartConstants';
 import {
@@ -118,7 +119,8 @@ const App = () => {
 			success: setProductStockSuccess
 		},
 		createProduct: { error: createProductError, success: createProductSuccess },
-		updateProduct: { error: updateProductError, success: updateProductSuccess }
+		updateProduct: { error: updateProductError, success: updateProductSuccess },
+		uploadImage: { error: uploadImageError }
 	} = useSelector(state => state);
 
 	useEffect(() => {
@@ -158,7 +160,8 @@ const App = () => {
 							setProductStockError ||
 							deleteProductError ||
 							createProductError ||
-							updateProductError
+							updateProductError ||
+							uploadImageError
 						}
 						success={
 							signupSuccess ||
@@ -214,6 +217,8 @@ const App = () => {
 								? UPDATE_PRODUCT_CLEAR
 								: createProductError
 								? CREATE_PRODUCT_CLEAR
+								: uploadImageError
+								? UPLOAD_IMAGE_CLEAR
 								: null
 						}
 						actionText={

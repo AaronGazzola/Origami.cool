@@ -23,7 +23,10 @@ import {
 	CREATE_PRODUCT_FAIL,
 	UPDATE_PRODUCT_REQUEST,
 	UPDATE_PRODUCT_SUCCESS,
-	UPDATE_PRODUCT_FAIL
+	UPDATE_PRODUCT_FAIL,
+	UPLOAD_IMAGE_REQUEST,
+	UPLOAD_IMAGE_SUCCESS,
+	UPLOAD_IMAGE_FAIL
 } from 'constants/productConstants';
 
 export const getProductsAction = () => async dispatch => {
@@ -297,6 +300,48 @@ export const updateProductAction = (product, id) => async (
 	} catch (error) {
 		dispatch({
 			type: UPDATE_PRODUCT_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+		});
+	}
+};
+
+export const uploadImageAction = file => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: UPLOAD_IMAGE_REQUEST
+		});
+
+		const {
+			userData: { token }
+		} = getState();
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`
+			}
+		};
+
+		const formData = new FormData();
+		formData.append('image', file);
+
+		const { data } = await axios.post(
+			`/api/v1/products/image`,
+			formData,
+			config
+		);
+
+		dispatch({
+			type: UPLOAD_IMAGE_SUCCESS,
+			payload: 'Image uploaded',
+			image: data.image
+		});
+	} catch (error) {
+		dispatch({
+			type: UPLOAD_IMAGE_FAIL,
 			payload:
 				error.response && error.response.data.message
 					? error.response.data.message

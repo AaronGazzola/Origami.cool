@@ -75,7 +75,7 @@ const ImageSlider = ({ images }) => {
 						<img
 							key={image.path}
 							src={image.path}
-							alt={image.label}
+							alt={image.label || `Product image ${index + 1}`}
 							onLoad={e => handleImageLoaded(e)}
 							style={{ display: imagesLoaded.length < images.length && 'none' }}
 							className={
@@ -147,7 +147,7 @@ const ImageSlider = ({ images }) => {
 								>
 									<img
 										src={image.path}
-										alt={image.label}
+										alt={image.label || `Product image ${index + 1}`}
 										className={classes.listImage}
 									></img>
 								</div>
