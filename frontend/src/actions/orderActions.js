@@ -218,11 +218,7 @@ export const setDeliveredAction = id => async (dispatch, getState) => {
 			}
 		};
 
-		const { data } = await axios.put(
-			`/api/v1/orders/${id}/setdelivered`,
-			{},
-			config
-		);
+		await axios.put(`/api/v1/orders/${id}/setdelivered`, {}, config);
 
 		dispatch({
 			type: SET_DELIVERED_SUCCESS,

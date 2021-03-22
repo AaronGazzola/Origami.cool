@@ -76,7 +76,7 @@ const EditProductScreen = ({ match, history }) => {
 		if (slug && slug !== product?.slug) {
 			dispatch(getProductAction(slug));
 		}
-	}, [dispatch, slug]);
+	}, [dispatch, slug, product]);
 
 	useEffect(() => {
 		if (getProductSuccess) {
@@ -103,7 +103,7 @@ const EditProductScreen = ({ match, history }) => {
 			formDispatch({ type: 'UPLOAD_IMAGE', payload: uploadedImage });
 			dispatch({ type: UPLOAD_IMAGE_CLEAR });
 		}
-	}, [uploadImageSuccess, uploadedImage]);
+	}, [uploadImageSuccess, uploadedImage, dispatch, formDispatch]);
 
 	const submitHandler = e => {
 		e.preventDefault();
@@ -145,8 +145,6 @@ const EditProductScreen = ({ match, history }) => {
 		const file = e.target.files[0];
 		dispatch(uploadImageAction(file));
 	};
-
-	console.log(formState);
 
 	return (
 		<>

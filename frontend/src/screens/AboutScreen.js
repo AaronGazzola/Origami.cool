@@ -38,6 +38,7 @@ const AboutScreen = () => {
 				<a
 					href='https://www.apexapps.dev'
 					target='_blank'
+					rel='noreferrer'
 					className={classes.link}
 				>
 					<Typography variant='h5' className={classes.subTitle}>
@@ -49,6 +50,7 @@ const AboutScreen = () => {
 					<a
 						href='https://www.apexapps.dev'
 						target='_blank'
+						rel='noreferrer'
 						className={classes.link}
 					>
 						Apex Apps
@@ -58,6 +60,7 @@ const AboutScreen = () => {
 			<a
 				href='https://www.apexapps.dev'
 				target='_blank'
+				rel='noreferrer'
 				className={classes.link}
 			>
 				<img

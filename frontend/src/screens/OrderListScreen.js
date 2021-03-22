@@ -14,13 +14,7 @@ import {
 	Switch,
 	useMediaQuery,
 	IconButton,
-	TablePagination,
-	TextField,
-	Collapse,
-	FormControl,
-	InputLabel,
-	Select,
-	MenuItem
+	TablePagination
 } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
@@ -39,9 +33,6 @@ const OrderListScreen = () => {
 	const dispatch = useDispatch();
 	const theme = useTheme();
 
-	const matchesXs = useMediaQuery(theme => theme.breakpoints.down('xs'));
-	const matchesMd = useMediaQuery(theme => theme.breakpoints.down('md'));
-
 	const mediaMdUp = useMediaQuery(theme.breakpoints.up('md'));
 	const mediaXsDown = useMediaQuery(theme.breakpoints.down('xs'));
 
@@ -52,11 +43,9 @@ const OrderListScreen = () => {
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
 
-	const {
-		orders,
-		success: listOrdersSuccess,
-		loading: listOrdersLoading
-	} = useSelector(state => state.listOrders);
+	const { orders, loading: listOrdersLoading } = useSelector(
+		state => state.listOrders
+	);
 	const {
 		success: cancelOrderSuccess,
 		loading: cancelOrderLoading

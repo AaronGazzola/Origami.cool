@@ -58,7 +58,7 @@ const UserListScreen = () => {
 
 	useEffect(() => {
 		dispatch(getUsersAction());
-	}, []);
+	}, [dispatch]);
 
 	const handleChangeRowsPerPage = e => {
 		setRowsPerPage(parseInt(e.target.value, 10));

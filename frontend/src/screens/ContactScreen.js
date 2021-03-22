@@ -14,6 +14,7 @@ const AboutScreen = () => {
 				<a
 					href='https://www.apexapps.dev'
 					target='_blank'
+					rel='noreferrer'
 					className={classes.link}
 				>
 					<Typography variant='h5' className={classes.subTitle}>
@@ -25,6 +26,7 @@ const AboutScreen = () => {
 					<a
 						href='https://www.apexapps.dev'
 						target='_blank'
+						rel='noreferrer'
 						className={classes.link}
 					>
 						Apex Apps
@@ -34,6 +36,7 @@ const AboutScreen = () => {
 			<a
 				href='https://www.apexapps.dev'
 				target='_blank'
+				rel='noreferrer'
 				className={classes.link}
 			>
 				<img
@@ -58,10 +61,18 @@ const AboutScreen = () => {
 				justify='space-between'
 				className={classes.icons}
 			>
-				<a href='https://github.com/AaronGazzola' target='_blank'>
+				<a
+					href='https://github.com/AaronGazzola'
+					target='_blank'
+					rel='noreferrer'
+				>
 					<GitHub fontSize='large' />
 				</a>
-				<a href='https://twitter.com/aarongazzola' target='_blank'>
+				<a
+					href='https://twitter.com/aarongazzola'
+					target='_blank'
+					rel='noreferrer'
+				>
 					<Twitter fontSize='large' />
 				</a>
 				<a href='mailto: aaron@apexapps.dev'>
