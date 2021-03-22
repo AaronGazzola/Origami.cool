@@ -160,6 +160,41 @@ const styles = makeStyles(theme => ({
 	shadow: {
 		marginTop: theme.spacing(2),
 		boxShadow: theme.shadows[5]
+	},
+	divider2: {
+		padding: theme.spacing(1),
+		marginTop: theme.spacing(2),
+		width: '80%',
+		maxWidth: 400,
+		borderBottom: `1px solid ${theme.palette.grey[800]}`
+	},
+	icons: {
+		marginTop: theme.spacing(2),
+		maxWidth: 150,
+		'& a': {
+			color: theme.palette.text.primary,
+			'&:hover': {
+				color: theme.palette.secondary.main
+			}
+		}
+	},
+	email: {
+		marginTop: theme.spacing(1),
+		'& a': {
+			color: theme.palette.secondary.main,
+			textDecoration: 'none',
+			'&:hover': {
+				color: theme.palette.secondary.main
+			}
+		}
+	},
+	subTitle3: {
+		[theme.breakpoints.down('sm')]: {
+			fontSize: '1.7rem'
+		},
+		[theme.breakpoints.down('xs')]: {
+			fontSize: '1.5rem'
+		}
 	}
 }));
 
