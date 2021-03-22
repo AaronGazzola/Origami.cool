@@ -163,7 +163,7 @@ const styles = makeStyles(theme => ({
 	},
 	divider2: {
 		padding: theme.spacing(1),
-		marginTop: theme.spacing(2),
+		marginTop: theme.spacing(1),
 		width: '80%',
 		maxWidth: 400,
 		borderBottom: `1px solid ${theme.palette.grey[800]}`

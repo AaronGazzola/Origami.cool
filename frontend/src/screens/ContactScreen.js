@@ -33,18 +33,7 @@ const AboutScreen = () => {
 					</a>
 				</Typography>
 			</Paper>
-			<a
-				href='https://www.apexapps.dev'
-				target='_blank'
-				rel='noreferrer'
-				className={classes.link}
-			>
-				<img
-					className={classes.shadow}
-					src='./images/apex-apps-logo.png'
-					alt='Apex Apps logo'
-				/>
-			</a>
+
 			<Grid container className={classes.divider2} justify='center'>
 				<Typography
 					variant='h4'

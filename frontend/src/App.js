@@ -29,6 +29,8 @@ import ProductListScreen from 'screens/ProductListScreen';
 import UserListScreen from 'screens/UserListScreen';
 import AboutScreen from 'screens/AboutScreen';
 import ContactScreen from 'screens/ContactScreen';
+import TermsScreen from 'screens/TermsScreen';
+import PrivacyScreen from 'screens/PrivacyScreen';
 import Message from 'components/Message';
 import SnackBar from 'components/SnackBar';
 import {
@@ -369,6 +371,8 @@ const App = () => {
 							)}
 							<Route path='/about' exact component={AboutScreen} />
 							<Route path='/contact' exact component={ContactScreen} />
+							<Route path='/terms' exact component={TermsScreen} />
+							<Route path='/privacy' exact component={PrivacyScreen} />
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
 					) : isAuth && user.isVerified ? (
@@ -392,6 +396,8 @@ const App = () => {
 							)}
 							<Route path='/about' exact component={AboutScreen} />
 							<Route path='/contact' exact component={ContactScreen} />
+							<Route path='/terms' exact component={TermsScreen} />
+							<Route path='/privacy' exact component={PrivacyScreen} />
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
 					) : (
@@ -420,6 +426,8 @@ const App = () => {
 							<Redirect from='/admin' to='/login' />
 							<Route path='/about' exact component={AboutScreen} />
 							<Route path='/contact' exact component={ContactScreen} />
+							<Route path='/terms' exact component={TermsScreen} />
+							<Route path='/privacy' exact component={PrivacyScreen} />
 							<Route path='/' component={PageNotFoundScreen} />
 						</Switch>
 					)}
