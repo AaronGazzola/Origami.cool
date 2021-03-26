@@ -9,14 +9,14 @@ if (/*@cc_on!@*/ false || !!document.documentMode) {
 		<p className='ie'>
 			Internet Explorer is not supported by this web app, please use a modern
 			browser such as{' '}
-			<a href='https://www.google.com/chrome/' target='_blank' rel='noopener'>
+			<a href='https://www.google.com/chrome/' target='_blank' rel='noreferrer'>
 				Google Chrome
 			</a>{' '}
 			or{' '}
 			<a
 				href='https://www.mozilla.org/en-US/firefox/download/'
 				target='_blank'
-				rel='noopener'
+				rel='noreferrer'
 			>
 				Firefox
 			</a>

@@ -58,8 +58,8 @@ const ReviewSection = ({ product }) => {
 	const [rating, setRating] = useState(userReview?.rating || 5);
 
 	useEffect(() => {
-		dispatch(userListOrdersAction());
-	}, [dispatch]);
+		if (isAuth) dispatch(userListOrdersAction());
+	}, [dispatch, isAuth]);
 
 	useEffect(() => {
 		if (

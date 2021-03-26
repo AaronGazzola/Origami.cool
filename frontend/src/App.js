@@ -5,7 +5,7 @@ import {
 	Route,
 	Switch
 } from 'react-router-dom';
-import { CssBaseline, ThemeProvider, Typography } from '@material-ui/core';
+import { CssBaseline, ThemeProvider } from '@material-ui/core';
 import { getTheme } from 'styles/theme';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutAction } from 'actions/userActions';

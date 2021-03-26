@@ -85,15 +85,13 @@ const styles = makeStyles(theme => ({
 		borderColor: theme.palette.primary.main
 	},
 	innerList: {
+		padding: theme.spacing(1, 2),
 		display: 'flex',
 		flexDirection: 'column',
 		alignItems: 'center'
 	},
 	greyText: {
 		color: theme.palette.grey[600]
-	},
-	listInput: {
-		width: '90%'
 	}
 }));
 

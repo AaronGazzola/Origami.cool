@@ -241,7 +241,6 @@ const ProfileModal = ({ open, setOpen, user }) => {
 												label='Street Address Line 1'
 												type='text'
 												placeholder='Street Address Line 1'
-												fullWidth
 												color='secondary'
 												value={street1.value}
 												onChange={e => changeHandler(e, [VALIDATOR_REQUIRE()])}
@@ -257,13 +256,13 @@ const ProfileModal = ({ open, setOpen, user }) => {
 														? 'Street address is requried'
 														: ' '
 												}
+												fullWidth
 											/>
 											<TextField
 												id='street2'
 												label='Street Address Line 2'
 												type='text'
 												placeholder='Street Address Line 2'
-												fullWidth
 												color='secondary'
 												value={street2.value}
 												onChange={e => changeHandler(e, [])}
@@ -275,13 +274,13 @@ const ProfileModal = ({ open, setOpen, user }) => {
 												onBlur={touchHandler}
 												error={!street2.isValid && street2.isTouched}
 												helperText=' '
+												fullWidth
 											/>
 											<TextField
 												id='city'
 												label='City'
 												type='text'
 												placeholder='City'
-												fullWidth
 												color='secondary'
 												value={city.value}
 												onChange={e => changeHandler(e, [VALIDATOR_REQUIRE()])}
@@ -299,13 +298,13 @@ const ProfileModal = ({ open, setOpen, user }) => {
 														? 'City is required'
 														: ' '
 												}
+												fullWidth
 											/>
 											<TextField
 												id='state'
 												label='State'
 												type='text'
 												placeholder='State'
-												fullWidth
 												color='secondary'
 												value={state.value}
 												onChange={e => changeHandler(e, [VALIDATOR_REQUIRE()])}
@@ -323,13 +322,13 @@ const ProfileModal = ({ open, setOpen, user }) => {
 														? 'State is required'
 														: ' '
 												}
+												fullWidth
 											/>
 											<TextField
 												id='postCode'
 												label='Post Code'
 												type='number'
 												placeholder='Post Code'
-												fullWidth
 												color='secondary'
 												value={postCode.value}
 												onChange={e =>
@@ -352,13 +351,13 @@ const ProfileModal = ({ open, setOpen, user }) => {
 														? 'Post Code is required'
 														: ' '
 												}
+												fullWidth
 											/>
 											<TextField
 												id='country'
 												label='Country'
 												type='text'
 												placeholder='Country'
-												fullWidth
 												color='secondary'
 												value={country.value}
 												onChange={e => changeHandler(e, [VALIDATOR_REQUIRE()])}
@@ -376,6 +375,7 @@ const ProfileModal = ({ open, setOpen, user }) => {
 														? 'Country is required'
 														: ' '
 												}
+												fullWidth
 											/>
 										</List>
 									</Collapse>
@@ -402,7 +402,6 @@ const ProfileModal = ({ open, setOpen, user }) => {
 												label='Current Password'
 												type='password'
 												placeholder='Current Password'
-												fullWidth
 												color='secondary'
 												value={currentPassword.value}
 												onChange={e =>
@@ -425,13 +424,13 @@ const ProfileModal = ({ open, setOpen, user }) => {
 														? 'Password must be between 6 and 30 characters'
 														: ' '
 												}
+												fullWidth
 											/>
 											<TextField
 												id='newPassword'
 												label='New Password'
 												type='password'
 												placeholder='New Password'
-												fullWidth
 												color='secondary'
 												value={newPassword.value}
 												onChange={e =>
@@ -454,13 +453,13 @@ const ProfileModal = ({ open, setOpen, user }) => {
 														? 'Password must be between 6 and 30 characters'
 														: ' '
 												}
+												fullWidth
 											/>
 											<TextField
 												id='confirmNewPassword'
 												label='Confirm New Password'
 												type='password'
 												placeholder='Confirm New Password'
-												fullWidth
 												color='secondary'
 												value={confirmNewPassword.value}
 												onChange={e => {
@@ -483,6 +482,7 @@ const ProfileModal = ({ open, setOpen, user }) => {
 														? 'Passwords must match'
 														: ' '
 												}
+												fullWidth
 											/>
 										</List>
 									</Collapse>

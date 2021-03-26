@@ -73,11 +73,11 @@ const styles = makeStyles(theme => ({
 		}
 	},
 	back: {
-		transform: 'translate(-50%, -50%)',
+		transform: 'translate(-45%, -50%)',
 		left: 0
 	},
 	next: {
-		transform: 'translate(50%, -50%)',
+		transform: 'translate(45%, -50%)',
 		right: 0
 	},
 	border: {
