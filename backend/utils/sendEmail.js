@@ -2,19 +2,29 @@ import nodemailer from 'nodemailer';
 import useHtmlTemplate from './useHtmlTemplate.js';
 
 const sendEmail = async options => {
-	const transporter = nodemailer.createTransport({
-		host: process.env.SMTP_HOST_DEV,
-		port: process.env.SMTP_PORT_DEV,
-		auth: {
-			user: process.env.SMTP_EMAIL_DEV,
-			pass: process.env.SMTP_PASSWORD_DEV
-		}
-	});
+	const transporter = nodemailer.createTransport(
+		process.env.NODE_ENV === 'production'
+			? {
+					service: process.env.SMTP_SERVICE_PROD,
+					auth: {
+						user: process.env.SMTP_USER_PROD,
+						pass: process.env.SMTP_PASSWORD_PROD
+					}
+			  }
+			: {
+					host: process.env.SMTP_HOST_DEV,
+					port: process.env.SMTP_PORT_DEV,
+					auth: {
+						user: process.env.SMTP_EMAIL_DEV,
+						pass: process.env.SMTP_PASSWORD_DEV
+					}
+			  }
+	);
 
 	const [mailList, subject, html] = useHtmlTemplate(options);
 
 	const message = {
-		from: `${process.env.FROM_NAME_DEV} <aaron@origami.cool>`,
+		from: `${process.env.FROM_NAME_DEV} <${process.env.FROM_EMAIL_PROD}>`,
 		to: mailList,
 		subject,
 		html
@@ -26,13 +36,3 @@ const sendEmail = async options => {
 };
 
 export default sendEmail;
-
-// 	// create reset url
-// 	const verifyUrl = `${req.protocol}://${
-// 		process.env.NODE_ENV === 'production' ? req.get('host') : 'localhost:3000'
-// 	}/verify/${verifyToken}`;
-
-// 	const message = `
-// 	<!DOCTYPE html>
-// <html lang="en">
-// 	<p>Please follow the link below to verify your account</p></br> <a href='${verifyUrl}'>Verify Account</a></html>`;

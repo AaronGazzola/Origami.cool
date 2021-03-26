@@ -56,7 +56,8 @@ export const signupAction = (name, email, password) => async dispatch => {
 
 		dispatch({
 			type: SIGNUP_SUCCESS,
-			payload: 'Please Check your inbox to confirm your email address'
+			payload:
+				'Please Check your inbox to confirm your email address (You may need to check your junk/spam folder)'
 		});
 
 		dispatch(sendVerifyUserAction(email));
@@ -312,7 +313,8 @@ export const forgotPasswordAction = email => async dispatch => {
 
 		dispatch({
 			type: FORGOT_PASSWORD_SUCCESS,
-			payload: 'Please Check your email for a link to reset your password'
+			payload:
+				'Please Check your email for a link to reset your password (You may need to check your junk/spam folder)'
 		});
 	} catch (error) {
 		dispatch({
@@ -396,8 +398,8 @@ export const userUpdateProfileAction = updateFields => async (
 
 		dispatch({
 			type: USER_UPDATE_PROFILE_SUCCESS,
-			payload: data.user.newEmail
-				? 'Please check your inbox to confirm your new email address'
+			payload: data.userData.user.newEmail
+				? 'Please check your inbox to confirm your new email address (You may need to check your junk/spam folder)'
 				: 'Profile Updated'
 		});
 

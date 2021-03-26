@@ -170,7 +170,8 @@ const forgotPassword = asyncHandler(async (req, res, next) => {
 			baseUrl,
 			message1: `Please follow the link below to reset your password.`,
 			message2: `If you did not request to reset your password, please ignore this email.`,
-			reason: `You have recieved this email because a request was made to reset your password at Origami.cool, this is not a promotional email.`
+			reason: `You have recieved this email because a request was made to reset your password at Origami.cool, this is not a promotional email.`,
+			buttonText: 'Reset Password'
 		});
 		res.status(200).json({ success: true, data: 'Email sent' });
 	} catch (error) {
@@ -259,7 +260,8 @@ const userUpdateProfile = asyncHandler(async (req, res, next) => {
 				baseUrl,
 				message1: `Please follow the link below to verify your updated email address`,
 				message2: `If you did not request to change your email at <a class="link a" href="${baseUrl}" style="color: #026A97; text-decoration: none;"><span class="a__text" style="color: #026A97; text-decoration: none;">Origami.cool</span></a>, please ignore this email.`,
-				reason: `You have recieved this email because a request was made to update the email address associated with your account, this is not a promotional email.`
+				reason: `You have recieved this email because a request was made to update the email address associated with your account, this is not a promotional email.`,
+				buttonText: 'Update Email'
 			});
 		} catch (error) {
 			console.log(error);

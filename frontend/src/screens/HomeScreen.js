@@ -30,7 +30,7 @@ const HomeScreen = () => {
 			</Typography>
 			<Paper className={classes.paper}>
 				<Typography className={classes.text}>
-					Hi, my name's Aaron. I fold origami and develop web applications.
+					Hi, I'm Aaron. I fold origami and develop web applications.
 				</Typography>
 				<Typography className={classes.text}>
 					Like this web app? Want one just as awesome? Visit{' '}

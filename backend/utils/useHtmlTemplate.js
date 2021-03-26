@@ -188,7 +188,7 @@ const useHtmlTemplate = ({
                                       <tr class="row__row">
                                         <p class="footer-text text p" large="2" style="display: block; line-height: 20px; font-family: Helvetica,Arial,sans-serif; padding: 0; color: #424242; font-size: 11px; margin: 0;"> This email was sent by Apex Apps, ABN: 81700757157 via Origami.cool </p>
                                         <p class="footer-text text p" large="2" style="display: block; line-height: 20px; font-family: Helvetica,Arial,sans-serif; padding: 0; color: #424242; font-size: 11px; margin: 0;">
-                                        Make sure you add aaron@origami.cool to your address book and safe list. </p>
+                                        Make sure you add aaron@apexapps.dev to your address book and safe list. </p>
                                         <p class="footer-text text p" large="2" style="display: block; line-height: 20px; font-family: Helvetica,Arial,sans-serif; padding: 0; color: #424242; font-size: 11px; margin: 0;">
                                         ${reason}</p>
                                         <p class="footer-center text p" large="2" style="display: block; line-height: 20px; font-family: Helvetica,Arial,sans-serif; padding: 0; color: #424242; font-size: 11px; margin: 0; text-align: center;">
@@ -545,7 +545,7 @@ Origami.cool" border="0" style="display: block; max-width: 100%; white-space: pr
                               <tr class="row__row">
                                 <p class="footer-text text p" large="2" style="display: block; line-height: 20px; font-family: Helvetica,Arial,sans-serif; padding: 0; color: #424242; font-size: 11px; margin: 0;"> This email was sent by Apex Apps, ABN: 81700757157 via Origami.cool </p>
                                 <p class="footer-text text p" large="2" style="display: block; line-height: 20px; font-family: Helvetica,Arial,sans-serif; padding: 0; color: #424242; font-size: 11px; margin: 0;">
-                                Make sure you add aaron@origami.cool to your address book and safe list. </p>
+                                Make sure you add aaron@apexapps.dev to your address book and safe list. </p>
                                 <p class="footer-text text p" large="2" style="display: block; line-height: 20px; font-family: Helvetica,Arial,sans-serif; padding: 0; color: #424242; font-size: 11px; margin: 0;">
                                 ${reason} </p>
                                 <p class="footer-center text p" large="2" style="display: block; line-height: 20px; font-family: Helvetica,Arial,sans-serif; padding: 0; color: #424242; font-size: 11px; margin: 0; text-align: center;">
