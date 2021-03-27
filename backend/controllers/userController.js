@@ -8,7 +8,8 @@ import sendEmail from '../utils/sendEmail.js';
 // @route     POST /api/v1/users/signup
 // @access    Public
 const signup = asyncHandler(async (req, res, next) => {
-	const { name, email, password } = req.body;
+	const { name, password } = req.body;
+	const email = re.body.email?.toLowerCase();
 
 	// Check for required fields
 	if (!name || !email || !password) {
@@ -43,7 +44,8 @@ const signup = asyncHandler(async (req, res, next) => {
 // @route     POST /api/v1/users/login
 // @access    Public
 const login = asyncHandler(async (req, res, next) => {
-	const { email, password } = req.body;
+	const { password } = req.body;
+	const email = re.body.email?.toLowerCase();
 
 	// Check for email and password
 	if (!email || !password) {
@@ -73,7 +75,7 @@ const login = asyncHandler(async (req, res, next) => {
 // @route     POST /api/v1/users/sendverify
 // @access    Public
 const sendVerifyUser = asyncHandler(async (req, res, next) => {
-	const user = await User.findOne({ email: req.body.email });
+	const user = await User.findOne({ email: req.body.email?.toLowerCase() });
 
 	if (!user) {
 		return next(new ErrorResponse('Could not send verification email', 404));
@@ -145,7 +147,7 @@ const verifyUser = asyncHandler(async (req, res, next) => {
 // @route     POST /api/v1/users/forgotpassword
 // @access    Public
 const forgotPassword = asyncHandler(async (req, res, next) => {
-	const user = await User.findOne({ email: req.body.email });
+	const user = await User.findOne({ email: req.body.email?.toLowerCase() });
 
 	if (!user) {
 		return next(new ErrorResponse('There is no user with that email', 404));
@@ -231,9 +233,11 @@ const userUpdateProfile = asyncHandler(async (req, res, next) => {
 	}
 
 	// if email is updated
-	if (req.body.email && req.body.email !== user.email) {
+	if (req.body.email && req.body.email?.toLowerCase() !== user.email) {
 		//check for user with email
-		const foundUser = await User.findOne({ email: req.body.email });
+		const foundUser = await User.findOne({
+			email: req.body.email.toLowerCase()
+		});
 		if (foundUser) {
 			return next(
 				new ErrorResponse('A user with that email address already exists', 400)
@@ -243,7 +247,7 @@ const userUpdateProfile = asyncHandler(async (req, res, next) => {
 		const token = user.getToken('UPDATE_EMAIL');
 
 		// add email to user
-		user.newEmail = req.body.email;
+		user.newEmail = req.body.email.toLowerCase();
 
 		// get base URL from request protocol and host domain
 		const baseUrl = `${req.protocol}://${
