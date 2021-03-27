@@ -1,6 +1,25 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 const styles = makeStyles(theme => ({
+	arrowCircle: {
+		background: 'rgba(217,170,111,.5)',
+		border: `1px solid ${theme.palette.background.default}`,
+		height: 50,
+		width: 50,
+		position: 'fixed',
+		borderRadius: '50%',
+		position: 'fixed',
+		bottom: 50,
+		left: '50%',
+		transform: 'translate(-50%, 0%)',
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		animation: '$pulse .8s ease infinite alternate'
+	},
+	arrow: {
+		color: theme.palette.background.default
+	},
 	title: {
 		marginBottom: theme.spacing(1)
 	},
@@ -194,6 +213,14 @@ const styles = makeStyles(theme => ({
 		},
 		[theme.breakpoints.down('xs')]: {
 			fontSize: '1.5rem'
+		}
+	},
+	'@keyframes pulse': {
+		'0%': {
+			transform: 'translate(-50%, 40%)'
+		},
+		'100%': {
+			transform: 'translate(-50%, 0%)'
 		}
 	}
 }));

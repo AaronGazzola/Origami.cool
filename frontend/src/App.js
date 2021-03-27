@@ -274,7 +274,7 @@ const App = () => {
 							sendVerifyUserSuccess ||
 							verifyUserSuccess ||
 							verifyEmailUpdateSuccess ||
-							userUpdateProfileSuccess ||
+							userUpdateProfileSuccess === 'Profile updated' ||
 							forgotPasswordSuccess ||
 							resetPasswordSuccess ||
 							cancelEmailUpdateSuccess ||

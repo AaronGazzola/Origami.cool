@@ -1,23 +1,44 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import useStyles from 'styles/contentStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProductsAction } from 'actions/productActions';
 import { CircularProgress, Grid, Paper, Typography } from '@material-ui/core';
+import { ArrowDownward } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
 
 const HomeScreen = () => {
 	const dispatch = useDispatch();
 	const classes = useStyles();
 	const { loading, products } = useSelector(state => state.getProducts);
+	const [animation, setAnimation] = useState(true);
+	const messageRef = useRef(null);
 
 	useEffect(() => {
 		dispatch(getProductsAction());
 	}, [dispatch]);
 
+	useEffect(() => {
+		window.addEventListener('scroll', handleScroll);
+		handleScroll();
+		return () => window.removeEventListener('scroll', handleScroll);
+	}, []);
+	const handleScroll = e => {
+		const messageHeight =
+			messageRef.current?.offsetTop +
+			messageRef.current?.offsetHeight * 2 -
+			window.innerHeight;
+		if (window.scrollY >= messageHeight) setAnimation(false);
+	};
+
 	return (
 		<>
+			{animation && (
+				<div className={classes.arrowCircle}>
+					<ArrowDownward fontSize='large' className={classes.arrow} />
+				</div>
+			)}
 			<div className={classes.hero}>
 				<Typography variant='h1'>Origami.cool</Typography>
 				<div></div>
@@ -28,7 +49,7 @@ const HomeScreen = () => {
 			>
 				Welcome
 			</Typography>
-			<Paper className={classes.paper}>
+			<Paper className={classes.paper} ref={messageRef}>
 				<Typography className={classes.text}>
 					Hi, I'm Aaron. I fold origami and develop web applications.
 				</Typography>
