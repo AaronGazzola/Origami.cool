@@ -70,7 +70,9 @@ const useProductForm = product => {
 					draft.inputs[action.payload.id].isTouched = true;
 					break;
 				case 'UPLOAD_IMAGE':
-					draft.images = [...state.images, { path: action.payload, label: '' }];
+					let uploadedArr = [...state.images];
+					uploadedArr.push({ path: action.payload, label: '' });
+					draft.images = uploadedArr;
 					let uploadValid = true;
 					for (const inputId in state.inputs) {
 						uploadValid = uploadValid && state.inputs[inputId].isValid;
@@ -78,7 +80,9 @@ const useProductForm = product => {
 					draft.formIsValid = uploadValid;
 					break;
 				case 'DELETE_IMAGE':
-					draft.images = [...state.images].splice(action.payload + 1, 1);
+					let deletedArr = [...state.images];
+					deletedArr.splice(action.payload, 1);
+					draft.images = deletedArr;
 					let valid = true;
 					for (const inputId in state.inputs) {
 						valid = valid && state.inputs[inputId].isValid;

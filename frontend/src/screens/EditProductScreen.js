@@ -102,6 +102,7 @@ const EditProductScreen = ({ match, history }) => {
 		if (uploadImageSuccess) {
 			formDispatch({ type: 'UPLOAD_IMAGE', payload: uploadedImage });
 			dispatch({ type: UPLOAD_IMAGE_CLEAR });
+			setActiveStep(images.length);
 		}
 	}, [uploadImageSuccess, uploadedImage, dispatch, formDispatch]);
 
