@@ -60,11 +60,7 @@ app.use(cors());
 app.use((req, res, next) => {
 	res.header(
 		'Content-Security-Policy',
-		`script-src 'self' https://www.paypal.com https://www.paypal.com/sdk/js?client-id=${
-			process.env.NODE_ENV === 'production'
-				? process.env.PAYPAL_CLIENT_ID_PROD
-				: process.env.PAYPAL_CLIENT_ID_DEV
-		}&currency=AUD`
+		"script-src 'self' https://www.paypal.com"
 	);
 	next();
 });

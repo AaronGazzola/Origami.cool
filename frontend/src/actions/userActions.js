@@ -398,7 +398,7 @@ export const userUpdateProfileAction = updateFields => async (
 
 		dispatch({
 			type: USER_UPDATE_PROFILE_SUCCESS,
-			payload: data.userData.user.newEmail
+			payload: data.user.newEmail
 				? 'Please check your inbox to confirm your new email address (You may need to check your junk/spam folder)'
 				: 'Profile Updated'
 		});

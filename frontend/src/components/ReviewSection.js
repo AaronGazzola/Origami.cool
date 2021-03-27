@@ -52,9 +52,9 @@ const ReviewSection = ({ product }) => {
 	const initialDisplayCount = 3;
 	const [displayCount, setDisplayCount] = useState(initialDisplayCount);
 	const [reviewEnabled, setReviewEnabled] = useState(false);
-	const userReview = product.reviews.filter(
-		review => review.user === user._id
-	)[0];
+	const userReview = isAuth
+		? product.reviews.find(review => review.user === user?._id)
+		: null;
 	const [rating, setRating] = useState(userReview?.rating || 5);
 
 	useEffect(() => {

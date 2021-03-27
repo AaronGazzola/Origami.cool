@@ -181,14 +181,13 @@ const styles = makeStyles(theme => ({
 		boxShadow: theme.shadows[5]
 	},
 	divider2: {
-		padding: theme.spacing(1),
-		marginTop: theme.spacing(1),
+		margin: theme.spacing(2, 0),
+		padding: theme.spacing(1, 0),
 		width: '80%',
 		maxWidth: 400,
 		borderBottom: `1px solid ${theme.palette.grey[800]}`
 	},
 	icons: {
-		marginTop: theme.spacing(2),
 		maxWidth: 150,
 		'& a': {
 			color: theme.palette.text.primary,
