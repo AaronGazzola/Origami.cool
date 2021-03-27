@@ -9,7 +9,7 @@ import sendEmail from '../utils/sendEmail.js';
 // @access    Public
 const signup = asyncHandler(async (req, res, next) => {
 	const { name, password } = req.body;
-	const email = re.body.email?.toLowerCase();
+	const email = req.body.email?.toLowerCase();
 
 	// Check for required fields
 	if (!name || !email || !password) {
@@ -45,7 +45,7 @@ const signup = asyncHandler(async (req, res, next) => {
 // @access    Public
 const login = asyncHandler(async (req, res, next) => {
 	const { password } = req.body;
-	const email = re.body.email?.toLowerCase();
+	const email = req.body.email?.toLowerCase();
 
 	// Check for email and password
 	if (!email || !password) {
